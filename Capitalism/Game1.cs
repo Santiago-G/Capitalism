@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace Capitalism
-{    public class Game1 : Game
+{
+    // TODO: Add stuff here to do
+    public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -23,7 +25,7 @@ namespace Capitalism
 
         protected override void Initialize()
         {
-            
+
             // TODO: Add your initialization logic here
 
             IsMouseVisible = true;
@@ -80,7 +82,7 @@ namespace Capitalism
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(spriteSheet, new Vector2(410,0), Color.White);
+            spriteBatch.Draw(spriteSheet, new Vector2(410, 0), Color.White);
             spriteBatch.Draw(BankThing, new Vector2(45, 0), Color.White);
             TheBoard.Draw(spriteBatch);
 
