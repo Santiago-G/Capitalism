@@ -5,7 +5,18 @@ using System.Collections.Generic;
 
 namespace Capitalism
 {
-    // TODO: Add stuff here to do
+    // TODO LIST
+    /*
+     * Make Sprites for the characters
+     * IF the Sprites for the cards aren't fixed, FIX THEM
+     * Finish the positions with the right Sprites
+     * Either make a loading screen asking how many players there are
+       OR add the money system
+     * 
+     * 
+     * 
+     * 
+     */
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;

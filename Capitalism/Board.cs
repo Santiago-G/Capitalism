@@ -14,33 +14,60 @@ namespace Capitalism
 {
     public class Board
     {
+        static public float Player1X = 1276;
+        static public float Player1Y = 870;
 
+        #region Functions
+
+        static public Vector2[] MakingPositions()
+        {
+            //there are 40 positions
+            Vector2[] Positions = new Vector2[40];
+
+            float tempPlayer1X = Player1X;
+            float tempPlayer1Y = Player1Y;
+
+            for (int i = 0; i < 10; i++)
+            {
+                tempPlayer1X = tempPlayer1X - 75.7f;
+                Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);   
+            }
+
+            tempPlayer1X = tempPlayer1X - 30;
+
+            for (int i = 10; i < 20; i++)
+            {
+                tempPlayer1Y = tempPlayer1Y - 75.7f;
+                Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
+            }
+
+            return Positions;
+        }
+
+        static public void TestingPositions(Vector2[] positionArray, int position)
+        {
+            (Player1X, Player1Y) = positionArray[position];
+        }
+
+        #endregion
 
         Texture2D Frame;
         Texture2D Yes;
         Texture2D No;
         Texture2D Purchase;
         Texture2D WhatAboutTheDroidAttackOnTheWookies;
-
-
-        public float Player1X = 1276;
-        public float Player1Y = 870;
-
-
-        bool isPressed = false;
-
-
+        Player player;
         Button noButton;
 
         Dictionary<PropertyNames, Property> Properties = new Dictionary<PropertyNames, Property>();
 
         PropertyNames? selectedValue = null;
 
-        /*
-            Do either, money or finish walking logic
-        */
-
         MouseState lms;
+
+
+        bool isPressed = false;
+        new Vector2[] listOfPositions = new Vector2[40];
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -56,14 +83,18 @@ namespace Capitalism
 
         public Board(ContentManager Content)
         {
+            //Testing Testing Testing
+            listOfPositions = MakingPositions();
+            TestingPositions(listOfPositions, 10);
 
+            //Testing Testing Testing
 
             Properties.Add(PropertyNames.Mediterranean, LoadContent("MediterraneanAve", 1199, 895, true, 2, 10, 30, 90, 160, 250, 50, 50, Content));
             ;
             Properties.Add(PropertyNames.Baltic, LoadContent("BalticAve", 1049, 895, true, 4, 20, 60, 180, 320, 450, 50, 50, Content));
             Properties.Add(PropertyNames.Oriental, LoadContent("OrientalAve", 820, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
             Properties.Add(PropertyNames.Vermont, LoadContent("VermontAve", 668, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(PropertyNames.Connecticut, LoadContent("ConnecticutAve", 592, 895, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(PropertyNames.Connecticut, LoadContent("ConnecticutAve", 592, 895, true, 8, 40, 100, 300, 450, 600, 50, 50, Content));
 
             Properties.Add(PropertyNames.StCharles, LoadContent("StCharlesPlace", 458, 794, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
             Properties.Add(PropertyNames.State, LoadContent("StatesAve", 458, 642, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
@@ -101,23 +132,13 @@ namespace Capitalism
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
             WhatAboutTheDroidAttackOnTheWookies = Content.Load<Texture2D>("WhatAboutTheDroidAttackOnTheWookies");
 
-            ///////////////////////////////////
-
-
             noButton = new Button(No, new Vector2(356, 662), Color.White);
+
+            player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
         }
 
         public void Update(MouseState ms)
         {
-            if (noButton.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed && isPressed != true)
-            {
-                Player1X -= 75.7f;
-                isPressed = true;
-            }
-            else if (ms.LeftButton == ButtonState.Released)
-            {
-                isPressed = false;
-            }
 
             #region Property
 
