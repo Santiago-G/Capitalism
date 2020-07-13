@@ -2,21 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Capitalism
 {
-    // TODO LIST
-    /*
-     * Make Sprites for the characters
-     * IF the Sprites for the cards aren't fixed, FIX THEM
-     * Finish the positions with the right Sprites
-     * Either make a loading screen asking how many players there are
-       OR add the money system
-     * 
-     * 
-     * 
-     * 
-     */
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -27,6 +17,11 @@ namespace Capitalism
 
         Board TheBoard;
         Player Players;
+
+        bool StartingScreen = true;
+
+        //List<Screen> screens;
+        //Screen currentScreen;
 
         public Game1()
         {
@@ -40,11 +35,24 @@ namespace Capitalism
             // TODO: Add your initialization logic here
 
             IsMouseVisible = true;
-            graphics.PreferredBackBufferWidth = 1470;
-            graphics.PreferredBackBufferHeight = 1048;
-            graphics.ApplyChanges();
+
+            ChangeResolution(1470, 1048);
+
+            //ScreenManager manager = new ScreenManager();
+            //manager.Add(new Screen("Loading Screen"))
+
+       
+            // currentScreen = screens[0];
+
 
             base.Initialize();
+        }
+
+        public void ChangeResolution(int width, int height)
+        {
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
+            graphics.ApplyChanges();
         }
 
 
@@ -55,37 +63,58 @@ namespace Capitalism
 
             spriteSheet = Content.Load<Texture2D>("TheCapitalistBoard");
             BankThing = Content.Load<Texture2D>("BankTitle");
+
+
             TheBoard = new Board(Content);
+
+
+            //string[] filecontents = File.ReadAllLines("rules.txt");
+
+            ;
 
             // TODO: use this.Content to load your game content here
         }
+
+
 
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                
+               Exit();
+            }
+
+
             MouseState Ms = Mouse.GetState();
-            TheBoard.Update(Ms);
+
+            //currentScreen.Update();
+
+            if (StartingScreen)
+            {
+                ChangeResolution(700, 700);
+            }
+            else
+            {
+                TheBoard.Update(Ms);
+            }
+
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
+
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.FromNonPremultiplied(109, 109, 109, 155));
@@ -93,9 +122,21 @@ namespace Capitalism
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(spriteSheet, new Vector2(410, 0), Color.White);
-            spriteBatch.Draw(BankThing, new Vector2(45, 0), Color.White);
-            TheBoard.Draw(spriteBatch);
+            //currentScreen.Draw();
+
+            if (StartingScreen)
+            {
+                ChangeResolution(700, 700);
+                
+
+            }
+
+            else
+            {
+                spriteBatch.Draw(spriteSheet, new Vector2(410, 0), Color.White);
+                spriteBatch.Draw(BankThing, new Vector2(45, 0), Color.White);
+                TheBoard.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);

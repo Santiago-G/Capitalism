@@ -1,0 +1,30 @@
+﻿Ok gamers, this is the TO DO LIST of all of the program. this is very important. do not delete it. i swear to god if you delete this i will... uh. whats another word for kill thats more..
+family friendly.      GAME END. thats right, imma game end you.
+
+There will be a lot of spelling errors, i cant spell. TDL means TO-DO-LIST, and anything caps is important.
+
+
+
+TDL for Game1
+
+
+
+
+TDL for Board
+
+
+
+
+TDL for Starting_Screen
+
+* There are 3 buttons, Start, Rules, and Options.
+* Make another button for exit, but make it small at the bottem (might be changed)
+* All buttons do the effect I made in Sorry, just copy and paste that there.
+* For START, once its prest, the screen changes more buttons to select how many players there are.
+  once they select the players, SAVE THAT INFO, and then show dice in the middle. do the dice thing
+  i never bothered to do while playing (aka who goes first, and who goes last)
+  Once that is done, make the choose who they want to be, and then start the game.
+
+* For RULES, just control c, control v the rules in monoploy. it just works
+
+* For OPTIONS, now this is where the fun begins. Now just 1000 easter eggs. thats it. go crazy
