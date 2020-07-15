@@ -14,6 +14,7 @@ namespace Capitalism
 
         Texture2D spriteSheet;
         Texture2D BankThing;
+        Texture2D Logo;
 
         Board TheBoard;
         Player Players;
@@ -63,6 +64,7 @@ namespace Capitalism
 
             spriteSheet = Content.Load<Texture2D>("TheCapitalistBoard");
             BankThing = Content.Load<Texture2D>("BankTitle");
+            Logo = Content.Load<Texture2D>("MonopolyLogo");
 
 
             TheBoard = new Board(Content);
@@ -114,11 +116,8 @@ namespace Capitalism
 
 
 
-
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.FromNonPremultiplied(109, 109, 109, 155));
-
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
@@ -127,12 +126,16 @@ namespace Capitalism
             if (StartingScreen)
             {
                 ChangeResolution(700, 700);
-                
+                GraphicsDevice.Clear(Color.Beige);
+
+                spriteBatch.Draw(Logo, new Vector2(30, 10), Color.White);
 
             }
 
             else
             {
+                GraphicsDevice.Clear(Color.FromNonPremultiplied(109, 109, 109, 155));
+
                 spriteBatch.Draw(spriteSheet, new Vector2(410, 0), Color.White);
                 spriteBatch.Draw(BankThing, new Vector2(45, 0), Color.White);
                 TheBoard.Draw(spriteBatch);
