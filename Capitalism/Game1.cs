@@ -14,15 +14,18 @@ namespace Capitalism
 
         Texture2D spriteSheet;
         Texture2D BankThing;
-        Texture2D Logo;
+
+        //thy placeholders.
 
         Board TheBoard;
+        Starting_Screen TheStartingScreen;
         Player Players;
 
         bool StartingScreen = true;
 
         //List<Screen> screens;
         //Screen currentScreen;
+        bool setMainScreenResolution = false;
 
         public Game1()
         {
@@ -37,12 +40,13 @@ namespace Capitalism
 
             IsMouseVisible = true;
 
-            ChangeResolution(1470, 1048);
+            //ChangeResolution(1470, 1048);
+            ChangeResolution(700, 700);
 
             //ScreenManager manager = new ScreenManager();
             //manager.Add(new Screen("Loading Screen"))
 
-       
+
             // currentScreen = screens[0];
 
 
@@ -64,15 +68,15 @@ namespace Capitalism
 
             spriteSheet = Content.Load<Texture2D>("TheCapitalistBoard");
             BankThing = Content.Load<Texture2D>("BankTitle");
-            Logo = Content.Load<Texture2D>("MonopolyLogo");
 
 
             TheBoard = new Board(Content);
+            TheStartingScreen = new Starting_Screen(Content);
 
 
             //string[] filecontents = File.ReadAllLines("rules.txt");
 
-            ;
+            
 
             // TODO: use this.Content to load your game content here
         }
@@ -97,11 +101,24 @@ namespace Capitalism
 
             MouseState Ms = Mouse.GetState();
 
+            if (Ms.LeftButton == ButtonState.Pressed)
+            {
+                setMainScreenResolution = true;
+            }
+
             //currentScreen.Update();
 
             if (StartingScreen)
             {
-                ChangeResolution(700, 700);
+                TheStartingScreen.Update(Ms);
+
+                if (setMainScreenResolution == true)
+                {
+                    ChangeResolution(1470, 1048);
+
+                    setMainScreenResolution = false;
+                    StartingScreen = false;
+                }
             }
             else
             {
@@ -125,10 +142,9 @@ namespace Capitalism
 
             if (StartingScreen)
             {
-                ChangeResolution(700, 700);
                 GraphicsDevice.Clear(Color.Beige);
 
-                spriteBatch.Draw(Logo, new Vector2(30, 10), Color.White);
+                TheStartingScreen.Draw(spriteBatch);
 
             }
 

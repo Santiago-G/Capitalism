@@ -28,3 +28,5 @@ TDL for Starting_Screen
 * For RULES, just control c, control v the rules in monoploy. it just works
 
 * For OPTIONS, now this is where the fun begins. Now just 1000 easter eggs. thats it. go crazy
+
+* Make an achevements page, and put a secret achevement, (also put one to find every easter egg.)
