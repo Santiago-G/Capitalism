@@ -14,39 +14,78 @@ namespace Capitalism
     {
         Texture2D Logo;
 
-        Button Square1;
-        Button Square2;
-        Button Square3;
+        Button SquareStart;
+        Button SquareRules;
+        Button SquareOptions;
 
+        Button SquarePlayerCount;
 
+        SpriteFont playerCountFont;
 
+        bool realStartingScreen = true;
+        bool PlayerScreen = false;
+
+        int playerCount = 2;
         public Starting_Screen(ContentManager Content)
         {
             Logo = Content.Load<Texture2D>("MonopolyLogo");
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
-            Texture2D Square2Image = Content.Load<Texture2D>("WhiteSquare");
-            Texture2D Square3Image = Content.Load<Texture2D>("WhiteSquare");
 
-            Square1 = new Button(Square1Image, new Vector2(30, 200), Color.Red);
-            Square2 = new Button(Square2Image, new Vector2(30, 350), Color.Red);
-            Square3 = new Button(Square3Image, new Vector2(30, 500), Color.Red);
+            SquareStart = new Button(Square1Image, new Vector2(30, 200), Color.Red);
+            SquareRules = new Button(Square1Image, new Vector2(30, 350), Color.Red);
+            SquareOptions = new Button(Square1Image, new Vector2(30, 500), Color.Red);
+
+            SquarePlayerCount = new Button(Square1Image, new Vector2(150, 250), Color.Red);
+
+            playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
         }
 
         public void Update(MouseState ms)
         {
-            Square1.Update(ms);
-            Square2.Update(ms);
-            Square3.Update(ms);
+            SquareStart.Update(ms, true);
+            SquareRules.Update(ms, true);
+            SquareOptions.Update(ms, true);
+            SquarePlayerCount.Update(ms, false);
 
-            // && ms.LeftButton == ButtonState.Pressed
+            if (SquareStart.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+            {
+                //**its gaming time**
+
+                PlayerScreen = true;
+                realStartingScreen = false;
+                
+           
+
+            }
+
+            if (SquarePlayerCount.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+            {
+                playerCount += 1;
+                ;
+                if (playerCount == 9)
+                {
+                    playerCount = 2;
+                }
+
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Logo, new Vector2(30, 10), Color.White);
-            Square1.Draw(spriteBatch);
-            Square2.Draw(spriteBatch);
-            Square3.Draw(spriteBatch);
+            if (realStartingScreen)
+            {
+                spriteBatch.Draw(Logo, new Vector2(30, 10), Color.White);
+                SquareStart.Draw(spriteBatch);
+                SquareRules.Draw(spriteBatch);
+                SquareOptions.Draw(spriteBatch);
+            }
+            else if (PlayerScreen)
+            {
+                SquarePlayerCount.Draw(spriteBatch);
+
+                spriteBatch.DrawString(playerCountFont, playerCount.ToString(), new Vector2(350, 250), Color.Black);
+            }
 
         }
     }

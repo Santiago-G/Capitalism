@@ -66,7 +66,6 @@ namespace Capitalism
         MouseState lms;
 
 
-        bool isPressed = false;
         Vector2[] listOfPositions = new Vector2[40];
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)

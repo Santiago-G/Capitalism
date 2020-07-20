@@ -27,6 +27,9 @@ namespace Capitalism
         //Screen currentScreen;
         bool setMainScreenResolution = false;
 
+
+        
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -74,6 +77,7 @@ namespace Capitalism
             TheStartingScreen = new Starting_Screen(Content);
 
 
+
             //string[] filecontents = File.ReadAllLines("rules.txt");
 
             
@@ -101,10 +105,10 @@ namespace Capitalism
 
             MouseState Ms = Mouse.GetState();
 
-            if (Ms.LeftButton == ButtonState.Pressed)
-            {
-                setMainScreenResolution = true;
-            }
+            //if (Ms.LeftButton == ButtonState.Pressed)
+            //{
+            //    setMainScreenResolution = true;
+            //}
 
             //currentScreen.Update();
 
@@ -145,6 +149,8 @@ namespace Capitalism
                 GraphicsDevice.Clear(Color.Beige);
 
                 TheStartingScreen.Draw(spriteBatch);
+
+
 
             }
 

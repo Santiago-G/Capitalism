@@ -23,7 +23,7 @@ namespace Capitalism
                 //int 
                 //// NOTE: MOVE THE BOX BACK BY THE NEW SIZE AMOUNT SO ITS BASED OFF THE CENTER
 
-                return new Rectangle(this.Hitbox.X - (int)(this.Hitbox.Height * 0.1), this.Hitbox.Y - (int)(this.Hitbox.Width * 0.1), (int)(this.Hitbox.Width * 1.1), (int)(this.Hitbox.Height * 1.1));
+                return new Rectangle(this.Hitbox.X - (int)(this.Hitbox.Height * 0.05), this.Hitbox.Y - (int)(this.Hitbox.Width * 0.05), (int)(this.Hitbox.Width * 1.1), (int)(this.Hitbox.Height * 1.1));
                 
             }
         }
@@ -34,18 +34,27 @@ namespace Capitalism
         {
         }
 
-        public void Update(MouseState ms)
+        public void Update(MouseState ms, bool toHighlight)
         {
-            if (Hitbox.Contains(ms.Position))
+            if (toHighlight)
             {
-                CurrentHitbox = HighlightedHitbox;
-                CurrentTint = Color.Gold;
+                if (Hitbox.Contains(ms.Position))
+                {
+                    CurrentHitbox = HighlightedHitbox;
+                    CurrentTint = Color.Gold;
+                }
+                else
+                {
+                    CurrentHitbox = Hitbox;
+                    CurrentTint = Tint;
+                }
             }
             else
             {
                 CurrentHitbox = Hitbox;
                 CurrentTint = Tint;
             }
+
 
         }
 

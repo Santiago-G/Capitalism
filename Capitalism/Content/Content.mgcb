@@ -361,6 +361,13 @@
 /processorParam:TextureFormat=Color
 /build:PennsylvaniaRR.jpg
 
+#begin PlayerCountFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:PlayerCountFont.spritefont
+
 #begin PurchaseThisProp.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
