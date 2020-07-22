@@ -30,15 +30,22 @@ namespace Capitalism
 
         public Rectangle CurrentHitbox;
         public Color CurrentTint;
+
+        MouseState mouseState;
+
+        public bool IsClicked { get; private set; }
+
         public Button(Texture2D image, Vector2 position, Color tint) : base(image, position, tint)
         {
         }
 
         public void Update(MouseState ms, bool toHighlight)
         {
+            IsClicked = false;
+
             if (toHighlight)
             {
-                if (Hitbox.Contains(ms.Position))
+                if (Hitbox.Contains(ms.Position)) 
                 {
                     CurrentHitbox = HighlightedHitbox;
                     CurrentTint = Color.Gold;
@@ -55,7 +62,15 @@ namespace Capitalism
                 CurrentTint = Tint;
             }
 
+            if (Hitbox.Contains(ms.Position))
+            {
+                if ((ms != mouseState && ms.LeftButton == ButtonState.Pressed)) // click logic goes in here
+                {
+                    IsClicked = true;
+                }
+            }
 
+            mouseState = ms;
         }
 
         public override void Draw(SpriteBatch batch)

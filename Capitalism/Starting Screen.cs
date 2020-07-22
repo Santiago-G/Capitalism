@@ -19,11 +19,15 @@ namespace Capitalism
         Button SquareOptions;
 
         Button SquarePlayerCount;
+        Button SquarePlayersConfirmed;
 
         SpriteFont playerCountFont;
+        SpriteFont startingScreenFont;
+
 
         bool realStartingScreen = true;
         bool PlayerScreen = false;
+        bool diceScreen = false;
 
         int playerCount = 2;
         public Starting_Screen(ContentManager Content)
@@ -36,38 +40,57 @@ namespace Capitalism
             SquareOptions = new Button(Square1Image, new Vector2(30, 500), Color.Red);
 
             SquarePlayerCount = new Button(Square1Image, new Vector2(150, 250), Color.Red);
+            SquarePlayersConfirmed = new Button(Square1Image, new Vector2(300, 500), Color.Green);
 
             playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
+            startingScreenFont = Content.Load<SpriteFont>("startingScreenFont");
         }
 
         public void Update(MouseState ms)
         {
+            ButtonState oldState = ButtonState.Released;
+
             SquareStart.Update(ms, true);
             SquareRules.Update(ms, true);
             SquareOptions.Update(ms, true);
             SquarePlayerCount.Update(ms, false);
+            SquarePlayersConfirmed.Update(ms, false);
 
-            if (SquareStart.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+            if (SquareStart.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed && oldState == ButtonState.Released)
             {
                 //**its gaming time**
 
                 PlayerScreen = true;
                 realStartingScreen = false;
-                
-           
 
             }
 
-            if (SquarePlayerCount.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+            if (PlayerScreen)
             {
-                playerCount += 1;
-                ;
-                if (playerCount == 9)
+                if (SquarePlayerCount.IsClicked)
                 {
-                    playerCount = 2;
+                    playerCount += 1;
+                    
+                    if (playerCount == 9)
+                    {
+                        playerCount = 2;
+                    }
                 }
 
-            }
+                if (SquarePlayersConfirmed.IsClicked)
+                {
+                    //the number of players have been selected, time to make more ifs.
+
+                    PlayerScreen = false;
+                    diceScreen = true;
+                }
+            } // Selecting The Number Of Players
+
+            if (diceScreen)
+            { 
+                
+            } //Choosing Who Goes First
+
 
         }
 
@@ -79,10 +102,15 @@ namespace Capitalism
                 SquareStart.Draw(spriteBatch);
                 SquareRules.Draw(spriteBatch);
                 SquareOptions.Draw(spriteBatch);
+
+                spriteBatch.DrawString(startingScreenFont, "Start", new Vector2(300, 220), Color.Black);
+                spriteBatch.DrawString(startingScreenFont, "Rules", new Vector2(295, 370), Color.Black);
+                spriteBatch.DrawString(startingScreenFont, "Options", new Vector2(275, 520), Color.Black);
             }
             else if (PlayerScreen)
             {
                 SquarePlayerCount.Draw(spriteBatch);
+                SquarePlayersConfirmed.Draw(spriteBatch);
 
                 spriteBatch.DrawString(playerCountFont, playerCount.ToString(), new Vector2(350, 250), Color.Black);
             }

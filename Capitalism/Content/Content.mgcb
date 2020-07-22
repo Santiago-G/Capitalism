@@ -404,6 +404,13 @@
 /processorParam:TextureFormat=Color
 /build:ShortLineRR.jpg
 
+#begin startingScreenFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:startingScreenFont.spritefont
+
 #begin StatesAve.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
