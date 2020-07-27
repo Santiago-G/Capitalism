@@ -114,7 +114,7 @@ namespace Capitalism
 
             if (StartingScreen)
             {
-                TheStartingScreen.Update(Ms);
+                TheStartingScreen.Update(Ms, gameTime);
 
                 if (setMainScreenResolution == true)
                 {

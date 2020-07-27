@@ -20,20 +20,26 @@ namespace Capitalism
 
         Button SquarePlayerCount;
         Button SquarePlayersConfirmed;
+        
 
         SpriteFont playerCountFont;
         SpriteFont startingScreenFont;
 
+        Animation RedDice1;
+        Animation RedDice2;
 
         bool realStartingScreen = true;
         bool PlayerScreen = false;
         bool diceScreen = false;
 
         int playerCount = 2;
+        Random gen;
         public Starting_Screen(ContentManager Content)
         {
+            gen = new Random();
             Logo = Content.Load<Texture2D>("MonopolyLogo");
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
+            Texture2D RedDiceImage = Content.Load<Texture2D>("RedDice");
 
             SquareStart = new Button(Square1Image, new Vector2(30, 200), Color.Red);
             SquareRules = new Button(Square1Image, new Vector2(30, 350), Color.Red);
@@ -44,9 +50,12 @@ namespace Capitalism
 
             playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
             startingScreenFont = Content.Load<SpriteFont>("startingScreenFont");
+
+            RedDice1 = new Animation(RedDiceImage, new Vector2(200, 200), 200, new Random(gen.Next()));
+            RedDice2 = new Animation(RedDiceImage, new Vector2(400, 200), 200, new Random(gen.Next()));
         }
 
-        public void Update(MouseState ms)
+        public void Update(MouseState ms, GameTime gameTime)
         {
             ButtonState oldState = ButtonState.Released;
 
@@ -62,6 +71,7 @@ namespace Capitalism
 
                 PlayerScreen = true;
                 realStartingScreen = false;
+
 
             }
 
@@ -87,8 +97,9 @@ namespace Capitalism
             } // Selecting The Number Of Players
 
             if (diceScreen)
-            { 
-                
+            {
+                RedDice1.Update(gameTime, true);
+                RedDice2.Update(gameTime, true);
             } //Choosing Who Goes First
 
 
@@ -114,7 +125,11 @@ namespace Capitalism
 
                 spriteBatch.DrawString(playerCountFont, playerCount.ToString(), new Vector2(350, 250), Color.Black);
             }
-
+            else if (diceScreen)
+            {
+                RedDice1.Draw(spriteBatch);
+                RedDice2.Draw(spriteBatch);
+            }
         }
     }
 }
