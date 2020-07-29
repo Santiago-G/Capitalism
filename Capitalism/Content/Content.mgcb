@@ -253,6 +253,13 @@
 /processorParam:TextureFormat=Color
 /build:MediterraneanAve.jpg
 
+#begin MediumSize.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:MediumSize.spritefont
+
 #begin MonopolyLogo.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -415,6 +422,25 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ShortLineRR.jpg
+
+#begin SmallerWhiteSquare.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SmallerWhiteSquare.png
+
+#begin smallSize.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:smallSize.spritefont
 
 #begin startingScreenFont.spritefont
 /importer:FontDescriptionImporter

@@ -29,6 +29,9 @@ namespace Capitalism
         int currentRoll = 0;
         Random gen;
 
+        public bool stopped = false;
+        bool hasGone = false;
+
         public int DiceRollValue => currentFrame + 1;
         public Animation(Texture2D tex, Vector2 position, uint delay, Random random)
         {
@@ -57,52 +60,25 @@ namespace Capitalism
             ;
         }
 
-        void SlowDownFuntion(GameTime gameTime)
-        {
-            //for 2 sec, go as fast
-            //for the 3nd sec, slow down to a halt
-
-            if (gameTime.TotalGameTime - previousTime < TimeSpan.FromSeconds(2))
-            {
-                if (gameTime.TotalGameTime - previousTime > TimeSpan.FromMilliseconds(delayMs))
-                {
-                    currentFrame = gen.Next(frames.Count);
-
-                    previousTime = gameTime.TotalGameTime;
-                }
-            }
-            else
-            {
-                delayMs = delayMs - 10;
-                if (gameTime.TotalGameTime - previousTime > TimeSpan.FromMilliseconds(delayMs))
-                {
-                    currentFrame = gen.Next(frames.Count);
-
-                    previousTime = gameTime.TotalGameTime;
-                }
-            }
-        }
 
         internal void Update(GameTime gameTime, bool SlowDown)
         {
-            //if (!SlowDown)
-            //{
+
             if (gameTime.TotalGameTime - previousTime > TimeSpan.FromMilliseconds(delayMs))
             {
                 if (currentRoll < numRolls)
                 {
+                    hasGone = true;
                     currentFrame = gen.Next(frames.Count);
                     currentRoll++;
-                    delayMs += 20;
+                    delayMs = (uint)(delayMs * 1.2);
                     previousTime = gameTime.TotalGameTime;
                 }
+                else if (hasGone)
+                {
+                    stopped = true;
+                }
             }
-            //}
-            //else 
-            //{
-            //    SlowDownFuntion(gameTime);
-            //}
-
 
 
             Console.WriteLine(currentFrame);

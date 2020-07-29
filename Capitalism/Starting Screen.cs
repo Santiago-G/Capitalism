@@ -13,6 +13,7 @@ namespace Capitalism
     public class Starting_Screen
     {
         Texture2D Logo;
+        Texture2D Square2Image;
 
         Button SquareStart;
         Button SquareRules;
@@ -20,10 +21,12 @@ namespace Capitalism
 
         Button SquarePlayerCount;
         Button SquarePlayersConfirmed;
-        
+        Button SquareDiceRoll;
 
         SpriteFont playerCountFont;
         SpriteFont startingScreenFont;
+        SpriteFont mediumSizeFont;
+        SpriteFont smallSizeFont;
 
         Animation RedDice1;
         Animation RedDice2;
@@ -32,13 +35,19 @@ namespace Capitalism
         bool PlayerScreen = false;
         bool diceScreen = false;
 
-        int playerCount = 2;
+        bool rollDice = false;
+
+        public int playerCount = 2;
+
+        int greenSquarePlayerThing = 10;
+
         Random gen;
         public Starting_Screen(ContentManager Content)
         {
             gen = new Random();
             Logo = Content.Load<Texture2D>("MonopolyLogo");
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
+            Square2Image = Content.Load<Texture2D>("SmallerWhiteSquare");
             Texture2D RedDiceImage = Content.Load<Texture2D>("RedDice");
 
             SquareStart = new Button(Square1Image, new Vector2(30, 200), Color.Red);
@@ -47,12 +56,16 @@ namespace Capitalism
 
             SquarePlayerCount = new Button(Square1Image, new Vector2(150, 250), Color.Red);
             SquarePlayersConfirmed = new Button(Square1Image, new Vector2(300, 500), Color.Green);
+            SquareDiceRoll = new Button(Square1Image, new Vector2(315, 400), Color.Green);
 
             playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
             startingScreenFont = Content.Load<SpriteFont>("startingScreenFont");
+            mediumSizeFont = Content.Load<SpriteFont>("MediumSize");
+            smallSizeFont = Content.Load<SpriteFont>("smallSize");
 
-            RedDice1 = new Animation(RedDiceImage, new Vector2(200, 200), 200, new Random(gen.Next()));
-            RedDice2 = new Animation(RedDiceImage, new Vector2(400, 200), 200, new Random(gen.Next()));
+            RedDice1 = new Animation(RedDiceImage, new Vector2(200, 200), 100, new Random(gen.Next()));
+            RedDice2 = new Animation(RedDiceImage, new Vector2(400, 200), 100, new Random(gen.Next()));
+
         }
 
         public void Update(MouseState ms, GameTime gameTime)
@@ -62,8 +75,9 @@ namespace Capitalism
             SquareStart.Update(ms, true);
             SquareRules.Update(ms, true);
             SquareOptions.Update(ms, true);
-            SquarePlayerCount.Update(ms, false);
+            SquarePlayerCount.Update(ms, true);
             SquarePlayersConfirmed.Update(ms, false);
+
 
             if (SquareStart.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed && oldState == ButtonState.Released)
             {
@@ -98,8 +112,28 @@ namespace Capitalism
 
             if (diceScreen)
             {
-                RedDice1.Update(gameTime, true);
-                RedDice2.Update(gameTime, true);
+                
+
+                if (SquareDiceRoll.IsClicked)
+                {
+                    rollDice = true;
+                }
+                else 
+                {
+                    SquareDiceRoll.Update(ms, false);
+                }
+
+                if(rollDice)
+                {
+                    RedDice1.Update(gameTime, true);
+                    RedDice2.Update(gameTime, true);
+
+                    if (RedDice1.stopped)
+                    { 
+                        
+                    }
+                }
+
             } //Choosing Who Goes First
 
 
@@ -124,9 +158,22 @@ namespace Capitalism
                 SquarePlayersConfirmed.Draw(spriteBatch);
 
                 spriteBatch.DrawString(playerCountFont, playerCount.ToString(), new Vector2(350, 250), Color.Black);
+                spriteBatch.DrawString(mediumSizeFont, "Press the red button to select", new Vector2(130, 100), Color.Black);
+                spriteBatch.DrawString(mediumSizeFont, "how many players will be playing", new Vector2(100, 140), Color.Black);
             }
             else if (diceScreen)
             {
+                int distance = 50;
+                int y = distance - 40;
+                for (int i = 0; i < playerCount; i++)
+                {
+                    spriteBatch.DrawString(smallSizeFont, $"Player {i + 1}", new Vector2(10, y), Color.Black);
+                    y += distance;
+                }
+
+                spriteBatch.Draw(Square2Image, new Vector2(80, 12), Color.Green);
+
+                SquareDiceRoll.Draw(spriteBatch);
                 RedDice1.Draw(spriteBatch);
                 RedDice2.Draw(spriteBatch);
             }
