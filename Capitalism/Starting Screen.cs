@@ -34,12 +34,18 @@ namespace Capitalism
         bool realStartingScreen = true;
         bool PlayerScreen = false;
         bool diceScreen = false;
+        bool ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
+
+        int currentPlayer = 1;
 
         bool rollDice = false;
 
         public int playerCount = 2;
 
-        int greenSquarePlayerThing = 10;
+        int greenSquareX = 110;
+        int highestDiceRoll = 0;
+        int greenSquareY = 0;
+
 
         Random gen;
         public Starting_Screen(ContentManager Content)
@@ -112,25 +118,38 @@ namespace Capitalism
 
             if (diceScreen)
             {
-                
-
-                if (SquareDiceRoll.IsClicked)
+                if (currentPlayer < playerCount)
                 {
-                    rollDice = true;
-                }
-                else 
-                {
-                    SquareDiceRoll.Update(ms, false);
-                }
+                    if (SquareDiceRoll.IsClicked)
+                    {
+                        rollDice = true;
+                        ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
+                        SquareDiceRoll.Update(ms, false);
+                    }
+                    else 
+                    {
+                        SquareDiceRoll.Update(ms, false);
+                    }
 
-                if(rollDice)
-                {
-                    RedDice1.Update(gameTime, true);
-                    RedDice2.Update(gameTime, true);
 
-                    if (RedDice1.stopped)
-                    { 
-                        
+                    if (rollDice && ictoastiwdteuswoaiwynictoatmhtohyswoatlwy)
+                    {
+                        RedDice1.Update(gameTime, true);
+                        RedDice2.Update(gameTime, true);
+
+                        if (RedDice1.stopped && ictoastiwdteuswoaiwynictoatmhtohyswoatlwy)
+                        {
+                            greenSquareY += 1;
+                            rollDice = false;
+
+                            if ((RedDice1.DiceRollValue + 1) + (RedDice2.DiceRollValue + 1) >  highestDiceRoll)
+                            {
+                                highestDiceRoll = (RedDice1.DiceRollValue + 1) + (RedDice2.DiceRollValue + 1);
+                            }
+
+                            currentPlayer++;
+                            ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = false;
+                        }
                     }
                 }
 
@@ -171,7 +190,7 @@ namespace Capitalism
                     y += distance;
                 }
 
-                spriteBatch.Draw(Square2Image, new Vector2(80, 12), Color.Green);
+                spriteBatch.Draw(Square2Image, new Vector2(greenSquareX, 12 + (17 * greenSquareY)), Color.Green);
 
                 SquareDiceRoll.Draw(spriteBatch);
                 RedDice1.Draw(spriteBatch);

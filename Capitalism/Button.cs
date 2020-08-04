@@ -68,6 +68,10 @@ namespace Capitalism
                 {
                     IsClicked = true;
                 }
+                else 
+                {
+                    IsClicked = false;
+                }
             }
 
             mouseState = ms;
