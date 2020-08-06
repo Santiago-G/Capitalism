@@ -23,13 +23,14 @@ namespace Capitalism
         TimeSpan previousTime;
 
         uint delayMs;
+        uint delayMsRestart;
 
         List<Rectangle> frames;
         int numRolls = 15;
         int currentRoll = 0;
         Random gen;
 
-        public bool stopped = false;
+        public bool stopped = true;
         bool hasGone = false;
 
         public int DiceRollValue => currentFrame + 1;
@@ -45,6 +46,7 @@ namespace Capitalism
             height = tex.Height;
 
             delayMs = delay;
+            delayMsRestart = delay;
 
             dest = new Rectangle((int)position.X, (int)position.Y, width, height);
 
@@ -60,6 +62,13 @@ namespace Capitalism
             ;
         }
 
+        public void Restart()
+        {
+            stopped = false;
+            delayMs = delayMsRestart;
+            currentRoll = 0;
+            currentFrame = 0;
+        }
 
         internal void Update(GameTime gameTime, bool SlowDown)
         {
@@ -68,6 +77,7 @@ namespace Capitalism
             {
                 if (currentRoll < numRolls)
                 {
+                    stopped = false;
                     hasGone = true;
                     currentFrame = gen.Next(frames.Count);
                     currentRoll++;

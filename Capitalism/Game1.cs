@@ -28,7 +28,7 @@ namespace Capitalism
         bool setMainScreenResolution = false;
 
 
-        
+        public static string TitleBarString;
 
         public Game1()
         {
@@ -102,6 +102,7 @@ namespace Capitalism
                Exit();
             }
 
+            Window.Title = TitleBarString;
 
             MouseState Ms = Mouse.GetState();
 
@@ -149,7 +150,6 @@ namespace Capitalism
                 GraphicsDevice.Clear(Color.Beige);
 
                 TheStartingScreen.Draw(spriteBatch);
-
 
 
             }

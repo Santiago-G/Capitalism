@@ -14,6 +14,7 @@ namespace Capitalism
     {
         Texture2D Logo;
         Texture2D Square2Image;
+        Texture2D Crown;
 
         Button SquareStart;
         Button SquareRules;
@@ -37,6 +38,7 @@ namespace Capitalism
         bool ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
 
         int currentPlayer = 1;
+        int currentHighestPlayer = 0;
 
         bool rollDice = false;
 
@@ -55,6 +57,8 @@ namespace Capitalism
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
             Square2Image = Content.Load<Texture2D>("SmallerWhiteSquare");
             Texture2D RedDiceImage = Content.Load<Texture2D>("RedDice");
+            Crown = Content.Load<Texture2D>("SmallCrown");
+
 
             SquareStart = new Button(Square1Image, new Vector2(30, 200), Color.Red);
             SquareRules = new Button(Square1Image, new Vector2(30, 350), Color.Red);
@@ -77,6 +81,8 @@ namespace Capitalism
         public void Update(MouseState ms, GameTime gameTime)
         {
             ButtonState oldState = ButtonState.Released;
+
+            Game1.TitleBarString = "";
 
             SquareStart.Update(ms, true);
             SquareRules.Update(ms, true);
@@ -118,13 +124,16 @@ namespace Capitalism
 
             if (diceScreen)
             {
-                if (currentPlayer < playerCount)
+                if (currentPlayer <= playerCount)
                 {
-                    if (SquareDiceRoll.IsClicked)
+                    if (SquareDiceRoll.IsClicked && RedDice1.stopped)
                     {
                         rollDice = true;
                         ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
                         SquareDiceRoll.Update(ms, false);
+
+                        RedDice1.Restart();
+                        RedDice2.Restart();
                     }
                     else 
                     {
@@ -139,16 +148,24 @@ namespace Capitalism
 
                         if (RedDice1.stopped && ictoastiwdteuswoaiwynictoatmhtohyswoatlwy)
                         {
-                            greenSquareY += 1;
+
+                                greenSquareY += 1;
+       
+
                             rollDice = false;
 
-                            if ((RedDice1.DiceRollValue + 1) + (RedDice2.DiceRollValue + 1) >  highestDiceRoll)
+                            int diceRollValue = (RedDice1.DiceRollValue + 1) + (RedDice2.DiceRollValue + 1);
+
+                            highestDiceRoll = Math.Max(diceRollValue, highestDiceRoll);
+
+                            if (highestDiceRoll == diceRollValue)
                             {
-                                highestDiceRoll = (RedDice1.DiceRollValue + 1) + (RedDice2.DiceRollValue + 1);
+                                currentHighestPlayer = currentPlayer - 1;
                             }
 
                             currentPlayer++;
                             ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = false;
+
                         }
                     }
                 }
@@ -160,6 +177,7 @@ namespace Capitalism
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            //Dictionary[CurrentScreen].Draw()
             if (realStartingScreen)
             {
                 spriteBatch.Draw(Logo, new Vector2(30, 10), Color.White);
@@ -190,7 +208,8 @@ namespace Capitalism
                     y += distance;
                 }
 
-                spriteBatch.Draw(Square2Image, new Vector2(greenSquareX, 12 + (17 * greenSquareY)), Color.Green);
+                spriteBatch.Draw(Square2Image, new Vector2(greenSquareX, 12 + (53 * greenSquareY)), Color.Green);
+                spriteBatch.Draw(Crown, new Vector2(150, 10 + (53 * currentHighestPlayer)), Color.White);
 
                 SquareDiceRoll.Draw(spriteBatch);
                 RedDice1.Draw(spriteBatch);
