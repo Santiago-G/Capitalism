@@ -16,9 +16,7 @@ namespace Capitalism
         Texture2D Square2Image;
         Texture2D Crown;
 
-        Button SquareStart;
-        Button SquareRules;
-        Button SquareOptions;
+
 
         Button SquarePlayerCount;
         Button SquarePlayersConfirmed;
@@ -35,6 +33,7 @@ namespace Capitalism
         bool realStartingScreen = true;
         bool PlayerScreen = false;
         bool diceScreen = false;
+        bool characterChoosingScreen = false;
         bool ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
 
         int currentPlayer = 1;
@@ -53,23 +52,23 @@ namespace Capitalism
         public Starting_Screen(ContentManager Content)
         {
             gen = new Random();
-            Logo = Content.Load<Texture2D>("MonopolyLogo");
+
+
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
+
             Square2Image = Content.Load<Texture2D>("SmallerWhiteSquare");
             Texture2D RedDiceImage = Content.Load<Texture2D>("RedDice");
             Crown = Content.Load<Texture2D>("SmallCrown");
+            playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
 
 
-            SquareStart = new Button(Square1Image, new Vector2(30, 200), Color.Red);
-            SquareRules = new Button(Square1Image, new Vector2(30, 350), Color.Red);
-            SquareOptions = new Button(Square1Image, new Vector2(30, 500), Color.Red);
 
             SquarePlayerCount = new Button(Square1Image, new Vector2(150, 250), Color.Red);
             SquarePlayersConfirmed = new Button(Square1Image, new Vector2(300, 500), Color.Green);
             SquareDiceRoll = new Button(Square1Image, new Vector2(315, 400), Color.Green);
 
-            playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
-            startingScreenFont = Content.Load<SpriteFont>("startingScreenFont");
+
+
             mediumSizeFont = Content.Load<SpriteFont>("MediumSize");
             smallSizeFont = Content.Load<SpriteFont>("smallSize");
 
@@ -80,26 +79,14 @@ namespace Capitalism
 
         public void Update(MouseState ms, GameTime gameTime)
         {
-            ButtonState oldState = ButtonState.Released;
 
             Game1.TitleBarString = "";
 
-            SquareStart.Update(ms, true);
-            SquareRules.Update(ms, true);
-            SquareOptions.Update(ms, true);
+
             SquarePlayerCount.Update(ms, true);
             SquarePlayersConfirmed.Update(ms, false);
 
 
-            if (SquareStart.Hitbox.Contains(ms.Position) && ms.LeftButton == ButtonState.Pressed && oldState == ButtonState.Released)
-            {
-                //**its gaming time**
-
-                PlayerScreen = true;
-                realStartingScreen = false;
-
-
-            }
 
             if (PlayerScreen)
             {
@@ -148,10 +135,16 @@ namespace Capitalism
 
                         if (RedDice1.stopped && ictoastiwdteuswoaiwynictoatmhtohyswoatlwy)
                         {
-
+                            if (currentPlayer < playerCount)
+                            {
                                 greenSquareY += 1;
-       
+                            }
+                            else 
+                            {
+                                characterChoosingScreen = true;
+                            }
 
+       
                             rollDice = false;
 
                             int diceRollValue = (RedDice1.DiceRollValue + 1) + (RedDice2.DiceRollValue + 1);
@@ -180,14 +173,7 @@ namespace Capitalism
             //Dictionary[CurrentScreen].Draw()
             if (realStartingScreen)
             {
-                spriteBatch.Draw(Logo, new Vector2(30, 10), Color.White);
-                SquareStart.Draw(spriteBatch);
-                SquareRules.Draw(spriteBatch);
-                SquareOptions.Draw(spriteBatch);
 
-                spriteBatch.DrawString(startingScreenFont, "Start", new Vector2(300, 220), Color.Black);
-                spriteBatch.DrawString(startingScreenFont, "Rules", new Vector2(295, 370), Color.Black);
-                spriteBatch.DrawString(startingScreenFont, "Options", new Vector2(275, 520), Color.Black);
             }
             else if (PlayerScreen)
             {
