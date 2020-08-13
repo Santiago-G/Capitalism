@@ -13,11 +13,12 @@ namespace Capitalism
     public abstract class Screen
     {
         public string Name;
-        public string EndScreen;
+        public bool EndScreen;
 
-        public Screen(string name)
+        public Screen(string name, bool endScreen)
         {
             Name = name;
+            EndScreen = endScreen;
         }
 
         

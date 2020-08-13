@@ -8,7 +8,6 @@ namespace Capitalism.Screens
 {
     public class MainMenu : Screen
     {
-
         Button SquareStart;
         Button SquareRules;
         Button SquareOptions;
@@ -17,7 +16,10 @@ namespace Capitalism.Screens
 
         Texture2D Logo;
 
-        public bool ScreenEnded = false;
+        public MainMenu(string Name, bool ScreenEnded) : base (Name, ScreenEnded)
+        { 
+            
+        }
 
         public override void LoadContent(ContentManager Content)
         {
