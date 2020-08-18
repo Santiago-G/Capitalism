@@ -16,13 +16,15 @@ namespace Capitalism.Screens
 
         Texture2D Logo;
 
-        public MainMenu(string Name, bool ScreenEnded) : base (Name, ScreenEnded)
+        public MainMenu(string Name) : base (Name)
         { 
             
         }
 
         public override void LoadContent(ContentManager Content)
         {
+            this.EndScreen = false;
+
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
             Logo = Content.Load<Texture2D>("MonopolyLogo");
 
@@ -47,7 +49,7 @@ namespace Capitalism.Screens
             {
                 //**its gaming time**
 
-                ScreenEnded = true;
+                this.EndScreen = true;
 
             }
         }

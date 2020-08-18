@@ -15,10 +15,9 @@ namespace Capitalism
         public string Name;
         public bool EndScreen;
 
-        public Screen(string name, bool endScreen)
+        public Screen(string name)
         {
             Name = name;
-            EndScreen = endScreen;
         }
 
         

@@ -18,9 +18,7 @@ namespace Capitalism.Screens
         SpriteFont playerCountFont;
         SpriteFont mediumSizeFont;
 
-        public int playerCount = 2;
-
-        public bool ScreenEnded = false;
+        public static int playerCount = 2;
 
         public SelectingPlayers(string Name) : base(Name)
         {
@@ -29,6 +27,8 @@ namespace Capitalism.Screens
 
         public override void LoadContent(ContentManager Content)
         {
+            this.EndScreen = false;
+
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
 
             playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
@@ -59,7 +59,7 @@ namespace Capitalism.Screens
             {
                 //the number of players have been selected, time to make more ifs.
 
-                ScreenEnded = true;
+                this.EndScreen = true;
             }
         }
 

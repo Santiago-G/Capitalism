@@ -15,7 +15,6 @@ namespace Capitalism.Screens
         Texture2D Square2Image;
         Texture2D Crown;
 
-        Button SquarePlayersConfirmed;
         Button SquareDiceRoll;
 
         SpriteFont smallSizeFont;
@@ -29,24 +28,24 @@ namespace Capitalism.Screens
 
         bool rollDice = false;
         bool ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
+        bool diceRollingOver = false;
 
         public bool ScreenEnded = false;
 
-        public int playerCount = 2;
+        public int playerCount => SelectingPlayers.playerCount;
 
-        int greenSquareX = 110;
         int highestDiceRoll = 0;
         int greenSquareY = 0;
 
         Random gen;
 
         public DiceRolling(string Name) : base(Name)
-        { 
-        
+        {
         }
 
         public override void LoadContent(ContentManager Content)
         {
+            this.EndScreen = false;
             gen = new Random();
 
             Texture2D Square1Image = Content.Load<Texture2D>("WhiteSquare");
@@ -67,23 +66,25 @@ namespace Capitalism.Screens
         public override void Update(GameTime gameTime)
         {
             MouseState ms = Mouse.GetState();
+            SquareDiceRoll.Update(ms, false);
+
+            if (diceRollingOver && SquareDiceRoll.IsClicked)
+            {
+                this.EndScreen = true;
+            }
 
             if (currentPlayer <= playerCount)
             {
+
                 if (SquareDiceRoll.IsClicked && RedDice1.stopped)
                 {
                     rollDice = true;
                     ictoastiwdteuswoaiwynictoatmhtohyswoatlwy = true;
-                    SquareDiceRoll.Update(ms, false);
+
 
                     RedDice1.Restart();
                     RedDice2.Restart();
                 }
-                else
-                {
-                    SquareDiceRoll.Update(ms, false);
-                }
-
 
                 if (rollDice && ictoastiwdteuswoaiwynictoatmhtohyswoatlwy)
                 {
@@ -92,15 +93,15 @@ namespace Capitalism.Screens
 
                     if (RedDice1.stopped && ictoastiwdteuswoaiwynictoatmhtohyswoatlwy)
                     {
-                        if (currentPlayer < playerCount)
+                        if (currentPlayer >= playerCount)
                         {
-                            greenSquareY += 1;
-                        }
-                        else
-                        {
-                            ScreenEnded = true;
+                            diceRollingOver = true;
                         }
 
+                        if (currentPlayer < playerCount)
+                        {
+                            greenSquareY++;
+                        }
 
                         rollDice = false;
 
@@ -131,7 +132,7 @@ namespace Capitalism.Screens
                 y += distance;
             }
 
-            spriteBatch.Draw(Square2Image, new Vector2(greenSquareX, 12 + (53 * greenSquareY)), Color.Green);
+            spriteBatch.Draw(Square2Image, new Vector2(110, 12 + (53 * greenSquareY)), Color.Green);
             spriteBatch.Draw(Crown, new Vector2(150, 10 + (53 * currentHighestPlayer)), Color.White);
 
             SquareDiceRoll.Draw(spriteBatch);

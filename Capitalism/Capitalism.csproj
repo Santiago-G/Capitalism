@@ -52,6 +52,7 @@
     <Compile Include="Property.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="ScreenManager.cs" />
+    <Compile Include="Screens\ChoosingCharacters.cs" />
     <Compile Include="Screens\DiceRolling.cs" />
     <Compile Include="Screens\MainMenu.cs" />
     <Compile Include="Screens\SelectingPlayers.cs" />

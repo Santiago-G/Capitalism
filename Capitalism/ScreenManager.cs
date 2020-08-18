@@ -12,21 +12,35 @@ namespace Capitalism
     public class ScreenManager
     {
 
-        Stack<Screen> Screens;
+        Queue<Screen> Screens;
         public Screen currentScreen => Screens.Peek();
+        public Screen lastScreen => Screens.Last();
         public ScreenManager()
         {
-            Screens = new Stack<Screen>();
+            Screens = new Queue<Screen>();
         }
 
         public void AddScreen(Screen newScreen)
         {
-            Screens.Push(newScreen);
+            Screens.Enqueue(newScreen);
         }
 
         public void NextScreen()
         {
-            Screens.Pop();
+            Screens.Dequeue();
+        }
+
+        public Screen GetScreenByName(string name)
+        {
+            foreach (var screen in Screens)
+            {
+                if (screen.Name == name)
+                {
+                    return screen;
+                }
+            }
+
+            return null;
         }
 
 
@@ -34,16 +48,16 @@ namespace Capitalism
 
         public void LoadContent(ContentManager Content)
         {
-            currentScreen.LoadContent(Content);
+            lastScreen.LoadContent(Content);
         }
 
         public void Update(GameTime gameTime)
         {
             currentScreen.Update(gameTime);
 
-            if (currentScreen.e)
-            { 
-            
+            if (currentScreen.EndScreen)
+            {
+                NextScreen();
             }
         }
 

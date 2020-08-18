@@ -18,66 +18,32 @@ namespace Capitalism
         MainMenu mainMenu = new MainMenu("Main Menu");
         SelectingPlayers selectingPlayers = new SelectingPlayers("Selecting Players");
         DiceRolling rollingOfTheDice = new DiceRolling("Dice Rolling");
-
-
-        bool realStartingScreen = true;
-        bool PlayerScreen = false;
-        bool diceScreen = false;
-
+        ChoosingCharacters characterChoosing = new ChoosingCharacters("Choosing Characters");
 
         public Starting_Screen(ContentManager Content)
         {
             startingScreens.AddScreen(mainMenu);
-            startingScreens.AddScreen(selectingPlayers);
-            startingScreens.AddScreen(rollingOfTheDice);
-
-
             startingScreens.LoadContent(Content);
-
+            startingScreens.AddScreen(selectingPlayers);
+            startingScreens.LoadContent(Content);
+            startingScreens.AddScreen(rollingOfTheDice);
+            startingScreens.LoadContent(Content);
+            startingScreens.AddScreen(characterChoosing);
+            startingScreens.LoadContent(Content);
         }
 
         public void Update(MouseState ms, GameTime gameTime)
         {
-
             Game1.TitleBarString = "";
 
-            mainMenu.Update(gameTime);
-            selectingPlayers.Update(gameTime);
-            rollingOfTheDice.Update(gameTime);
-
-            if (mainMenu.ScreenEnded)
-            {
-                realStartingScreen = false;
-                PlayerScreen = true;
-            }
-            if (selectingPlayers.ScreenEnded)
-            {
-                PlayerScreen = false;
-                diceScreen = true;
-            }
-            if (rollingOfTheDice.ScreenEnded)
-            {
-                diceScreen = false;
-            }
-
+            startingScreens.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             //Dictionary[CurrentScreen].Draw()
-            if (realStartingScreen)
-            {
-                mainMenu.Draw(spriteBatch);
-            }
-            else if (PlayerScreen)
-            {
-                selectingPlayers.Draw(spriteBatch);
-            }
 
-            else if (diceScreen)
-            {
-                rollingOfTheDice.Draw(spriteBatch);
-            }
+            startingScreens.Draw(spriteBatch);
         }
     }
 }
