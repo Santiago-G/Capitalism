@@ -9,10 +9,21 @@ namespace Capitalism.Screens
     {
         SpriteFont playerFont;
 
+        Texture2D VroomVroom;
+        Texture2D AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN;
+        Texture2D good_day_sir;
+        Texture2D ew;
+        Texture2D yes;
+        Texture2D discount_cart;
+        Texture2D the_shape_of_italy;
+        Texture2D black_magic;
+        Texture2D F_O_O_D;
+        Texture2D weakling;
+
         public int playerCount => SelectingPlayers.playerCount;
         int currentPlayer = 1;
 
-        // LIST OF PLAYERS  - Car, Ship, Top Hat, Ice Skate, Cat, Dog, WheelBarrow, Boot, Plane, Hamburger.
+        // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, Hamburger, duck
 
         public ChoosingCharacters(string Name) : base(Name)
         { 
@@ -22,6 +33,11 @@ namespace Capitalism.Screens
         public override void LoadContent(ContentManager Content)
         {
             playerFont = Content.Load<SpriteFont>("startingScreenFont");
+
+            VroomVroom = Content.Load<Texture2D>("car");
+            AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN = Content.Load<Texture2D>("boat");
+
+            weakling = Content.Load<Texture2D>("duck");
 
         }
 
