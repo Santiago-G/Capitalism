@@ -22,12 +22,12 @@ namespace Capitalism
 
         public Starting_Screen(ContentManager Content)
         {
-            startingScreens.AddScreen(mainMenu);
-            startingScreens.LoadContent(Content);
+            //startingScreens.AddScreen(mainMenu);
+            //startingScreens.LoadContent(Content);
             startingScreens.AddScreen(selectingPlayers);
             startingScreens.LoadContent(Content);
-            startingScreens.AddScreen(rollingOfTheDice);
-            startingScreens.LoadContent(Content);
+            //startingScreens.AddScreen(rollingOfTheDice);
+            //startingScreens.LoadContent(Content);
             startingScreens.AddScreen(characterChoosing);
             startingScreens.LoadContent(Content);
         }
