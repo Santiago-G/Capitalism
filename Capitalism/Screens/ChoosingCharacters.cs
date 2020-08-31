@@ -38,11 +38,10 @@ namespace Capitalism.Screens
 
         #endregion
         public int playerCount => SelectingPlayers.playerCount;
-        int currentPlayer = 1;
+        int currentPlayer = 1; 
 
-        List<Player> Players = new List<Player>();
 
-        // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, Hamburger, duck
+        // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, duck
 
         Dictionary<string, (Player player, Button button)> players = new Dictionary<string, (Player, Button)>();
 
@@ -56,12 +55,10 @@ namespace Capitalism.Screens
 
             for (int i = 0; i < alreadySelected.Length; i++)
             {
-                alreadySelected[i] = true;
+                alreadySelected[i] = false;
             }
 
             playerFont = Content.Load<SpriteFont>("startingScreenFont");
-
-
 
             #region tokens 
 
@@ -69,27 +66,24 @@ namespace Capitalism.Screens
             AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN = Content.Load<Texture2D>("boat");
             good_day_sir = Content.Load<Texture2D>("hat");
             ew = Content.Load<Texture2D>("cat");
+            yes = Content.Load<Texture2D>("dog");
             discount_cart = Content.Load<Texture2D>("wheelbarrow");
             the_shape_of_italy = Content.Load<Texture2D>("boot");
-
-
+            //Plane
             weakling = Content.Load<Texture2D>("duck");
+
 
             Car = new Button(VroomVroom, new Vector2(50, 120), Color.White);
             Boat = new Button(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(260, 100), Color.White);
             Hat = new Button(good_day_sir, new Vector2(480, 130), Color.White);
             Cat = new Button(ew, new Vector2(50, 260), Color.White);
-            Wheelbarrow = new Button(discount_cart, new Vector2(260, 320), Color.White);
+            Dog = new Button(yes, new Vector2(260, 260), Color.White);
+            Wheelbarrow = new Button(discount_cart, new Vector2(480, 320), Color.White);
             Boot = new Button(the_shape_of_italy, new Vector2(50, 470), Color.White);
-
+            //Plane
 
             Duck = new Button(weakling, new Vector2(480, 470), Color.White);
             #endregion
-
-            players.Add("Car", (Players[0], new Button(VroomVroom, new Vector2(50, 120), Color.White)));
-            players.Add("Ship", (Players[1], new Button(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(260, 100), Color.White)));
-            players.Add("Hat", (Players[2], new Button(VroomVroom, new Vector2(50, 120), Color.White)));
-
         }
 
 
@@ -103,72 +97,84 @@ namespace Capitalism.Screens
             //}
 
 
-            Car.Update(ms, alreadySelected[0]);
-            Boat.Update(ms, alreadySelected[1]);
-            Hat.Update(ms, alreadySelected[2]);
-            Cat.Update(ms, alreadySelected[3]);
-            Wheelbarrow.Update(ms, alreadySelected[5]);
-            Boot.Update(ms, alreadySelected[6]);
+            Car.Update(ms, !alreadySelected[0]);
+            Boat.Update(ms, !alreadySelected[1]);
+            Hat.Update(ms, !alreadySelected[2]);
+            Cat.Update(ms, !alreadySelected[3]);
+            Dog.Update(ms, !alreadySelected[4]);
+            Wheelbarrow.Update(ms, !alreadySelected[5]);
+            Boot.Update(ms, !alreadySelected[6]);
 
 
-            Duck.Update(ms, alreadySelected[8]);
+            Duck.Update(ms, !alreadySelected[8]);
 
 
-
-            if (Car.IsClicked)
+            if (currentPlayer < playerCount)
             {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                if (Car.IsClicked && !alreadySelected[0])
+                {
+                    players.Add($"Player {currentPlayer}, Car", (new Player(VroomVroom, new Vector2(1000), Color.White, "Car"), Car));
+                    alreadySelected[0] = true;
 
-            if (Boat.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                    currentPlayer++;
+                }
 
-            if (Hat.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                if (Boat.IsClicked && !alreadySelected[1])
+                {
+                    players.Add($"Player {currentPlayer}, Boat", (new Player(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(1000), Color.White, "Boat"), Boat));
+                    alreadySelected[1] = true;
 
-            if (Cat.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                    currentPlayer++;
+                }
 
-            if (Wheelbarrow.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                if (Hat.IsClicked && !alreadySelected[2])
+                {
+                    players.Add($"Player {currentPlayer}, Hat", (new Player(good_day_sir, new Vector2(1000), Color.White, "Hat"), Hat));
+                    alreadySelected[2] = true;
 
-            if (Boot.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                    currentPlayer++;
+                }
 
-            if (Car.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                if (Cat.IsClicked && !alreadySelected[3])
+                {
+                    players.Add($"Player {currentPlayer}, Cat", (new Player(ew, new Vector2(1000), Color.White, "Cat"), Cat));
+                    alreadySelected[3] = true;
 
-            if (Car.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                    currentPlayer++;
+                }
 
-            if (Duck.IsClicked)
-            {
-                Players.Add(new Player(VroomVroom, new Vector2(1000), Color.White, "Car"));
-                alreadySelected[0] = false;
-            }
+                if (Dog.IsClicked && !alreadySelected[4])
+                {
+                    players.Add($"Player {currentPlayer}, Dog", (new Player(yes, new Vector2(1000), Color.White, "Dog"), Dog));
+                    alreadySelected[4] = true;
 
+                    currentPlayer++;
+                }
+
+                if (Wheelbarrow.IsClicked && !alreadySelected[5])
+                {
+                    players.Add($"Player {currentPlayer}, Wheelbarrow", (new Player(discount_cart, new Vector2(1000), Color.White, "Wheelbarrow"), Wheelbarrow));
+                    alreadySelected[5] = true;
+
+                    currentPlayer++;
+                }
+
+                if (Boot.IsClicked && !alreadySelected[6])
+                {
+                    players.Add($"Player {currentPlayer}, Boot", (new Player(the_shape_of_italy, new Vector2(1000), Color.White, "Boot"), Boot));
+                    alreadySelected[6] = true;
+
+                    currentPlayer++;
+                }
+
+                if (Duck.IsClicked && !alreadySelected[8])
+                {
+                    players.Add($"Player {currentPlayer}, Duck", (new Player(weakling, new Vector2(1000), Color.White, "Duck"), Duck));
+                    alreadySelected[8] = true;
+
+                    currentPlayer++;
+                }
+            }
 
         }
         public override void Draw(SpriteBatch spritebatch)
@@ -178,7 +184,7 @@ namespace Capitalism.Screens
             Boat.Draw(spritebatch);
             Hat.Draw(spritebatch);
             Cat.Draw(spritebatch);
-
+            Dog.Draw(spritebatch);
             Wheelbarrow.Draw(spritebatch);
             Boot.Draw(spritebatch);
 

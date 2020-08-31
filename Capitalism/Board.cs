@@ -133,7 +133,7 @@ namespace Capitalism
 
             noButton = new Button(No, new Vector2(356, 662), Color.White);
 
-            player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
+            player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White, "no");
         }
 
         public void Update(MouseState ms)
