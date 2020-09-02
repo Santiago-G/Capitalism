@@ -10,6 +10,13 @@ namespace Capitalism.Screens
     public class ChoosingCharacters : Screen
     {
         SpriteFont playerFont;
+        Texture2D test;
+        Texture2D pixel;
+        Texture2D yesTexture;
+        Texture2D noTexture;
+
+        Button Yes;
+        Button No;
 
 
         #region Token Setup
@@ -38,16 +45,19 @@ namespace Capitalism.Screens
 
         #endregion
         public int playerCount => SelectingPlayers.playerCount;
-        int currentPlayer = 1; 
+        int currentPlayer = 1;
 
+        bool why = false;
+        bool not = true;
+        bool areYouDone = false;
 
         // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, duck
 
         Dictionary<string, (Player player, Button button)> players = new Dictionary<string, (Player, Button)>();
 
+
         public ChoosingCharacters(string Name) : base(Name)
         {
-
         }
 
         public override void LoadContent(ContentManager Content)
@@ -59,6 +69,14 @@ namespace Capitalism.Screens
             }
 
             playerFont = Content.Load<SpriteFont>("startingScreenFont");
+
+            test = Content.Load<Texture2D>("Test");
+            pixel = Content.Load<Texture2D>("pixel");
+
+            yesTexture = Content.Load<Texture2D>("YesTwo");
+            Yes = new Button(yesTexture, new Vector2(280,350), Color.White);
+            noTexture = Content.Load<Texture2D>("NoTwo");
+            No = new Button(noTexture, new Vector2(370, 350), Color.White);
 
             #region tokens 
 
@@ -109,14 +127,14 @@ namespace Capitalism.Screens
             Duck.Update(ms, !alreadySelected[8]);
 
 
-            if (currentPlayer < playerCount)
+            if (currentPlayer <= playerCount && not)
             {
                 if (Car.IsClicked && !alreadySelected[0])
                 {
                     players.Add($"Player {currentPlayer}, Car", (new Player(VroomVroom, new Vector2(1000), Color.White, "Car"), Car));
                     alreadySelected[0] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Boat.IsClicked && !alreadySelected[1])
@@ -124,7 +142,7 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Boat", (new Player(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(1000), Color.White, "Boat"), Boat));
                     alreadySelected[1] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Hat.IsClicked && !alreadySelected[2])
@@ -132,7 +150,7 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Hat", (new Player(good_day_sir, new Vector2(1000), Color.White, "Hat"), Hat));
                     alreadySelected[2] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Cat.IsClicked && !alreadySelected[3])
@@ -140,7 +158,7 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Cat", (new Player(ew, new Vector2(1000), Color.White, "Cat"), Cat));
                     alreadySelected[3] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Dog.IsClicked && !alreadySelected[4])
@@ -148,7 +166,7 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Dog", (new Player(yes, new Vector2(1000), Color.White, "Dog"), Dog));
                     alreadySelected[4] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Wheelbarrow.IsClicked && !alreadySelected[5])
@@ -156,7 +174,7 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Wheelbarrow", (new Player(discount_cart, new Vector2(1000), Color.White, "Wheelbarrow"), Wheelbarrow));
                     alreadySelected[5] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Boot.IsClicked && !alreadySelected[6])
@@ -164,7 +182,7 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Boot", (new Player(the_shape_of_italy, new Vector2(1000), Color.White, "Boot"), Boot));
                     alreadySelected[6] = true;
 
-                    currentPlayer++;
+                    why = true;
                 }
 
                 if (Duck.IsClicked && !alreadySelected[8])
@@ -172,9 +190,31 @@ namespace Capitalism.Screens
                     players.Add($"Player {currentPlayer}, Duck", (new Player(weakling, new Vector2(1000), Color.White, "Duck"), Duck));
                     alreadySelected[8] = true;
 
+                    why = true;
+                }
+
+                if (why && currentPlayer < playerCount)
+                {
                     currentPlayer++;
+                    why = false;
+                }
+                else if (why && currentPlayer == playerCount)
+                {
+                    not = false;
                 }
             }
+            else
+            {
+                Yes.Update(ms, false);
+                No.Update(ms, false);
+
+                areYouDone = true;
+                for (int i = 0; i < alreadySelected.Length; i++)
+                {
+                    alreadySelected[i] = true;
+                }
+            }
+
 
         }
         public override void Draw(SpriteBatch spritebatch)
@@ -189,6 +229,19 @@ namespace Capitalism.Screens
             Boot.Draw(spritebatch);
 
             Duck.Draw(spritebatch);
+
+            if (areYouDone)
+            {
+
+                spritebatch.Draw(pixel, new Rectangle(0, 0, 700, 700), new Color(Color.DarkGreen, 0.5f));
+                spritebatch.Draw(test, new Vector2(100, 250), Color.White);
+                spritebatch.DrawString(playerFont, "Ready to Start?", new Vector2(200, 280), Color.Black);
+                Yes.Draw(spritebatch);
+                No.Draw(spritebatch);
+            }
+
+
+
         }
 
     }

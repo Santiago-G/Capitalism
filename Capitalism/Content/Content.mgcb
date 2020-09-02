@@ -392,6 +392,18 @@
 /processorParam:TextureFormat=Color
 /build:NoCarolinaAve.jpg
 
+#begin NoTwo.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:NoTwo.jpg
+
 #begin OrientalAve.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -451,6 +463,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PennsylvaniaRR.jpg
+
+#begin pixel.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pixel.png
 
 #begin PlayerCountFont.spritefont
 /importer:FontDescriptionImporter
@@ -593,6 +617,18 @@
 /processorParam:TextureFormat=Color
 /build:TennesseeAve.jpg
 
+#begin Test.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Test.png
+
 #begin TheCapitalistBoard.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -700,4 +736,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Yes.jpg
+
+#begin YesTwo.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:YesTwo.jpg
 
