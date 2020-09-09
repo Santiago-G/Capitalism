@@ -21,7 +21,7 @@ namespace Capitalism
         Starting_Screen TheStartingScreen;
         Player Players;
 
-        bool StartingScreen = true;
+        public bool StartingScreen = true;
 
         //List<Screen> screens;
         //Screen currentScreen;
@@ -117,7 +117,7 @@ namespace Capitalism
             {
                 TheStartingScreen.Update(Ms, gameTime);
 
-                if (setMainScreenResolution == true)
+                if (TheStartingScreen.StartingScreenFinished)
                 {
                     ChangeResolution(1470, 1048);
 

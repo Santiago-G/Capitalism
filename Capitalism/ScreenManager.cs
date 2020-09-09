@@ -11,6 +11,7 @@ namespace Capitalism
 {
     public class ScreenManager
     {
+        int numbOfLastScreen = 0;
 
         Queue<Screen> Screens;
         public Screen currentScreen => Screens.Peek();
@@ -23,11 +24,13 @@ namespace Capitalism
         public void AddScreen(Screen newScreen)
         {
             Screens.Enqueue(newScreen);
+            numbOfLastScreen++;
         }
 
         public void NextScreen()
         {
             Screens.Dequeue();
+            numbOfLastScreen--;
         }
 
         public Screen GetScreenByName(string name)
@@ -55,7 +58,7 @@ namespace Capitalism
         {
             currentScreen.Update(gameTime);
 
-            if (currentScreen.EndScreen)
+            if (currentScreen.EndScreen && numbOfLastScreen > 1)
             {
                 NextScreen();
             }

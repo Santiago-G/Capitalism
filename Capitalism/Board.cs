@@ -59,6 +59,12 @@ namespace Capitalism
         Player player;
         Button noButton;
 
+        Texture2D pixel;
+        Button Dice1;
+        Button Dice2;
+
+
+        
         Dictionary<PropertyNames, Property> Properties = new Dictionary<PropertyNames, Property>();
 
         PropertyNames? selectedValue = null;
@@ -87,6 +93,13 @@ namespace Capitalism
             TestingPositions(listOfPositions, 10);
 
             //Testing Testing Testing
+
+            pixel = Content.Load<Texture2D>("FFFFFF-1");
+            Dice1 = new Button(pixel, Vector2.Zero , Color.Yellow);
+            Dice1.CurrentHitbox = new Rectangle(682, 554, 62, 110);
+
+
+            #region Properties
 
             Properties.Add(PropertyNames.Mediterranean, LoadContent("MediterraneanAve", 1199, 895, true, 2, 10, 30, 90, 160, 250, 50, 50, Content));
             ;
@@ -124,6 +137,8 @@ namespace Capitalism
             //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
             //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
+            #endregion
+
             Frame = Content.Load<Texture2D>("Frame");
 
             Yes = Content.Load<Texture2D>("Yes");
@@ -153,6 +168,14 @@ namespace Capitalism
 
             #endregion
 
+            Dice1.Update(ms, false);
+
+            if (Dice1.CurrentHitbox.Contains(ms.Position))
+            {
+                // exit
+            }
+
+
             lms = ms;
         }
 
@@ -166,6 +189,9 @@ namespace Capitalism
             batch.Draw(Yes, new Vector2(324, 662), Color.White);
             noButton.Draw(batch);
             batch.Draw(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
+
+            Dice1.CurrentHitbox = new Rectangle(682, 554, 62, 110);
+            Dice1.Draw(batch);
 
             if (selectedValue.HasValue)
             {

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Capitalism.Screens
 {
@@ -50,6 +51,7 @@ namespace Capitalism.Screens
         bool why = false;
         bool not = true;
         bool areYouDone = false;
+        
 
         // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, duck
 
@@ -62,7 +64,7 @@ namespace Capitalism.Screens
 
         public override void LoadContent(ContentManager Content)
         {
-
+            this.EndScreen = false;
             for (int i = 0; i < alreadySelected.Length; i++)
             {
                 alreadySelected[i] = false;
@@ -207,6 +209,15 @@ namespace Capitalism.Screens
             {
                 Yes.Update(ms, false);
                 No.Update(ms, false);
+
+                if (Yes.IsClicked)
+                {
+                    this.EndScreen = true;
+                }
+                if (No.IsClicked)
+                { 
+                    //sinners
+                }
 
                 areYouDone = true;
                 for (int i = 0; i < alreadySelected.Length; i++)

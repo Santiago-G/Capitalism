@@ -20,6 +20,8 @@ namespace Capitalism
         DiceRolling rollingOfTheDice = new DiceRolling("Dice Rolling");
         ChoosingCharacters characterChoosing = new ChoosingCharacters("Choosing Characters");
 
+        public bool StartingScreenFinished = false;
+
         public Starting_Screen(ContentManager Content)
         {
             startingScreens.AddScreen(mainMenu);
@@ -35,6 +37,11 @@ namespace Capitalism
         public void Update(MouseState ms, GameTime gameTime)
         {
             Game1.TitleBarString = "";
+
+            if (startingScreens.currentScreen == characterChoosing && startingScreens.currentScreen.EndScreen == true)
+            {
+                StartingScreenFinished = true;
+            }
 
             startingScreens.Update(gameTime);
         }
