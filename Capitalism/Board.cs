@@ -17,6 +17,11 @@ namespace Capitalism
         static public float Player1X = 1276;
         static public float Player1Y = 870;
 
+        Random gen = new Random();
+
+        bool diceCanRoll = true;
+        bool diceRolling = false;
+
         #region Functions
 
         static public Vector2[] MakingPositions()
@@ -49,6 +54,7 @@ namespace Capitalism
             (Player1X, Player1Y) = positionArray[position];
         }
 
+
         #endregion
 
         Texture2D Frame;
@@ -56,14 +62,17 @@ namespace Capitalism
         Texture2D No;
         Texture2D Purchase;
         Texture2D WhatAboutTheDroidAttackOnTheWookies;
+        Texture2D RedDice;
         Player player;
-        Button noButton;
+        HighlightButton noButton;
 
         Texture2D pixel;
-        Button Dice1;
-        Button Dice2;
+        Texture2D pixel2;
+        HighlightButton diceOnBoard1;
+        HighlightButton diceOnBoard2;
 
-
+        Animation dice1;
+        Animation dice2;
         
         Dictionary<PropertyNames, Property> Properties = new Dictionary<PropertyNames, Property>();
 
@@ -91,13 +100,17 @@ namespace Capitalism
             //Testing Testing Testing
             listOfPositions = MakingPositions();
             TestingPositions(listOfPositions, 10);
-
             //Testing Testing Testing
 
-            pixel = Content.Load<Texture2D>("FFFFFF-1");
-            Dice1 = new Button(pixel, Vector2.Zero , Color.Yellow);
-            Dice1.CurrentHitbox = new Rectangle(682, 554, 62, 110);
 
+
+            pixel = Content.Load<Texture2D>("FFFFFF-1");
+            pixel2 = Content.Load<Texture2D>("pixel");
+            diceOnBoard1 = new HighlightButton(pixel, Vector2.Zero , Color.Yellow * 0.2f);//new Color(Color.Yellow, 0.5f));
+            diceOnBoard1.CurrentHitbox = new Rectangle(682, 618, 48, 44);
+            RedDice = Content.Load<Texture2D>("RedDice");
+            dice1 = new Animation(RedDice, new Vector2(250, 350), 100, new Random(gen.Next()));
+            dice2 = new Animation(RedDice, new Vector2(350), 100, new Random(gen.Next()));
 
             #region Properties
 
@@ -140,21 +153,20 @@ namespace Capitalism
             #endregion
 
             Frame = Content.Load<Texture2D>("Frame");
-
             Yes = Content.Load<Texture2D>("Yes");
             No = Content.Load<Texture2D>("No");
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
             WhatAboutTheDroidAttackOnTheWookies = Content.Load<Texture2D>("WhatAboutTheDroidAttackOnTheWookies");
 
-            noButton = new Button(No, new Vector2(356, 662), Color.White);
+            noButton = new HighlightButton(No, new Vector2(356, 662), Color.White);
 
             player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White, "no");
         }
 
-        public void Update(MouseState ms)
+        public void Update(MouseState ms, GameTime gameTime)
         {
-
-            #region Property
+            
+            #region Property/Testing
 
             if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
             {
@@ -168,17 +180,27 @@ namespace Capitalism
 
             #endregion
 
-            Dice1.Update(ms, false);
+            diceOnBoard1.Update(ms, false);
 
-            if (Dice1.CurrentHitbox.Contains(ms.Position))
+            diceOnBoard1.CurrentHitbox = new Rectangle(682, 618, 48, 44);
+            if (diceOnBoard1.CurrentHitbox.Contains(ms.Position) && diceOnBoard1.IsClicked)
             {
-                // exit
-            }
+                diceCanRoll = false;
+                diceRolling = true;
 
+                dice1.Update(gameTime, true);
+                dice2.Update(gameTime, true);
+
+                int rollValue = (dice1.DiceRollValue - 1) + (dice2.DiceRollValue - 1);
+            }
 
             lms = ms;
         }
 
+        public void DarkenScreen(SpriteBatch spritebatch)
+        {
+            spritebatch.Draw(pixel, new Rectangle(0, 0, 1500, 1400), new Color(Color.Black, 0.5f));
+        }
 
         public void Draw(SpriteBatch batch)
         {
@@ -190,8 +212,16 @@ namespace Capitalism
             noButton.Draw(batch);
             batch.Draw(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
 
-            Dice1.CurrentHitbox = new Rectangle(682, 554, 62, 110);
-            Dice1.Draw(batch);
+
+            diceOnBoard1.CurrentHitbox = new Rectangle(682, 618, 48, 44);
+            diceOnBoard1.Draw(batch);
+
+            if (diceRolling)
+            {
+                DarkenScreen(batch);
+                dice1.Draw(batch);
+                dice2.Draw(batch);
+            }
 
             if (selectedValue.HasValue)
             {

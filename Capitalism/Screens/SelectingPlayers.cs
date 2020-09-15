@@ -12,8 +12,8 @@ namespace Capitalism.Screens
 {
     public class SelectingPlayers : Screen
     {
-        Button SquarePlayerCount;
-        Button SquarePlayersConfirmed;
+        HighlightButton SquarePlayerCount;
+        HighlightButton SquarePlayersConfirmed;
 
         SpriteFont playerCountFont;
         SpriteFont mediumSizeFont;
@@ -34,8 +34,8 @@ namespace Capitalism.Screens
             playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
             mediumSizeFont = Content.Load<SpriteFont>("MediumSize");
 
-            SquarePlayerCount = new Button(Square1Image, new Vector2(150, 250), Color.Red);
-            SquarePlayersConfirmed = new Button(Square1Image, new Vector2(300, 500), Color.Green);
+            SquarePlayerCount = new HighlightButton(Square1Image, new Vector2(150, 250), Color.Red);
+            SquarePlayersConfirmed = new HighlightButton(Square1Image, new Vector2(300, 500), Color.Green);
         }
 
         public override void Update(GameTime gameTime)

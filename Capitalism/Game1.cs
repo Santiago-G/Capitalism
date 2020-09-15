@@ -127,7 +127,7 @@ namespace Capitalism
             }
             else
             {
-                TheBoard.Update(Ms);
+                TheBoard.Update(Ms, gameTime);
             }
 
 

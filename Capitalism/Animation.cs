@@ -81,7 +81,7 @@ namespace Capitalism
                     hasGone = true;
                     currentFrame = gen.Next(frames.Count);
                     currentRoll++;
-                    delayMs = (uint)(delayMs * 1.2);
+                    delayMs = (uint)(delayMs * 1.1);
                     previousTime = gameTime.TotalGameTime;
                 }
                 else if (hasGone)

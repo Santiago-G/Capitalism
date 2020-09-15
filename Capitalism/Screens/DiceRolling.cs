@@ -15,7 +15,7 @@ namespace Capitalism.Screens
         Texture2D Square2Image;
         Texture2D Crown;
 
-        Button SquareDiceRoll;
+        HighlightButton SquareDiceRoll;
 
         SpriteFont smallSizeFont;
 
@@ -54,7 +54,7 @@ namespace Capitalism.Screens
             Texture2D RedDiceImage = Content.Load<Texture2D>("RedDice");
             Crown = Content.Load<Texture2D>("SmallCrown");
 
-            SquareDiceRoll = new Button(Square1Image, new Vector2(315, 400), Color.Green);
+            SquareDiceRoll = new HighlightButton(Square1Image, new Vector2(315, 400), Color.Green);
 
             smallSizeFont = Content.Load<SpriteFont>("smallSize");
 

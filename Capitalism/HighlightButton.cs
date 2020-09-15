@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Capitalism
 {
-    public class Button : Sprite
+    public class HighlightButton : Sprite
     {
 
         public Rectangle HighlightedHitbox
@@ -35,7 +35,7 @@ namespace Capitalism
 
         public bool IsClicked { get; private set; }
 
-        public Button(Texture2D image, Vector2 position, Color tint) : base(image, position, tint)
+        public HighlightButton(Texture2D image, Vector2 position, Color tint) : base(image, position, tint)
         {
         }
 
@@ -62,7 +62,7 @@ namespace Capitalism
                 CurrentTint = Tint;
             }
 
-            if (Hitbox.Contains(ms.Position))
+            if (CurrentHitbox.Contains(ms.Position))
             {
                 if ((ms != mouseState && ms.LeftButton == ButtonState.Pressed)) // click logic goes in here
                 {

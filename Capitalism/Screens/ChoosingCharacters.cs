@@ -16,8 +16,8 @@ namespace Capitalism.Screens
         Texture2D yesTexture;
         Texture2D noTexture;
 
-        Button Yes;
-        Button No;
+        HighlightButton Yes;
+        HighlightButton No;
 
 
         #region Token Setup
@@ -32,15 +32,15 @@ namespace Capitalism.Screens
         Texture2D F_O_O_D;
         Texture2D weakling;
 
-        Button Car;
-        Button Boat;
-        Button Hat;
-        Button Cat;
-        Button Dog;
-        Button Wheelbarrow;
-        Button Boot;
-        Button Plane;
-        Button Duck;
+        HighlightButton Car;
+        HighlightButton Boat;
+        HighlightButton Hat;
+        HighlightButton Cat;
+        HighlightButton Dog;
+        HighlightButton Wheelbarrow;
+        HighlightButton Boot;
+        HighlightButton Plane;
+        HighlightButton Duck;
 
         bool[] alreadySelected = new bool[9];
 
@@ -55,7 +55,7 @@ namespace Capitalism.Screens
 
         // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, duck
 
-        Dictionary<string, (Player player, Button button)> players = new Dictionary<string, (Player, Button)>();
+        Dictionary<string, (Player player, HighlightButton button)> players = new Dictionary<string, (Player, HighlightButton)>();
 
 
         public ChoosingCharacters(string Name) : base(Name)
@@ -76,9 +76,9 @@ namespace Capitalism.Screens
             pixel = Content.Load<Texture2D>("pixel");
 
             yesTexture = Content.Load<Texture2D>("YesTwo");
-            Yes = new Button(yesTexture, new Vector2(280,350), Color.White);
+            Yes = new HighlightButton(yesTexture, new Vector2(280,350), Color.White);
             noTexture = Content.Load<Texture2D>("NoTwo");
-            No = new Button(noTexture, new Vector2(370, 350), Color.White);
+            No = new HighlightButton(noTexture, new Vector2(370, 350), Color.White);
 
             #region tokens 
 
@@ -93,16 +93,16 @@ namespace Capitalism.Screens
             weakling = Content.Load<Texture2D>("duck");
 
 
-            Car = new Button(VroomVroom, new Vector2(50, 120), Color.White);
-            Boat = new Button(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(260, 100), Color.White);
-            Hat = new Button(good_day_sir, new Vector2(480, 130), Color.White);
-            Cat = new Button(ew, new Vector2(50, 260), Color.White);
-            Dog = new Button(yes, new Vector2(260, 260), Color.White);
-            Wheelbarrow = new Button(discount_cart, new Vector2(480, 320), Color.White);
-            Boot = new Button(the_shape_of_italy, new Vector2(50, 470), Color.White);
+            Car = new HighlightButton(VroomVroom, new Vector2(50, 120), Color.White);
+            Boat = new HighlightButton(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(260, 100), Color.White);
+            Hat = new HighlightButton(good_day_sir, new Vector2(480, 130), Color.White);
+            Cat = new HighlightButton(ew, new Vector2(50, 260), Color.White);
+            Dog = new HighlightButton(yes, new Vector2(260, 260), Color.White);
+            Wheelbarrow = new HighlightButton(discount_cart, new Vector2(480, 320), Color.White);
+            Boot = new HighlightButton(the_shape_of_italy, new Vector2(50, 470), Color.White);
             //Plane
 
-            Duck = new Button(weakling, new Vector2(480, 470), Color.White);
+            Duck = new HighlightButton(weakling, new Vector2(480, 470), Color.White);
             #endregion
         }
 
