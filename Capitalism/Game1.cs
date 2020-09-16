@@ -19,16 +19,16 @@ namespace Capitalism
 
         Board TheBoard;
         Starting_Screen TheStartingScreen;
-        Player Players;
 
         public bool StartingScreen = true;
 
         //List<Screen> screens;
         //Screen currentScreen;
-        bool setMainScreenResolution = false;
 
 
         public static string TitleBarString;
+
+        Effect blurEffect;
 
         public Game1()
         {
@@ -66,6 +66,7 @@ namespace Capitalism
 
         protected override void LoadContent()
         {
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -121,7 +122,6 @@ namespace Capitalism
                 {
                     ChangeResolution(1470, 1048);
 
-                    setMainScreenResolution = false;
                     StartingScreen = false;
                 }
             }
@@ -157,7 +157,6 @@ namespace Capitalism
             else
             {
                 GraphicsDevice.Clear(Color.FromNonPremultiplied(109, 109, 109, 155));
-
                 spriteBatch.Draw(spriteSheet, new Vector2(410, 0), Color.White);
                 spriteBatch.Draw(BankThing, new Vector2(45, 0), Color.White);
                 TheBoard.Draw(spriteBatch);

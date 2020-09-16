@@ -57,19 +57,24 @@ namespace Capitalism
 
         #endregion
 
+        #region Textures
         Texture2D Frame;
         Texture2D Yes;
         Texture2D No;
         Texture2D Purchase;
         Texture2D WhatAboutTheDroidAttackOnTheWookies;
         Texture2D RedDice;
+        Texture2D pixel;
+        Texture2D pixel2;
+        Effect blurEffect;
+
+        #endregion
+
         Player player;
         HighlightButton noButton;
 
-        Texture2D pixel;
-        Texture2D pixel2;
-        HighlightButton diceOnBoard1;
-        HighlightButton diceOnBoard2;
+        NormalButton diceOnBoard1;
+        NormalButton diceOnBoard2;
 
         Animation dice1;
         Animation dice2;
@@ -79,7 +84,6 @@ namespace Capitalism
         PropertyNames? selectedValue = null;
 
         MouseState lms;
-
 
         Vector2[] listOfPositions = new Vector2[40];
 
@@ -103,13 +107,14 @@ namespace Capitalism
             //Testing Testing Testing
 
 
+            blurEffect = Content.Load<Effect>("GaussianBlur");
 
             pixel = Content.Load<Texture2D>("FFFFFF-1");
             pixel2 = Content.Load<Texture2D>("pixel");
-            diceOnBoard1 = new HighlightButton(pixel, Vector2.Zero , Color.Yellow * 0.2f);//new Color(Color.Yellow, 0.5f));
-            diceOnBoard1.CurrentHitbox = new Rectangle(682, 618, 48, 44);
+            diceOnBoard1 = new NormalButton(pixel, Vector2.Zero , Color.Yellow * 0.2f);
+            diceOnBoard1.Hitbox = new Rectangle(682, 618, 48, 44);
             RedDice = Content.Load<Texture2D>("RedDice");
-            dice1 = new Animation(RedDice, new Vector2(250, 350), 100, new Random(gen.Next()));
+            dice1 = new Animation(RedDice, new Vector2(700, 350), 100, new Random(gen.Next()));
             dice2 = new Animation(RedDice, new Vector2(350), 100, new Random(gen.Next()));
 
             #region Properties
@@ -180,10 +185,10 @@ namespace Capitalism
 
             #endregion
 
-            diceOnBoard1.Update(ms, false);
+            #region DiceRolling
+            diceOnBoard1.Update(ms);
 
-            diceOnBoard1.CurrentHitbox = new Rectangle(682, 618, 48, 44);
-            if (diceOnBoard1.CurrentHitbox.Contains(ms.Position) && diceOnBoard1.IsClicked)
+            if (diceOnBoard1.IsClicked(ms))
             {
                 diceCanRoll = false;
                 diceRolling = true;
@@ -193,6 +198,8 @@ namespace Capitalism
 
                 int rollValue = (dice1.DiceRollValue - 1) + (dice2.DiceRollValue - 1);
             }
+
+            #endregion
 
             lms = ms;
         }
@@ -204,16 +211,11 @@ namespace Capitalism
 
         public void Draw(SpriteBatch batch)
         {
-
-            batch.Draw(Frame, new Vector2(25, 200), Color.White);
-
             batch.Draw(Purchase, new Vector2(27, 640), Color.White);
             batch.Draw(Yes, new Vector2(324, 662), Color.White);
             noButton.Draw(batch);
             batch.Draw(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
 
-
-            diceOnBoard1.CurrentHitbox = new Rectangle(682, 618, 48, 44);
             diceOnBoard1.Draw(batch);
 
             if (diceRolling)
@@ -222,22 +224,17 @@ namespace Capitalism
                 dice1.Draw(batch);
                 dice2.Draw(batch);
             }
+            //batch.End();
+
+            //batch.Begin(effect: blurEffect);
+            batch.Draw(texture:  Frame, position: new Vector2(25, 200),color: Color.White );
+            //batch.End();
+            //batch.Begin();
 
             if (selectedValue.HasValue)
             {
                 //Properties[selectedValue.Value]
             }
         }
-
-
-
-
-        //spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        ////spriteSheet = Content.Load<Texture2D>("TheCapitalistBoard");
-        //TheBoard = new Board();
-
-
-
     }
 }

@@ -277,6 +277,12 @@
 /processorParam:TextureFormat=Color
 /build:Frame.jpg
 
+#begin GaussianBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:GaussianBlur.fx
+
 #begin hat.png
 /importer:TextureImporter
 /processor:TextureProcessor
