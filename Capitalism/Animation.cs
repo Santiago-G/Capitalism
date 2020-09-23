@@ -11,14 +11,14 @@ namespace Capitalism
     public class Animation
     {
         private Texture2D tex;
-        private Vector2 pos;
+        public Vector2 pos;
 
         int numFrames;
         int width;
         int height;
         int currentFrame;
 
-        Rectangle dest;
+        public Rectangle dest;
 
         TimeSpan previousTime;
 

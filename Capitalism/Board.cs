@@ -22,6 +22,10 @@ namespace Capitalism
 
         bool diceCanRoll = true;
         bool diceRolling = false;
+        bool diceMoving = false;
+        bool darkenScreen = false;
+
+        int rollValue = 0;
 
         #region Functions
 
@@ -192,12 +196,39 @@ namespace Capitalism
             #endregion
 
             #region DiceRolling
+
+            if (diceMoving)
+            {
+                if (dice2.dest.X != 24)
+                {
+                    dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
+                    dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
+
+                    dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
+                    dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
+
+
+                    dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
+                    dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
+
+                    dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
+                    dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
+                }
+                else 
+                {
+                    diceMoving = false;
+                    darkenScreen = false;
+                }
+            }
+
             diceOnBoard1.Update(ms);
 
             if (diceOnBoard1.IsClicked(ms))
             {
                 diceCanRoll = false;
                 diceRolling = true;
+
+                darkenScreen = true;
             }
 
             if (diceRolling)
@@ -205,11 +236,11 @@ namespace Capitalism
                 dice1.Update(gameTime, true);
                 dice2.Update(gameTime, true);
 
-                int rollValue = (dice1.DiceRollValue - 1) + (dice2.DiceRollValue - 1);
+                rollValue = (dice1.DiceRollValue - 1) + (dice2.DiceRollValue - 1);
 
                 if (dice1.stopped)
                 {
-
+                    diceMoving = true;
                 }
             }
             else 
@@ -242,13 +273,17 @@ namespace Capitalism
 
             batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
 
-            if (diceRolling)
+
+            if (darkenScreen)
             {
                 DarkenScreen(batch);
+            }
+
+            if (diceRolling)
+            {
                 dice1.Draw(batch);
                 dice2.Draw(batch);
             }
-
 
 
             if (selectedValue.HasValue)
