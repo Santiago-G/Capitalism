@@ -8,7 +8,7 @@ namespace Capitalism
         public Texture2D Image;
         public Vector2 Position;
         public Color Tint;
-        public virtual Rectangle Hitbox { get => new Rectangle((int)Position.X, (int)Position.Y, Image.Width, Image.Height);  set { } }
+        public virtual Rectangle Hitbox { get => new Rectangle((int)Position.X, (int)Position.Y, Image.Width, Image.Height); set { } }
 
         public Sprite(Texture2D image, Vector2 position, Color tint)
         {

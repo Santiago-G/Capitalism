@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +13,9 @@ namespace Capitalism
     public class NormalButton : Sprite
     {
         public override Rectangle Hitbox { get; set; }
-
-        public NormalButton(Texture2D image, Vector2 position, Color tint) : base(image, position, tint)
+        public NormalButton(Texture2D image, Vector2 position, Color tint, Rectangle hitbox) : base(image, position, tint)
         {
+            Hitbox = hitbox;
         }
 
         public bool IsClicked(MouseState ms)

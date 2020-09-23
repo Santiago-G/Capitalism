@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Capitalism.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -70,6 +71,8 @@ namespace Capitalism
 
         #endregion
 
+        public int playerCount => SelectingPlayers.playerCount;
+
         Player player;
         HighlightButton noButton;
 
@@ -86,6 +89,10 @@ namespace Capitalism
         MouseState lms;
 
         Vector2[] listOfPositions = new Vector2[40];
+
+        TimeSpan previousTime = TimeSpan.Zero;
+
+        TimeSpan interval = TimeSpan.FromSeconds(1);
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -111,11 +118,10 @@ namespace Capitalism
 
             pixel = Content.Load<Texture2D>("FFFFFF-1");
             pixel2 = Content.Load<Texture2D>("pixel");
-            diceOnBoard1 = new NormalButton(pixel, Vector2.Zero , Color.Yellow * 0.2f);
-            diceOnBoard1.Hitbox = new Rectangle(682, 618, 48, 44);
+            diceOnBoard1 = new NormalButton(pixel, Vector2.Zero , Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
             RedDice = Content.Load<Texture2D>("RedDice");
-            dice1 = new Animation(RedDice, new Vector2(700, 350), 100, new Random(gen.Next()));
-            dice2 = new Animation(RedDice, new Vector2(350), 100, new Random(gen.Next()));
+            dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
+            dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
 
             #region Properties
 
@@ -192,11 +198,27 @@ namespace Capitalism
             {
                 diceCanRoll = false;
                 diceRolling = true;
+            }
 
+            if (diceRolling)
+            {
                 dice1.Update(gameTime, true);
                 dice2.Update(gameTime, true);
 
                 int rollValue = (dice1.DiceRollValue - 1) + (dice2.DiceRollValue - 1);
+
+                if (dice1.stopped)
+                {
+
+                }
+            }
+            else 
+            {
+                if (gameTime.TotalGameTime - previousTime >= interval)
+                {
+                    diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
+                    previousTime = gameTime.TotalGameTime;
+                }
             }
 
             #endregion
@@ -218,18 +240,16 @@ namespace Capitalism
 
             diceOnBoard1.Draw(batch);
 
+            batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
+
             if (diceRolling)
             {
                 DarkenScreen(batch);
                 dice1.Draw(batch);
                 dice2.Draw(batch);
             }
-            //batch.End();
 
-            //batch.Begin(effect: blurEffect);
-            batch.Draw(texture:  Frame, position: new Vector2(25, 200),color: Color.White );
-            //batch.End();
-            //batch.Begin();
+
 
             if (selectedValue.HasValue)
             {
