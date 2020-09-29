@@ -55,9 +55,8 @@ namespace Capitalism.Screens
 
         // LIST OF PLAYERS  - Car, Ship, Top Hat, Cat, Dog, WheelBarrow, Boot, Plane, duck
 
-        Dictionary<string, (Player player, HighlightButton button)> players = new Dictionary<string, (Player, HighlightButton)>();
-
-
+        public static Dictionary<string, (Player player, HighlightButton button)> players = new Dictionary<string, (Player, HighlightButton)>();
+        
         public ChoosingCharacters(string Name) : base(Name)
         {
         }
@@ -131,9 +130,11 @@ namespace Capitalism.Screens
 
             if (currentPlayer <= playerCount && not)
             {
+
                 if (Car.IsClicked && !alreadySelected[0])
                 {
-                    players.Add($"Player {currentPlayer}, Car", (new Player(VroomVroom, new Vector2(1000), Color.White, "Car"), Car));
+
+                    players.Add($"Player {currentPlayer}", (new Player(VroomVroom, new Vector2(1000), Color.White, "Car"), Car));
                     alreadySelected[0] = true;
 
                     why = true;
@@ -141,7 +142,7 @@ namespace Capitalism.Screens
 
                 if (Boat.IsClicked && !alreadySelected[1])
                 {
-                    players.Add($"Player {currentPlayer}, Boat", (new Player(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(1000), Color.White, "Boat"), Boat));
+                    players.Add($"Player {currentPlayer}", (new Player(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(1000), Color.White, "Boat"), Boat));
                     alreadySelected[1] = true;
 
                     why = true;
@@ -149,7 +150,7 @@ namespace Capitalism.Screens
 
                 if (Hat.IsClicked && !alreadySelected[2])
                 {
-                    players.Add($"Player {currentPlayer}, Hat", (new Player(good_day_sir, new Vector2(1000), Color.White, "Hat"), Hat));
+                    players.Add($"Player {currentPlayer}", (new Player(good_day_sir, new Vector2(1000), Color.White, "Hat"), Hat));
                     alreadySelected[2] = true;
 
                     why = true;
@@ -157,7 +158,7 @@ namespace Capitalism.Screens
 
                 if (Cat.IsClicked && !alreadySelected[3])
                 {
-                    players.Add($"Player {currentPlayer}, Cat", (new Player(ew, new Vector2(1000), Color.White, "Cat"), Cat));
+                    players.Add($"Player {currentPlayer}", (new Player(ew, new Vector2(1000), Color.White, "Cat"), Cat));
                     alreadySelected[3] = true;
 
                     why = true;
@@ -165,7 +166,7 @@ namespace Capitalism.Screens
 
                 if (Dog.IsClicked && !alreadySelected[4])
                 {
-                    players.Add($"Player {currentPlayer}, Dog", (new Player(yes, new Vector2(1000), Color.White, "Dog"), Dog));
+                    players.Add($"Player {currentPlayer}", (new Player(yes, new Vector2(1000), Color.White, "Dog"), Dog));
                     alreadySelected[4] = true;
 
                     why = true;
@@ -173,7 +174,7 @@ namespace Capitalism.Screens
 
                 if (Wheelbarrow.IsClicked && !alreadySelected[5])
                 {
-                    players.Add($"Player {currentPlayer}, Wheelbarrow", (new Player(discount_cart, new Vector2(1000), Color.White, "Wheelbarrow"), Wheelbarrow));
+                    players.Add($"Player {currentPlayer}", (new Player(discount_cart, new Vector2(1000), Color.White, "Wheelbarrow"), Wheelbarrow));
                     alreadySelected[5] = true;
 
                     why = true;
@@ -181,7 +182,7 @@ namespace Capitalism.Screens
 
                 if (Boot.IsClicked && !alreadySelected[6])
                 {
-                    players.Add($"Player {currentPlayer}, Boot", (new Player(the_shape_of_italy, new Vector2(1000), Color.White, "Boot"), Boot));
+                    players.Add($"Player {currentPlayer}", (new Player(the_shape_of_italy, new Vector2(1000), Color.White, "Boot"), Boot));
                     alreadySelected[6] = true;
 
                     why = true;
@@ -189,7 +190,7 @@ namespace Capitalism.Screens
 
                 if (Duck.IsClicked && !alreadySelected[8])
                 {
-                    players.Add($"Player {currentPlayer}, Duck", (new Player(weakling, new Vector2(1000), Color.White, "Duck"), Duck));
+                    players.Add($"Player {currentPlayer}", (new Player(weakling, new Vector2(1000), Color.White, "Duck"), Duck));
                     alreadySelected[8] = true;
 
                     why = true;
@@ -204,6 +205,8 @@ namespace Capitalism.Screens
                 {
                     not = false;
                 }
+
+                
             }
             else
             {

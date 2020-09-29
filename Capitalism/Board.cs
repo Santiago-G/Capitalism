@@ -24,8 +24,13 @@ namespace Capitalism
         bool diceRolling = false;
         bool diceMoving = false;
         bool darkenScreen = false;
+        bool characterMoving = false;
 
         int rollValue = 0;
+        int currentPlayersTurn = 1;
+
+        Dictionary<string, (Player player, HighlightButton button)> players = ChoosingCharacters.players;
+        Player CurrentPlayer;
 
         #region Functions
 
@@ -71,7 +76,7 @@ namespace Capitalism
         Texture2D RedDice;
         Texture2D pixel;
         Texture2D pixel2;
-        Effect blurEffect;
+        Texture2D itsBeanTime;
 
         #endregion
 
@@ -79,7 +84,6 @@ namespace Capitalism
 
         Player player;
         HighlightButton noButton;
-
         NormalButton diceOnBoard1;
         NormalButton diceOnBoard2;
 
@@ -118,14 +122,13 @@ namespace Capitalism
             //Testing Testing Testing
 
 
-            blurEffect = Content.Load<Effect>("GaussianBlur");
-
             pixel = Content.Load<Texture2D>("FFFFFF-1");
             pixel2 = Content.Load<Texture2D>("pixel");
             diceOnBoard1 = new NormalButton(pixel, Vector2.Zero , Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
             RedDice = Content.Load<Texture2D>("RedDice");
             dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
             dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
+            itsBeanTime = Content.Load<Texture2D>("bean");
 
             #region Properties
 
@@ -180,7 +183,6 @@ namespace Capitalism
 
         public void Update(MouseState ms, GameTime gameTime)
         {
-            
             #region Property/Testing
 
             if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
@@ -188,10 +190,10 @@ namespace Capitalism
                 Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
             }
 
-            if (Player1X > 1200 && Player1X < 1269)
-            {
-                selectedValue = PropertyNames.Atlantic;
-            }
+            Vector2[] charPostitions = MakingPositions();
+            ;
+            CurrentPlayer = players["Player 1"].player;
+            ;
 
             #endregion
 
@@ -218,6 +220,7 @@ namespace Capitalism
                 {
                     diceMoving = false;
                     darkenScreen = false;
+                    characterMoving = true;
                 }
             }
 
@@ -253,6 +256,11 @@ namespace Capitalism
             }
 
             #endregion
+
+            if (characterMoving)
+            { 
+                
+            }
 
             lms = ms;
         }
