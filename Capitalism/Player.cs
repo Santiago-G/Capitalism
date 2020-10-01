@@ -12,18 +12,20 @@ namespace Capitalism
     {
         public Texture2D Image;
         public Vector2 Position;
+        public float Size;
         public Color Tint;
-        public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, Image.Width, Image.Height);
+        public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * Size), (int)(Image.Height * Size));
 
         //yet to be decided if I use a set of bills, or I just do the number.
         public string Token = "";
 
-        public Player(Texture2D image, Vector2 position, Color tint, string token)
+        public Player(Texture2D image, Vector2 position, Color tint, string token, int size)
         {
             Position = position;
             Image = image;
             Tint = tint;
             Token = token;
+            Size = size;
         }
 
         public void Update()
@@ -33,7 +35,7 @@ namespace Capitalism
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Image, Position, Tint);
+            spriteBatch.Draw(texture: Image,destinationRectangle: Hitbox, color: Tint, rotation: 0, origin: new Vector2((int)(Image.Width * Size)/ 2, (int)(Image.Height * Size)/ 2), );
         }
     }
 }

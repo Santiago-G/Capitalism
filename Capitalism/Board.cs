@@ -15,20 +15,19 @@ namespace Capitalism
 {
     public class Board
     {
-        static public float Player1X = 1276;
-        static public float Player1Y = 870;
+
 
         Random gen = new Random();
 
-        bool diceCanRoll = true;
         bool diceRolling = false;
         bool diceMoving = false;
         bool darkenScreen = false;
         bool characterMoving = false;
+        bool bean = true;
 
         int rollValue = 0;
-        int currentPlayersTurn = 1;
 
+        Vector2[] charPostitions;
         Dictionary<string, (Player player, HighlightButton button)> players = ChoosingCharacters.players;
         Player CurrentPlayer;
 
@@ -39,12 +38,16 @@ namespace Capitalism
             //there are 40 positions
             Vector2[] Positions = new Vector2[40];
 
-            float tempPlayer1X = Player1X;
-            float tempPlayer1Y = Player1Y;
+            float tempPlayer1X = 1295;
+            float tempPlayer1Y = 910;
 
             for (int i = 0; i < 10; i++)
             {
-                tempPlayer1X = tempPlayer1X - 75.7f;
+                if (i != 0)
+                {
+                    tempPlayer1X = tempPlayer1X - 75.7f;
+                }
+
                 Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);   
             }
 
@@ -52,17 +55,13 @@ namespace Capitalism
 
             for (int i = 10; i < 20; i++)
             {
-                tempPlayer1Y = tempPlayer1Y - 75.7f;
+               // tempPlayer1Y = tempPlayer1Y - 75.7f;
                 Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
             }
 
             return Positions;
         }
 
-        static public void TestingPositions(Vector2[] positionArray, int position)
-        {
-            (Player1X, Player1Y) = positionArray[position];
-        }
 
 
         #endregion
@@ -72,7 +71,6 @@ namespace Capitalism
         Texture2D Yes;
         Texture2D No;
         Texture2D Purchase;
-        Texture2D WhatAboutTheDroidAttackOnTheWookies;
         Texture2D RedDice;
         Texture2D pixel;
         Texture2D pixel2;
@@ -118,7 +116,7 @@ namespace Capitalism
         {
             //Testing Testing Testing
             listOfPositions = MakingPositions();
-            TestingPositions(listOfPositions, 10);
+            charPostitions = MakingPositions();
             //Testing Testing Testing
 
 
@@ -174,26 +172,32 @@ namespace Capitalism
             Yes = Content.Load<Texture2D>("Yes");
             No = Content.Load<Texture2D>("No");
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
-            WhatAboutTheDroidAttackOnTheWookies = Content.Load<Texture2D>("WhatAboutTheDroidAttackOnTheWookies");
+            //WhatAboutTheDroidAttackOnTheWookies = Content.Load<Texture2D>("WhatAboutTheDroidAttackOnTheWookies");
 
             noButton = new HighlightButton(No, new Vector2(356, 662), Color.White);
 
-            player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White, "no");
+            //player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White, "no");
         }
 
         public void Update(MouseState ms, GameTime gameTime)
         {
+            if (bean)
+            {
+                CurrentPlayer = players["Player 1"].player;
+                ;
+                CurrentPlayer.Size = .3f;
+                CurrentPlayer.Image = itsBeanTime;
+                CurrentPlayer.Position = charPostitions[0];
+                ;
+                bean = false;
+            }
+
             #region Property/Testing
 
             if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
             {
                 Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
             }
-
-            Vector2[] charPostitions = MakingPositions();
-            ;
-            CurrentPlayer = players["Player 1"].player;
-            ;
 
             #endregion
 
@@ -228,7 +232,6 @@ namespace Capitalism
 
             if (diceOnBoard1.IsClicked(ms))
             {
-                diceCanRoll = false;
                 diceRolling = true;
 
                 darkenScreen = true;
@@ -275,8 +278,10 @@ namespace Capitalism
             batch.Draw(Purchase, new Vector2(27, 640), Color.White);
             batch.Draw(Yes, new Vector2(324, 662), Color.White);
             noButton.Draw(batch);
-            batch.Draw(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
+            //batch.Draw(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
 
+            CurrentPlayer?.Draw(batch);
+            
             diceOnBoard1.Draw(batch);
 
             batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
