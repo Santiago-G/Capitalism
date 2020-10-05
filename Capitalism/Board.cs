@@ -26,6 +26,7 @@ namespace Capitalism
         bool bean = true;
 
         int rollValue = 0;
+        int TESTINGCounter = 0;
 
         Vector2[] charPostitions;
         Dictionary<string, (Player player, HighlightButton button)> players = ChoosingCharacters.players;
@@ -39,7 +40,7 @@ namespace Capitalism
             Vector2[] Positions = new Vector2[40];
 
             float tempPlayer1X = 1295;
-            float tempPlayer1Y = 910;
+            float tempPlayer1Y = 920;
 
             for (int i = 0; i < 10; i++)
             {
@@ -51,18 +52,30 @@ namespace Capitalism
                 Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);   
             }
 
-            tempPlayer1X = tempPlayer1X - 30;
+            Positions[10] = new Vector2(545, 970);
+            tempPlayer1X = 500;
+            tempPlayer1Y = 890.7f;
 
-            for (int i = 10; i < 20; i++)
+            for (int i = 11; i < 20; i++)
             {
-               // tempPlayer1Y = tempPlayer1Y - 75.7f;
+                tempPlayer1Y = tempPlayer1Y - 75.7f;
                 Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
             }
 
+            Positions[20] = new Vector2(510, 110);
+            tempPlayer1Y = 100;
+            tempPlayer1X += 35;
+
+            for (int i = 21; i < 30; i++)
+            {
+                tempPlayer1X = tempPlayer1X + 75.7f;
+                Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
+            }
+
+            Positions[30] = new Vector2(1317, 1220);
+
             return Positions;
         }
-
-
 
         #endregion
 
@@ -97,8 +110,10 @@ namespace Capitalism
         Vector2[] listOfPositions = new Vector2[40];
 
         TimeSpan previousTime = TimeSpan.Zero;
+        TimeSpan TESTINGpreviousTime = TimeSpan.Zero;
 
-        TimeSpan interval = TimeSpan.FromSeconds(1);
+        TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
+        TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -184,7 +199,6 @@ namespace Capitalism
             if (bean)
             {
                 CurrentPlayer = players["Player 1"].player;
-                ;
                 CurrentPlayer.Size = .3f;
                 CurrentPlayer.Image = itsBeanTime;
                 CurrentPlayer.Position = charPostitions[0];
@@ -192,11 +206,26 @@ namespace Capitalism
                 bean = false;
             }
 
+            //X: 545, Y: 976
+            //X: 508, Y: 829
+
             #region Property/Testing
 
             if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
             {
                 Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
+            }
+
+            if (gameTime.TotalGameTime - TESTINGpreviousTime >= TESTINGinterval)
+            {
+                CurrentPlayer.Position = charPostitions[TESTINGCounter];
+                TESTINGCounter++;
+                TESTINGpreviousTime = gameTime.TotalGameTime;
+
+                if (TESTINGCounter == 11)
+                {
+                    ;
+                }
             }
 
             #endregion
@@ -251,7 +280,7 @@ namespace Capitalism
             }
             else 
             {
-                if (gameTime.TotalGameTime - previousTime >= interval)
+                if (gameTime.TotalGameTime - previousTime >= diceGlowInterval)
                 {
                     diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
                     previousTime = gameTime.TotalGameTime;
