@@ -19,6 +19,7 @@ namespace Capitalism
 
         Random gen = new Random();
 
+        bool showingDice = false;
         bool diceRolling = false;
         bool diceMoving = false;
         bool darkenScreen = false;
@@ -26,11 +27,18 @@ namespace Capitalism
         bool bean = true;
 
         int rollValue = 0;
-        int TESTINGCounter = 0;
+        int tokenMovingCounter = 0;
+        public int playerCount => SelectingPlayers.playerCount;
 
         Vector2[] charPostitions;
-        Dictionary<string, (Player player, HighlightButton button)> players = ChoosingCharacters.players;
+        Vector2[] goPositions;
+
+        Player[] Players;
+
+        Dictionary<string, (Player player, HighlightButton button)> playerDict = ChoosingCharacters.players;
         Player CurrentPlayer;
+
+
 
         #region Functions
 
@@ -72,11 +80,50 @@ namespace Capitalism
                 Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
             }
 
-            Positions[30] = new Vector2(1317, 1220);
+            Positions[30] = new Vector2(1317, 100);
+            tempPlayer1X = 1317;
+            tempPlayer1Y = 130;
 
+            for (int i = 31; i < 40; i++)
+            {
+                tempPlayer1Y = tempPlayer1Y + 75.7f;
+                Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
+            }
             return Positions;
         }
 
+        static public Vector2[] MakingGoPositions()
+        {
+            Vector2[] GoPostions = new Vector2[8];
+
+            int tempX = 1310;
+            int tempY = 900;
+
+            for (int i = 0; i < 2; i++)
+            {
+                GoPostions[i] = new Vector2(tempX, tempY);
+                tempY += 50;
+            }
+
+            tempX = 1350;
+            tempY = 870;
+
+            for (int i = 2; i < 4; i++)
+            {
+                
+            }
+
+            return GoPostions;
+        }
+
+        static public Player CreatePlayer(Player player, Texture2D image, int playerNumb, Vector2[] goPositions)
+        {
+            player.Size = .3f;
+            player.Image = image;
+            player.Position = goPositions[0];
+
+            return player;
+        }
         #endregion
 
         #region Textures
@@ -91,7 +138,6 @@ namespace Capitalism
 
         #endregion
 
-        public int playerCount => SelectingPlayers.playerCount;
 
         Player player;
         HighlightButton noButton;
@@ -111,9 +157,11 @@ namespace Capitalism
 
         TimeSpan previousTime = TimeSpan.Zero;
         TimeSpan TESTINGpreviousTime = TimeSpan.Zero;
+        TimeSpan tokenMovingTime = TimeSpan.Zero;
 
         TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
         TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
+        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -132,8 +180,9 @@ namespace Capitalism
             //Testing Testing Testing
             listOfPositions = MakingPositions();
             charPostitions = MakingPositions();
+            goPositions = MakingGoPositions();
             //Testing Testing Testing
-
+            Players = new Player[playerCount];
 
             pixel = Content.Load<Texture2D>("FFFFFF-1");
             pixel2 = Content.Load<Texture2D>("pixel");
@@ -198,10 +247,24 @@ namespace Capitalism
         {
             if (bean)
             {
-                CurrentPlayer = players["Player 1"].player;
-                CurrentPlayer.Size = .3f;
-                CurrentPlayer.Image = itsBeanTime;
-                CurrentPlayer.Position = charPostitions[0];
+                for (int i = 0; i < playerCount; i++)
+                {
+                    Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, playerCount + 1, goPositions);
+                }
+
+            X: 1308, Y: 908
+X: 1310, Y: 959
+
+X: 1350, Y: 873
+X: 1351, Y: 921
+X: 1346, Y: 958
+
+X: 1391, Y: 874
+X: 1386, Y: 920
+X: 1389, Y: 953
+
+                CurrentPlayer = Players[0];
+
                 ;
                 bean = false;
             }
@@ -216,17 +279,12 @@ namespace Capitalism
                 Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
             }
 
-            if (gameTime.TotalGameTime - TESTINGpreviousTime >= TESTINGinterval)
-            {
-                CurrentPlayer.Position = charPostitions[TESTINGCounter];
-                TESTINGCounter++;
-                TESTINGpreviousTime = gameTime.TotalGameTime;
-
-                if (TESTINGCounter == 11)
-                {
-                    ;
-                }
-            }
+            //if (gameTime.TotalGameTime - TESTINGpreviousTime >= TESTINGinterval)
+            //{
+            //    CurrentPlayer.Position = charPostitions[TESTINGCounter];
+            //    TESTINGCounter++;
+            //    TESTINGpreviousTime = gameTime.TotalGameTime;
+            //}
 
             #endregion
 
@@ -253,6 +311,7 @@ namespace Capitalism
                 {
                     diceMoving = false;
                     darkenScreen = false;
+                    diceRolling = false;
                     characterMoving = true;
                 }
             }
@@ -268,11 +327,12 @@ namespace Capitalism
 
             if (diceRolling)
             {
+                showingDice = true;
                 dice1.Update(gameTime, true);
                 dice2.Update(gameTime, true);
 
-                rollValue = (dice1.DiceRollValue - 1) + (dice2.DiceRollValue - 1);
-
+                rollValue = (dice1.DiceRollValue ) + (dice2.DiceRollValue );
+                
                 if (dice1.stopped)
                 {
                     diceMoving = true;
@@ -290,8 +350,23 @@ namespace Capitalism
             #endregion
 
             if (characterMoving)
-            { 
-                
+            {
+                if (tokenMovingCounter <= rollValue)
+                {
+                    if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
+                    {
+                        CurrentPlayer.Position = charPostitions[tokenMovingCounter];
+                        tokenMovingCounter++;
+                        tokenMovingTime = gameTime.TotalGameTime;
+                    }
+                }
+                else 
+                {
+                    rollValue = 0;
+                    tokenMovingCounter = 0;
+                    characterMoving = false;
+                    showingDice = false;
+                }
             }
 
             lms = ms;
@@ -307,7 +382,6 @@ namespace Capitalism
             batch.Draw(Purchase, new Vector2(27, 640), Color.White);
             batch.Draw(Yes, new Vector2(324, 662), Color.White);
             noButton.Draw(batch);
-            //batch.Draw(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White);
 
             CurrentPlayer?.Draw(batch);
             
@@ -321,7 +395,7 @@ namespace Capitalism
                 DarkenScreen(batch);
             }
 
-            if (diceRolling)
+            if (showingDice)
             {
                 dice1.Draw(batch);
                 dice2.Draw(batch);
