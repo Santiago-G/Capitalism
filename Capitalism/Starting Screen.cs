@@ -22,6 +22,8 @@ namespace Capitalism
 
         public bool StartingScreenFinished = false;
 
+        public static int PlayerCount => SelectingPlayers.playerCount;
+
         public Starting_Screen(ContentManager Content)
         {
             startingScreens.AddScreen(mainMenu);

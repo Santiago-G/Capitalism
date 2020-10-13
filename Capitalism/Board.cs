@@ -96,22 +96,16 @@ namespace Capitalism
         {
             Vector2[] GoPostions = new Vector2[8];
 
-            int tempX = 1310;
-            int tempY = 900;
+            GoPostions[0] = new Vector2(1284, 895);
+            GoPostions[1] = new Vector2(1284, 935);
 
-            for (int i = 0; i < 2; i++)
-            {
-                GoPostions[i] = new Vector2(tempX, tempY);
-                tempY += 50;
-            }
+            GoPostions[2] = new Vector2(1320, 950);
+            GoPostions[3] = new Vector2(1320, 875);
+            GoPostions[4] = new Vector2(1320, 915);
 
-            tempX = 1350;
-            tempY = 870;
-
-            for (int i = 2; i < 4; i++)
-            {
-                
-            }
+            GoPostions[5] = new Vector2(1360, 950);
+            GoPostions[6] = new Vector2(1360, 875);
+            GoPostions[7] = new Vector2(1360, 915);
 
             return GoPostions;
         }
@@ -120,7 +114,7 @@ namespace Capitalism
         {
             player.Size = .3f;
             player.Image = image;
-            player.Position = goPositions[0];
+            player.Position = goPositions[playerNumb];
 
             return player;
         }
@@ -181,7 +175,9 @@ namespace Capitalism
             listOfPositions = MakingPositions();
             charPostitions = MakingPositions();
             goPositions = MakingGoPositions();
+            ;
             //Testing Testing Testing
+           
             Players = new Player[playerCount];
 
             pixel = Content.Load<Texture2D>("FFFFFF-1");
@@ -247,21 +243,14 @@ namespace Capitalism
         {
             if (bean)
             {
+                if (playerCount != Players.Length)
+                {
+                    Players = new Player[playerCount];
+                }
                 for (int i = 0; i < playerCount; i++)
                 {
-                    Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, playerCount + 1, goPositions);
+                    Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
                 }
-
-            X: 1308, Y: 908
-X: 1310, Y: 959
-
-X: 1350, Y: 873
-X: 1351, Y: 921
-X: 1346, Y: 958
-
-X: 1391, Y: 874
-X: 1386, Y: 920
-X: 1389, Y: 953
 
                 CurrentPlayer = Players[0];
 
@@ -313,6 +302,9 @@ X: 1389, Y: 953
                     darkenScreen = false;
                     diceRolling = false;
                     characterMoving = true;
+
+                    dice1.dest.Width = 
+                    dice1.dest.Height = 
                 }
             }
 
@@ -366,6 +358,10 @@ X: 1389, Y: 953
                     tokenMovingCounter = 0;
                     characterMoving = false;
                     showingDice = false;
+                    CurrentPlayer = Players[1];
+                    tokenMovingTime = TimeSpan.Zero;
+                    dice1.Restart();
+                    dice2.Restart();
                 }
             }
 
@@ -384,7 +380,13 @@ X: 1389, Y: 953
             noButton.Draw(batch);
 
             CurrentPlayer?.Draw(batch);
-            
+
+            for (int i = 0; i < Players.Length; i++)
+            {
+                
+                Players[i]?.Draw(batch);
+            }
+            ;
             diceOnBoard1.Draw(batch);
 
             batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);

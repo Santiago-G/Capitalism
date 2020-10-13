@@ -73,9 +73,10 @@ namespace Capitalism
             spriteSheet = Content.Load<Texture2D>("TheCapitalistBoard");
             BankThing = Content.Load<Texture2D>("BankTitle");
 
-
-            TheBoard = new Board(Content);
             TheStartingScreen = new Starting_Screen(Content);
+            
+            TheBoard = new Board(Content);
+
 
 
 
