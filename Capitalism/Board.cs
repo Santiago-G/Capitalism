@@ -27,7 +27,7 @@ namespace Capitalism
         bool bean = true;
 
         int rollValue = 0;
-        int tokenMovingCounter = 0;
+        int currentPlayerIndex = 0;
         public int playerCount => SelectingPlayers.playerCount;
 
         Vector2[] charPostitions;
@@ -118,6 +118,11 @@ namespace Capitalism
 
             return player;
         }
+
+        static public void RestartingDice()
+        { 
+        
+        }
         #endregion
 
         #region Textures
@@ -172,7 +177,6 @@ namespace Capitalism
         public Board(ContentManager Content)
         {
             //Testing Testing Testing
-            listOfPositions = MakingPositions();
             charPostitions = MakingPositions();
             goPositions = MakingGoPositions();
             ;
@@ -250,6 +254,7 @@ namespace Capitalism
                 for (int i = 0; i < playerCount; i++)
                 {
                     Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
+                    Players[i].PositionArea = charPostitions;
                 }
 
                 CurrentPlayer = Players[0];
@@ -257,9 +262,6 @@ namespace Capitalism
                 ;
                 bean = false;
             }
-
-            //X: 545, Y: 976
-            //X: 508, Y: 829
 
             #region Property/Testing
 
@@ -281,6 +283,7 @@ namespace Capitalism
 
             if (diceMoving)
             {
+                ;
                 if (dice2.dest.X != 24)
                 {
                     dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
@@ -302,9 +305,6 @@ namespace Capitalism
                     darkenScreen = false;
                     diceRolling = false;
                     characterMoving = true;
-
-                    dice1.dest.Width = 
-                    dice1.dest.Height = 
                 }
             }
 
@@ -343,25 +343,46 @@ namespace Capitalism
 
             if (characterMoving)
             {
-                if (tokenMovingCounter <= rollValue)
+                if (CurrentPlayer.currentTileIndex <= rollValue + CurrentPlayer.currentTileIndex)
                 {
                     if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
                     {
-                        CurrentPlayer.Position = charPostitions[tokenMovingCounter];
-                        tokenMovingCounter++;
+                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
+                        CurrentPlayer.currentTileIndex++;
                         tokenMovingTime = gameTime.TotalGameTime;
                     }
                 }
                 else 
                 {
                     rollValue = 0;
-                    tokenMovingCounter = 0;
                     characterMoving = false;
                     showingDice = false;
-                    CurrentPlayer = Players[1];
+
                     tokenMovingTime = TimeSpan.Zero;
+
                     dice1.Restart();
                     dice2.Restart();
+
+                    dice1.dest.Width = 128;
+                    dice1.dest.Height = 128;
+                    dice1.dest.X = 800;
+                    dice1.dest.Y = 430;
+
+                    dice2.dest.X = 600;
+                    dice2.dest.Y = 430;
+                    dice2.dest.Width = dice1.dest.Width;
+                    dice2.dest.Height = dice1.dest.Height;
+
+                    if (currentPlayerIndex + 1 < playerCount)
+                    {
+                        currentPlayerIndex++;
+                    }
+                    else 
+                    {
+                        currentPlayerIndex = 0;
+                    }
+
+                    CurrentPlayer = Players[currentPlayerIndex];
                 }
             }
 

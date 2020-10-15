@@ -14,6 +14,9 @@ namespace Capitalism
         public Vector2 Position;
         public float Size;
         public Color Tint;
+        public Vector2[] PositionArea;
+        public int currentTileIndex;
+
         public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * Size), (int)(Image.Height * Size));
 
         //yet to be decided if I use a set of bills, or I just do the number.
@@ -31,6 +34,31 @@ namespace Capitalism
         public void Update()
         { 
             
+        }
+        public Vector2 GetTilePosition()
+        {
+            for (int i = 0; i < PositionArea.Length; i++)
+            {
+                if (Position == PositionArea[i])
+                {
+                    return PositionArea[i];
+                }
+            }
+
+            return Vector2.Zero;
+        }
+
+        public int GetTileIndex()
+        {
+            for (int i = 0; i < PositionArea.Length; i++)
+            {
+                if (Position == PositionArea[i])
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         public void Draw(SpriteBatch spriteBatch)
