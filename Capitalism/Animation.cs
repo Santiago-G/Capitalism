@@ -89,9 +89,6 @@ namespace Capitalism
                     stopped = true;
                 }
             }
-
-
-            Console.WriteLine(currentFrame);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

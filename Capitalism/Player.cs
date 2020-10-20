@@ -16,25 +16,35 @@ namespace Capitalism
         public Color Tint;
         public Vector2[] PositionArea;
         public int currentTileIndex;
+        public int Money;
 
         public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * Size), (int)(Image.Height * Size));
 
-        //yet to be decided if I use a set of bills, or I just do the number.
         public string Token = "";
 
-        public Player(Texture2D image, Vector2 position, Color tint, string token, int size)
+        public Player(Texture2D image, Vector2 position, Color tint, string token, int size, int cash)
         {
             Position = position;
             Image = image;
             Tint = tint;
             Token = token;
             Size = size;
+            Money = cash;
         }
 
         public void Update()
-        { 
-            
+        {
+            if (Money == 0)
+            { 
+                //game over
+            }
+
+            //if ()
+            //{
+            //    Money += 200;
+            //}
         }
+
         public Vector2 GetTilePosition()
         {
             for (int i = 0; i < PositionArea.Length; i++)

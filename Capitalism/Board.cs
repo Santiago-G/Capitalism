@@ -174,6 +174,8 @@ namespace Capitalism
             }
         }
 
+        int target;
+
         public Board(ContentManager Content)
         {
             //Testing Testing Testing
@@ -259,6 +261,8 @@ namespace Capitalism
 
                 CurrentPlayer = Players[0];
 
+
+                Players[0].Tint = Color.Purple;
                 ;
                 bean = false;
             }
@@ -278,6 +282,15 @@ namespace Capitalism
             //}
 
             #endregion
+
+            for (int i = 0; i < Players.Length; i++)
+            {
+                if (Players[i].Money == 0)
+                { 
+                    //game over
+                }
+            }
+
 
             #region DiceRolling
 
@@ -313,7 +326,6 @@ namespace Capitalism
             if (diceOnBoard1.IsClicked(ms))
             {
                 diceRolling = true;
-
                 darkenScreen = true;
             }
 
@@ -324,7 +336,8 @@ namespace Capitalism
                 dice2.Update(gameTime, true);
 
                 rollValue = (dice1.DiceRollValue ) + (dice2.DiceRollValue );
-                
+                target = rollValue + (CurrentPlayer.currentTileIndex - 1);
+
                 if (dice1.stopped)
                 {
                     diceMoving = true;
@@ -343,8 +356,24 @@ namespace Capitalism
 
             if (characterMoving)
             {
-                if (CurrentPlayer.currentTileIndex <= rollValue + CurrentPlayer.currentTileIndex)
+                // do this once when you roll
+
+                if (CurrentPlayer.currentTileIndex >= 40)
                 {
+                    CurrentPlayer.currentTileIndex = 0;
+                }
+
+                if (CurrentPlayer.currentTileIndex <= target)
+                {
+                    Console.WriteLine($"Roll Val + Pos = {target}");
+                    Console.WriteLine($"Roll Val = {rollValue}");
+                    Console.WriteLine($"Pos = {CurrentPlayer.currentTileIndex}");
+
+                    if (CurrentPlayer.currentTileIndex == 0)
+                    {
+                        target++;
+                    }
+
                     if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
                     {
                         CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
