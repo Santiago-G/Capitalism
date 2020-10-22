@@ -38,6 +38,7 @@ namespace Capitalism
         Dictionary<string, (Player player, HighlightButton button)> playerDict = ChoosingCharacters.players;
         Player CurrentPlayer;
 
+        bool shouldMove;
 
 
         #region Functions
@@ -257,6 +258,7 @@ namespace Capitalism
                 {
                     Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
                     Players[i].PositionArea = charPostitions;
+                    Players[i].currentTileIndex = 1;
                 }
 
                 CurrentPlayer = Players[0];
@@ -336,7 +338,7 @@ namespace Capitalism
                 dice2.Update(gameTime, true);
 
                 rollValue = (dice1.DiceRollValue ) + (dice2.DiceRollValue );
-                target = rollValue + (CurrentPlayer.currentTileIndex - 1);
+                target = rollValue + (CurrentPlayer.currentTileIndex );
 
                 if (dice1.stopped)
                 {
@@ -358,12 +360,20 @@ namespace Capitalism
             {
                 // do this once when you roll
 
-                if (CurrentPlayer.currentTileIndex >= 40)
+                if (target >= 40)
                 {
-                    CurrentPlayer.currentTileIndex = 0;
+                    //target = target - 40;
+                    target %= 40;
+                    shouldMove = true;
                 }
 
-                if (CurrentPlayer.currentTileIndex <= target)
+                if (CurrentPlayer.currentTileIndex >= 40)
+                {
+                    //CurrentPlayer.currentTileIndex = 0;
+                    CurrentPlayer.currentTileIndex %= 40;
+                }
+
+                if (CurrentPlayer.currentTileIndex < target || shouldMove)
                 {
                     Console.WriteLine($"Roll Val + Pos = {target}");
                     Console.WriteLine($"Roll Val = {rollValue}");
@@ -371,7 +381,7 @@ namespace Capitalism
 
                     if (CurrentPlayer.currentTileIndex == 0)
                     {
-                        target++;
+                        //target++;
                     }
 
                     if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
@@ -388,7 +398,7 @@ namespace Capitalism
                     showingDice = false;
 
                     tokenMovingTime = TimeSpan.Zero;
-
+                    shouldMove = false;
                     dice1.Restart();
                     dice2.Restart();
 
@@ -412,6 +422,11 @@ namespace Capitalism
                     }
 
                     CurrentPlayer = Players[currentPlayerIndex];
+                }
+
+                if (CurrentPlayer.currentTileIndex == target)
+                {
+                    shouldMove = false;
                 }
             }
 
