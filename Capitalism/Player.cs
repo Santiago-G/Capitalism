@@ -39,10 +39,10 @@ namespace Capitalism
                 //game over
             }
 
-            //if ()
-            //{
-            //    Money += 200;
-            //}
+            if (currentTileIndex == 0)
+            {
+                Money += 200;
+            }
         }
 
         public Vector2 GetTilePosition()

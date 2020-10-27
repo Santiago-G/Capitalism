@@ -24,10 +24,12 @@ namespace Capitalism
         bool diceMoving = false;
         bool darkenScreen = false;
         bool characterMoving = false;
+        bool itsMoneyTime = false;
         bool bean = true;
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
+        Vector2 val;
         public int playerCount => SelectingPlayers.playerCount;
 
         Vector2[] charPostitions;
@@ -144,10 +146,12 @@ namespace Capitalism
         NormalButton diceOnBoard1;
         NormalButton diceOnBoard2;
 
+
         Animation dice1;
         Animation dice2;
         
-        Dictionary<PropertyNames, Property> Properties = new Dictionary<PropertyNames, Property>();
+        Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
+        Dictionary<Vector2, Sprite> PropertyImages = new Dictionary<Vector2, Sprite>();
 
         PropertyNames? selectedValue = null;
 
@@ -161,7 +165,7 @@ namespace Capitalism
 
         TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
         TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
-        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
+        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(10);
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -174,6 +178,11 @@ namespace Capitalism
                 return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
         }
+        Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
+        { 
+            return new Sprite()
+        }
+
 
         int target;
 
@@ -197,26 +206,28 @@ namespace Capitalism
 
             #region Properties
 
-            Properties.Add(PropertyNames.Mediterranean, LoadContent("MediterraneanAve", 1199, 895, true, 2, 10, 30, 90, 160, 250, 50, 50, Content));
-            ;
-            Properties.Add(PropertyNames.Baltic, LoadContent("BalticAve", 1049, 895, true, 4, 20, 60, 180, 320, 450, 50, 50, Content));
-            Properties.Add(PropertyNames.Oriental, LoadContent("OrientalAve", 820, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(PropertyNames.Vermont, LoadContent("VermontAve", 668, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(PropertyNames.Connecticut, LoadContent("ConnecticutAve", 592, 895, true, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 2, 10, 30, 90, 160, 250, 50, 50, Content));
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 4, 20, 60, 180, 320, 450, 50, 50, Content));
 
-            Properties.Add(PropertyNames.StCharles, LoadContent("StCharlesPlace", 458, 794, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.State, LoadContent("StatesAve", 458, 642, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Virginia, LoadContent("VirginiaAve", 458, 567, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.StJames, LoadContent("StJamesPlace", 458, 413, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Tennessee, LoadContent("TennesseeAve", 458, 262, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.NewYork, LoadContent("NewYorkAve", 458, 186, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            //592 54, 742, 818, 970, 1045, 1196
-            Properties.Add(PropertyNames.Kentucky, LoadContent("KentuckyAve", 592, 54 , true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Indiana, LoadContent("IndianaAve", 742, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Illinois, LoadContent("IllinoisAve", 818, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Atlantic, LoadContent("AtlanticAve", 970, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Ventnor, LoadContent("VentnorAve", 1045, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(PropertyNames.Marvin, LoadContent("MarvinGardens", 1196, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54 , true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
 
             ;
 
@@ -232,6 +243,30 @@ namespace Capitalism
             //Properties.Add(PropertiesEnum.ShortLineR, Content.Load<Texture2D>("ShortLineRR"));
             //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
             //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+
+            PropertyImages.Add(charPostitions[1], );
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 4, 20, 60, 180, 320, 450, 50, 50, Content));
+
+            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+
 
             #endregion
 
@@ -293,6 +328,7 @@ namespace Capitalism
                 }
             }
 
+            CurrentPlayer.Update();
 
             #region DiceRolling
 
@@ -362,14 +398,12 @@ namespace Capitalism
 
                 if (target >= 40)
                 {
-                    //target = target - 40;
                     target %= 40;
                     shouldMove = true;
                 }
 
                 if (CurrentPlayer.currentTileIndex >= 40)
                 {
-                    //CurrentPlayer.currentTileIndex = 0;
                     CurrentPlayer.currentTileIndex %= 40;
                 }
 
@@ -379,22 +413,23 @@ namespace Capitalism
                     Console.WriteLine($"Roll Val = {rollValue}");
                     Console.WriteLine($"Pos = {CurrentPlayer.currentTileIndex}");
 
-                    if (CurrentPlayer.currentTileIndex == 0)
-                    {
-                        //target++;
-                    }
+                    val = charPostitions[CurrentPlayer.currentTileIndex];
 
                     if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
                     {
+                        //CurrentPlayer.Position = Vector2.Lerp(CurrentPlayer.Position, val, .1f);
+
                         CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
                         CurrentPlayer.currentTileIndex++;
+                        //urrentPlayer.currentTileIndex++;
                         tokenMovingTime = gameTime.TotalGameTime;
                     }
                 }
-                else 
+                else
                 {
                     rollValue = 0;
                     characterMoving = false;
+                    itsMoneyTime = true;
                     showingDice = false;
 
                     tokenMovingTime = TimeSpan.Zero;
@@ -416,7 +451,7 @@ namespace Capitalism
                     {
                         currentPlayerIndex++;
                     }
-                    else 
+                    else
                     {
                         currentPlayerIndex = 0;
                     }
@@ -428,6 +463,20 @@ namespace Capitalism
                 {
                     shouldMove = false;
                 }
+            }
+
+            if (itsMoneyTime)
+            {
+                if (CurrentPlayer.currentTileIndex == 4)
+                {
+                    CurrentPlayer.Money -= 200;
+                }
+                else if (CurrentPlayer.currentTileIndex == 4)
+                {
+                    CurrentPlayer.Money -= 100;
+                }
+
+
             }
 
             lms = ms;
