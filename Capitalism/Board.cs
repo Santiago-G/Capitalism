@@ -17,6 +17,7 @@ namespace Capitalism
     {
         Random gen = new Random();
 
+        bool rollDice = true;
         bool showingDice = false;
         bool diceRolling = false;
         bool diceMoving = false;
@@ -59,7 +60,7 @@ namespace Capitalism
                     tempPlayer1X = tempPlayer1X - 75.7f;
                 }
 
-                Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);   
+                Positions[i] = new Vector2(tempPlayer1X, tempPlayer1Y);
             }
 
             Positions[10] = new Vector2(545, 970);
@@ -122,8 +123,8 @@ namespace Capitalism
         }
 
         static public void RestartingDice()
-        { 
-        
+        {
+
         }
         #endregion
 
@@ -148,7 +149,7 @@ namespace Capitalism
 
         Animation dice1;
         Animation dice2;
-        
+
         Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
         Dictionary<Vector2, Sprite> PropertyImages = new Dictionary<Vector2, Sprite>();
 
@@ -190,14 +191,13 @@ namespace Capitalism
             //Testing Testing Testing
             charPostitions = MakingPositions();
             goPositions = MakingGoPositions();
-            ;
             //Testing Testing Testing
-           
+
             Players = new Player[playerCount];
 
             pixel = Content.Load<Texture2D>("FFFFFF-1");
             pixel2 = Content.Load<Texture2D>("pixel");
-            diceOnBoard1 = new NormalButton(pixel, Vector2.Zero , Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
+            diceOnBoard1 = new NormalButton(pixel, Vector2.Zero, Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
             RedDice = Content.Load<Texture2D>("RedDice");
             dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
             dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
@@ -220,7 +220,7 @@ namespace Capitalism
             Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
             Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54 , true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
             Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
             Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
 
@@ -296,7 +296,7 @@ namespace Capitalism
             for (int i = 0; i < Players.Length; i++)
             {
                 if (Players[i].Money == 0)
-                { 
+                {
                     //game over
                 }
             }
@@ -305,67 +305,74 @@ namespace Capitalism
             noButton.Update(ms, true);
             yesButton.Update(ms, true);
 
+            if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
+            {
+                diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
+                previousTime = gameTime.TotalGameTime;
+            }
+
             #region DiceRolling
 
-            if (diceMoving)
+            if (rollDice)
             {
-                ;
-                if (dice2.dest.X != 24)
+                if (diceMoving)
                 {
-                    dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
-                    dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
+                    ;
+                    if (dice2.dest.X != 24)
+                    {
+                        dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
+                        dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
 
-                    dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
-                    dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
+                        dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
+                        dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
 
 
-                    dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
-                    dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
+                        dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
+                        dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
 
-                    dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
-                    dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
+                        dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
+                        dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
+                    }
+                    else
+                    {
+                        diceMoving = false;
+                        darkenScreen = false;
+                        diceRolling = false;
+                        characterMoving = true;
+                        diceFlashing = false;
+                        rollDice = false;
+                    }
                 }
-                else 
+
+                diceOnBoard1.Update(ms);
+
+                if (diceOnBoard1.IsClicked(ms))
                 {
-                    diceMoving = false;
-                    darkenScreen = false;
-                    diceRolling = false;
-                    characterMoving = true;
+                    diceRolling = true;
+                    darkenScreen = true;
+                }
+
+                if (diceRolling)
+                {
                     diceFlashing = false;
+                    showingDice = true;
+                    dice1.Update(gameTime, true);
+                    dice2.Update(gameTime, true);
+
+                    rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
+                    target = rollValue + (CurrentPlayer.currentTileIndex);
+
+                    if (dice1.stopped)
+                    {
+                        diceMoving = true;
+                    }
                 }
-            }
-
-            diceOnBoard1.Update(ms);
-
-            if (diceOnBoard1.IsClicked(ms))
-            {
-                diceRolling = true;
-                darkenScreen = true;
-            }
-
-            if (diceRolling)
-            {
-                showingDice = true;
-                dice1.Update(gameTime, true);
-                dice2.Update(gameTime, true);
-
-                rollValue = (dice1.DiceRollValue ) + (dice2.DiceRollValue );
-                target = rollValue + (CurrentPlayer.currentTileIndex );
-
-                if (dice1.stopped)
+                else
                 {
-                    diceMoving = true;
+                    diceFlashing = true;
                 }
-            }
-            else 
-            {
-                if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
-                {
-                    diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
-                    previousTime = gameTime.TotalGameTime;
-                }
-            }
 
+            }
             #endregion
 
             #region Movement
@@ -457,6 +464,10 @@ namespace Capitalism
                     }
 
                     CurrentPlayer = Players[currentPlayerIndex];
+
+                    rollDice = true;
+                    itsMoneyTime = false;
+                    diceFlashing = true;
                 }
 
                 if (yesButton.IsClicked)
@@ -473,6 +484,10 @@ namespace Capitalism
                     }
 
                     CurrentPlayer = Players[currentPlayerIndex];
+
+                    rollDice = true;
+                    itsMoneyTime = false;
+                    diceFlashing = true;
                 }
             }
 
@@ -515,7 +530,7 @@ namespace Capitalism
 
             for (int i = 0; i < Players.Length; i++)
             {
-                
+
                 Players[i]?.Draw(batch);
             }
             ;
