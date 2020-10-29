@@ -15,8 +15,6 @@ namespace Capitalism
 {
     public class Board
     {
-
-
         Random gen = new Random();
 
         bool showingDice = false;
@@ -26,6 +24,7 @@ namespace Capitalism
         bool characterMoving = false;
         bool itsMoneyTime = false;
         bool bean = true;
+        bool diceFlashing = true;
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
@@ -140,8 +139,8 @@ namespace Capitalism
 
         #endregion
 
-
         Player player;
+        HighlightButton yesButton;
         HighlightButton noButton;
         NormalButton diceOnBoard1;
         NormalButton diceOnBoard2;
@@ -165,7 +164,7 @@ namespace Capitalism
 
         TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
         TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
-        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(10);
+        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
 
         Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -179,8 +178,8 @@ namespace Capitalism
             }
         }
         Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
-        { 
-            return new Sprite()
+        {
+            return new PropertySprite(image, Position, Tint);
         }
 
 
@@ -244,41 +243,15 @@ namespace Capitalism
             //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
             //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
-            PropertyImages.Add(charPostitions[1], );
-            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 4, 20, 60, 180, 320, 450, 50, 50, Content));
-
-            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 8, 40, 100, 300, 450, 600, 50, 50, Content));
-
-            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-
-            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-
-            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-
-
             #endregion
 
             Frame = Content.Load<Texture2D>("Frame");
             Yes = Content.Load<Texture2D>("Yes");
             No = Content.Load<Texture2D>("No");
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
-            //WhatAboutTheDroidAttackOnTheWookies = Content.Load<Texture2D>("WhatAboutTheDroidAttackOnTheWookies");
 
-            noButton = new HighlightButton(No, new Vector2(356, 662), Color.White);
-
-            //player = new Player(WhatAboutTheDroidAttackOnTheWookies, new Vector2(Player1X, Player1Y), Color.White, "no");
+            noButton = new HighlightButton(No, new Vector2(326, 662), Color.White);
+            yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White);
         }
 
         public void Update(MouseState ms, GameTime gameTime)
@@ -329,6 +302,8 @@ namespace Capitalism
             }
 
             CurrentPlayer.Update();
+            noButton.Update(ms, true);
+            yesButton.Update(ms, true);
 
             #region DiceRolling
 
@@ -356,6 +331,7 @@ namespace Capitalism
                     darkenScreen = false;
                     diceRolling = false;
                     characterMoving = true;
+                    diceFlashing = false;
                 }
             }
 
@@ -383,7 +359,7 @@ namespace Capitalism
             }
             else 
             {
-                if (gameTime.TotalGameTime - previousTime >= diceGlowInterval)
+                if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
                 {
                     diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
                     previousTime = gameTime.TotalGameTime;
@@ -392,6 +368,7 @@ namespace Capitalism
 
             #endregion
 
+            #region Movement
             if (characterMoving)
             {
                 // do this once when you roll
@@ -446,7 +423,30 @@ namespace Capitalism
                     dice2.dest.Y = 430;
                     dice2.dest.Width = dice1.dest.Width;
                     dice2.dest.Height = dice1.dest.Height;
+                }
 
+                if (CurrentPlayer.currentTileIndex == target)
+                {
+                    shouldMove = false;
+                }
+            }
+            #endregion
+
+            if (itsMoneyTime)
+            {
+
+
+                if (CurrentPlayer.currentTileIndex == 4)
+                {
+                    CurrentPlayer.Money -= 200;
+                }
+                else if (CurrentPlayer.currentTileIndex == 38)
+                {
+                    CurrentPlayer.Money -= 100;
+                }
+
+                if (noButton.IsClicked)
+                {
                     if (currentPlayerIndex + 1 < playerCount)
                     {
                         currentPlayerIndex++;
@@ -459,24 +459,21 @@ namespace Capitalism
                     CurrentPlayer = Players[currentPlayerIndex];
                 }
 
-                if (CurrentPlayer.currentTileIndex == target)
+                if (yesButton.IsClicked)
                 {
-                    shouldMove = false;
-                }
-            }
+                    //get this man a prop
 
-            if (itsMoneyTime)
-            {
-                if (CurrentPlayer.currentTileIndex == 4)
-                {
-                    CurrentPlayer.Money -= 200;
-                }
-                else if (CurrentPlayer.currentTileIndex == 4)
-                {
-                    CurrentPlayer.Money -= 100;
-                }
+                    if (currentPlayerIndex + 1 < playerCount)
+                    {
+                        currentPlayerIndex++;
+                    }
+                    else
+                    {
+                        currentPlayerIndex = 0;
+                    }
 
-
+                    CurrentPlayer = Players[currentPlayerIndex];
+                }
             }
 
             lms = ms;
@@ -487,13 +484,34 @@ namespace Capitalism
             spritebatch.Draw(pixel, new Rectangle(0, 0, 1500, 1400), new Color(Color.Black, 0.5f));
         }
 
+        Property prop;
+
         public void Draw(SpriteBatch batch)
         {
             batch.Draw(Purchase, new Vector2(27, 640), Color.White);
-            batch.Draw(Yes, new Vector2(324, 662), Color.White);
+
             noButton.Draw(batch);
+            yesButton.Draw(batch);
+
+            batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
+
+            if (CurrentPlayer != null && Properties.ContainsKey(CurrentPlayer.Position))
+            {
+                prop = Properties[CurrentPlayer.Position];
+            }
+            else
+            {
+                prop = null;
+            }
+
+            if (prop != null)
+            {
+                batch.Draw(prop.Image, new Rectangle(91, 265, 226, 279), Color.White);
+            }
+
 
             CurrentPlayer?.Draw(batch);
+
 
             for (int i = 0; i < Players.Length; i++)
             {
@@ -502,8 +520,6 @@ namespace Capitalism
             }
             ;
             diceOnBoard1.Draw(batch);
-
-            batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
 
 
             if (darkenScreen)
@@ -518,10 +534,6 @@ namespace Capitalism
             }
 
 
-            if (selectedValue.HasValue)
-            {
-                //Properties[selectedValue.Value]
-            }
         }
     }
 }
