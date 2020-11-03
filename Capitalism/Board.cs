@@ -26,6 +26,7 @@ namespace Capitalism
         bool itsMoneyTime = false;
         bool bean = true;
         bool diceFlashing = true;
+        bool moneyStolenOnce = false;
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
@@ -291,6 +292,8 @@ namespace Capitalism
             //    TESTINGpreviousTime = gameTime.TotalGameTime;
             //}
 
+            Console.WriteLine(CurrentPlayer.Money);
+
             #endregion
 
             for (int i = 0; i < Players.Length; i++)
@@ -442,14 +445,16 @@ namespace Capitalism
             if (itsMoneyTime)
             {
 
-
-                if (CurrentPlayer.currentTileIndex == 4)
+                if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
                 {
                     CurrentPlayer.Money -= 200;
+                    moneyStolenOnce = true;
                 }
-                else if (CurrentPlayer.currentTileIndex == 38)
+
+                else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
                 {
                     CurrentPlayer.Money -= 100;
+                    moneyStolenOnce = true;
                 }
 
                 if (noButton.IsClicked)
@@ -468,6 +473,7 @@ namespace Capitalism
                     rollDice = true;
                     itsMoneyTime = false;
                     diceFlashing = true;
+                    moneyStolenOnce = false;
                 }
 
                 if (yesButton.IsClicked)
@@ -488,6 +494,7 @@ namespace Capitalism
                     rollDice = true;
                     itsMoneyTime = false;
                     diceFlashing = true;
+                    moneyStolenOnce = false;
                 }
             }
 

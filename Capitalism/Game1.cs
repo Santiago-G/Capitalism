@@ -121,7 +121,7 @@ namespace Capitalism
 
                 if (TheStartingScreen.StartingScreenFinished)
                 {
-                    ChangeResolution(1470, 1048);
+                    ChangeResolution(1870, 1048);
 
                     StartingScreen = false;
                 }
