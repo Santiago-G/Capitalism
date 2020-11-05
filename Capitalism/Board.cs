@@ -27,6 +27,7 @@ namespace Capitalism
         bool bean = true;
         bool diceFlashing = true;
         bool moneyStolenOnce = false;
+        //bool firstLap = true;
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
@@ -138,7 +139,8 @@ namespace Capitalism
         Texture2D pixel;
         Texture2D pixel2;
         Texture2D itsBeanTime;
-
+        Texture2D PlayerTitle;
+        SpriteFont font;
         #endregion
 
         Player player;
@@ -168,15 +170,15 @@ namespace Capitalism
         TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
         TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
 
-        Property LoadContent(string Name, int x, int y, bool fliped, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
+        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
             if (fliped)
             {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
             else
             {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
         }
         Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
@@ -196,6 +198,7 @@ namespace Capitalism
 
             Players = new Player[playerCount];
 
+            PlayerTitle = Content.Load<Texture2D>("PlayerTitle2");
             pixel = Content.Load<Texture2D>("FFFFFF-1");
             pixel2 = Content.Load<Texture2D>("pixel");
             diceOnBoard1 = new NormalButton(pixel, Vector2.Zero, Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
@@ -203,46 +206,45 @@ namespace Capitalism
             dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
             dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
             itsBeanTime = Content.Load<Texture2D>("bean");
+            font = Content.Load<SpriteFont>("smallSize");
 
             #region Properties
 
-            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 2, 10, 30, 90, 160, 250, 50, 50, Content));
-            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 4, 20, 60, 180, 320, 450, 50, 50, Content));
+            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, 10, 30, 90, 160, 250, 50, 50, Content));
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, 20, 60, 180, 320, 450, 50, 50, Content));
 
-            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 8, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            ;
+            Properties.Add(PropertiesEnum.Pacific, Content.Load<Texture2D>("PacificAve"));
+            Properties.Add(PropertiesEnum.NorthCarolina, Content.Load<Texture2D>("NoCarolinaAve"));
+            Properties.Add(PropertiesEnum.Pennsylvania, Content.Load<Texture2D>("PennsylvaniaAve"));
+            Properties.Add(PropertiesEnum.Park, Content.Load<Texture2D>("ParkPlace"));
+            Properties.Add(PropertiesEnum.Boardwalk, Content.Load<Texture2D>("Boardwalk"));
 
-            //Properties.Add(PropertiesEnum.Pacific, Content.Load<Texture2D>("PacificAve"));
-            //Properties.Add(PropertiesEnum.NorthCarolina, Content.Load<Texture2D>("NoCarolinaAve"));
-            //Properties.Add(PropertiesEnum.Pennsylvania, Content.Load<Texture2D>("PennsylvaniaAve"));
-            //Properties.Add(PropertiesEnum.Park, Content.Load<Texture2D>("ParkPlace"));
-            //Properties.Add(PropertiesEnum.Boardwalk, Content.Load<Texture2D>("Boardwalk"));
-
-            //Properties.Add(PropertiesEnum.ReadingR, Content.Load<Texture2D>("ReadingRailroad"));
-            //Properties.Add(PropertiesEnum.PennsylvaniaR, Content.Load<Texture2D>("PennsylvaniaRR"));
-            //Properties.Add(PropertiesEnum.BOR, Content.Load<Texture2D>("B&ORailroad"));
-            //Properties.Add(PropertiesEnum.ShortLineR, Content.Load<Texture2D>("ShortLineRR"));
-            //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
-            //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+            Properties.Add(PropertiesEnum.ReadingR, Content.Load<Texture2D>("ReadingRailroad"));
+            Properties.Add(PropertiesEnum.PennsylvaniaR, Content.Load<Texture2D>("PennsylvaniaRR"));
+            Properties.Add(PropertiesEnum.BOR, Content.Load<Texture2D>("B&ORailroad"));
+            Properties.Add(PropertiesEnum.ShortLineR, Content.Load<Texture2D>("ShortLineRR"));
+            Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
+            Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
             #endregion
 
@@ -457,29 +459,52 @@ namespace Capitalism
                     moneyStolenOnce = true;
                 }
 
-                if (noButton.IsClicked)
+                if (Properties.ContainsKey(CurrentPlayer.Position))
                 {
-                    if (currentPlayerIndex + 1 < playerCount)
+                    if (noButton.IsClicked)
                     {
-                        currentPlayerIndex++;
-                    }
-                    else
-                    {
-                        currentPlayerIndex = 0;
+                        if (currentPlayerIndex + 1 < playerCount)
+                        {
+                            currentPlayerIndex++;
+                        }
+                        else
+                        {
+                            currentPlayerIndex = 0;
+                        }
+
+                        CurrentPlayer = Players[currentPlayerIndex];
+
+                        rollDice = true;
+                        itsMoneyTime = false;
+                        diceFlashing = true;
+                        moneyStolenOnce = false;
                     }
 
-                    CurrentPlayer = Players[currentPlayerIndex];
+                    if (yesButton.IsClicked)
+                    {
+                        CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
+                        CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
+                       
+                        if (currentPlayerIndex + 1 < playerCount)
+                        {
+                            currentPlayerIndex++;
+                        }
+                        else
+                        {
+                            currentPlayerIndex = 0;
+                        }
 
-                    rollDice = true;
-                    itsMoneyTime = false;
-                    diceFlashing = true;
-                    moneyStolenOnce = false;
+                        CurrentPlayer = Players[currentPlayerIndex];
+
+                        rollDice = true;
+                        itsMoneyTime = false;
+                        diceFlashing = true;
+                        moneyStolenOnce = false;
+                    }
+
                 }
-
-                if (yesButton.IsClicked)
+                else 
                 {
-                    //get this man a prop
-
                     if (currentPlayerIndex + 1 < playerCount)
                     {
                         currentPlayerIndex++;
@@ -511,7 +536,12 @@ namespace Capitalism
         public void Draw(SpriteBatch batch)
         {
             batch.Draw(Purchase, new Vector2(27, 640), Color.White);
+            if (CurrentPlayer != null)
+            {
+                batch.DrawString(font, $"{CurrentPlayer.Money}", new Vector2(1600, 500), Color.White);
+            }
 
+            batch.Draw(PlayerTitle, new Vector2(1506, 0), Color.White);
             noButton.Draw(batch);
             yesButton.Draw(batch);
 

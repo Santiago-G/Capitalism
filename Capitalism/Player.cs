@@ -22,6 +22,8 @@ namespace Capitalism
 
         public string Token = "";
 
+        public List<Property> properties = new List<Property>();
+
         public Player(Texture2D image, Vector2 position, Color tint, string token, int size, int cash)
         {
             Position = position;

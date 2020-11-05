@@ -15,7 +15,7 @@ namespace Capitalism
         public Color Tint;
         public Rectangle Hitbox;
 
-
+        public int Cost;
         public int Rent;
         public int With1House;
         public int With2House;
@@ -29,13 +29,14 @@ namespace Capitalism
         //Add Mortgage
 
 
-        public Property(Texture2D image, Rectangle hitbox, Color tint, int rent, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel)
+        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel)
         {
             Image = image;
             Tint = tint;
             Hitbox = hitbox;
             Position = hitbox.Location.ToVector2();
 
+            Cost = cost;
             Rent = rent;
             With1House = rentWHouse1;
             With2House = rentWHouse2;
