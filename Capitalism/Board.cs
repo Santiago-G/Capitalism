@@ -233,18 +233,19 @@ namespace Capitalism
             Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, 40, 100, 300, 450, 600, 50, 50, Content));
             Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(PropertiesEnum.Pacific, Content.Load<Texture2D>("PacificAve"));
-            Properties.Add(PropertiesEnum.NorthCarolina, Content.Load<Texture2D>("NoCarolinaAve"));
-            Properties.Add(PropertiesEnum.Pennsylvania, Content.Load<Texture2D>("PennsylvaniaAve"));
-            Properties.Add(PropertiesEnum.Park, Content.Load<Texture2D>("ParkPlace"));
-            Properties.Add(PropertiesEnum.Boardwalk, Content.Load<Texture2D>("Boardwalk"));
+            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(PropertiesEnum.ReadingR, Content.Load<Texture2D>("ReadingRailroad"));
-            Properties.Add(PropertiesEnum.PennsylvaniaR, Content.Load<Texture2D>("PennsylvaniaRR"));
-            Properties.Add(PropertiesEnum.BOR, Content.Load<Texture2D>("B&ORailroad"));
-            Properties.Add(PropertiesEnum.ShortLineR, Content.Load<Texture2D>("ShortLineRR"));
-            Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
-            Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            //Properties.Add(PropertiesEnum.ReadingR, Content.Load<Texture2D>("ReadingRailroad"));
+            //Properties.Add(PropertiesEnum.PennsylvaniaR, Content.Load<Texture2D>("PennsylvaniaRR"));
+            //Properties.Add(PropertiesEnum.BOR, Content.Load<Texture2D>("B&ORailroad"));
+            //Properties.Add(PropertiesEnum.ShortLineR, Content.Load<Texture2D>("ShortLineRR"));
+            //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
+            //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
             #endregion
 
@@ -484,7 +485,9 @@ namespace Capitalism
                     {
                         CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
                         CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
-                       
+
+                        Properties.Remove(CurrentPlayer.Position);
+
                         if (currentPlayerIndex + 1 < playerCount)
                         {
                             currentPlayerIndex++;
@@ -500,6 +503,8 @@ namespace Capitalism
                         itsMoneyTime = false;
                         diceFlashing = true;
                         moneyStolenOnce = false;
+
+
                     }
 
                 }
