@@ -154,7 +154,7 @@ namespace Capitalism
         Animation dice2;
 
         Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
-        Dictionary<Vector2, Sprite> PropertyImages = new Dictionary<Vector2, Sprite>();
+        Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
 
         PropertyNames? selectedValue = null;
 
@@ -447,7 +447,7 @@ namespace Capitalism
 
             if (itsMoneyTime)
             {
-
+                //taxes
                 if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
                 {
                     CurrentPlayer.Money -= 200;
@@ -459,7 +459,10 @@ namespace Capitalism
                     CurrentPlayer.Money -= 100;
                     moneyStolenOnce = true;
                 }
+                //taxes
 
+
+                //buying and rent
                 if (Properties.ContainsKey(CurrentPlayer.Position))
                 {
                     if (noButton.IsClicked)
@@ -486,7 +489,9 @@ namespace Capitalism
                         CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
                         CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
 
+                        BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
                         Properties.Remove(CurrentPlayer.Position);
+
 
                         if (currentPlayerIndex + 1 < playerCount)
                         {
@@ -504,11 +509,30 @@ namespace Capitalism
                         diceFlashing = true;
                         moneyStolenOnce = false;
 
+                        if (CurrentPlayer.properties[0] == Properties[CurrentPlayer.Position])
+                        {
+                            CurrentPlayer.properties[0].Position.X = 1506;
+                            CurrentPlayer.properties[0].Position.Y = 200;
+                        }
+                        else
+                        {
 
+                        }
                     }
 
                 }
-                else 
+                else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
+                {
+                    for (int i = 0; i < Players.Length; i++)
+                    {
+                        if ()
+                        { 
+                        
+                        }
+                    }
+                }
+                //buying and rent
+                else
                 {
                     if (currentPlayerIndex + 1 < playerCount)
                     {
@@ -566,6 +590,15 @@ namespace Capitalism
                 batch.Draw(prop.Image, new Rectangle(91, 265, 226, 279), Color.White);
             }
 
+            if (CurrentPlayer != null)
+            {
+                for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+                {
+                    CurrentPlayer.properties[i].Draw(batch);
+                }
+
+
+            }
 
             CurrentPlayer?.Draw(batch);
 
