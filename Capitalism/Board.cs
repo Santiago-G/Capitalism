@@ -492,7 +492,6 @@ namespace Capitalism
                         BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
                         Properties.Remove(CurrentPlayer.Position);
 
-
                         if (currentPlayerIndex + 1 < playerCount)
                         {
                             currentPlayerIndex++;
@@ -509,15 +508,7 @@ namespace Capitalism
                         diceFlashing = true;
                         moneyStolenOnce = false;
 
-                        if (CurrentPlayer.properties[0] == Properties[CurrentPlayer.Position])
-                        {
-                            CurrentPlayer.properties[0].Position.X = 1506;
-                            CurrentPlayer.properties[0].Position.Y = 200;
-                        }
-                        else
-                        {
 
-                        }
                     }
 
                 }
@@ -525,9 +516,16 @@ namespace Capitalism
                 {
                     for (int i = 0; i < Players.Length; i++)
                     {
-                        if ()
-                        { 
-                        
+                        if (Players[i] != CurrentPlayer)
+                        {
+                            for (int j = 0; j < Players[i].properties.Count; j++)
+                            {
+                                if (Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position])
+                                {
+                                    CurrentPlayer.Money -= Properties[CurrentPlayer.Position].Rent;
+                                    Players[i].Money += Properties[CurrentPlayer.Position].Rent;
+                                }
+                            }
                         }
                     }
                 }
