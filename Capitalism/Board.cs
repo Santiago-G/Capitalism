@@ -143,7 +143,6 @@ namespace Capitalism
         SpriteFont font;
         #endregion
 
-        Player player;
         HighlightButton yesButton;
         HighlightButton noButton;
         NormalButton diceOnBoard1;
@@ -294,8 +293,6 @@ namespace Capitalism
             //    TESTINGCounter++;
             //    TESTINGpreviousTime = gameTime.TotalGameTime;
             //}
-
-            Console.WriteLine(CurrentPlayer.Money);
 
             #endregion
 
@@ -489,8 +486,20 @@ namespace Capitalism
                         CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
                         CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
 
+                        int i = CurrentPlayer.properties.Count - 1;
                         BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
                         Properties.Remove(CurrentPlayer.Position);
+
+                        if (CurrentPlayer.properties.Count == 1)
+                        {
+                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1510, 220, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
+                        }
+                        else
+                        {
+                            int temp = 1510;
+                            temp += (((CurrentPlayer.properties.Count-1) % 3) *  (CurrentPlayer.properties[i].Image.Width / 2));
+                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 220, CurrentPlayer.properties[i].Image.Width / 2, CurrentPlayer.properties[i].Image.Height / 2);
+                        }
 
                         if (currentPlayerIndex + 1 < playerCount)
                         {

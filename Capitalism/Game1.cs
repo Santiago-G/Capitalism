@@ -28,8 +28,6 @@ namespace Capitalism
 
         public static string TitleBarString;
 
-        Effect blurEffect;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
