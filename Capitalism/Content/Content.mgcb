@@ -181,6 +181,18 @@
 /processorParam:TextureFormat=Color
 /build:boat.png
 
+#begin boatFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:boatFrame.png
+
 #begin boot.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -192,6 +204,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:boot.png
+
+#begin bootFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bootFrame.png
 
 #begin car.png
 /importer:TextureImporter
@@ -205,6 +229,18 @@
 /processorParam:TextureFormat=Color
 /build:car.png
 
+#begin carFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:carFrame.png
+
 #begin cat.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -216,6 +252,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:cat.png
+
+#begin catFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:catFrame.png
 
 #begin ConnecticutAve.jpg
 /importer:TextureImporter
@@ -241,6 +289,18 @@
 /processorParam:TextureFormat=Color
 /build:dog.png
 
+#begin dogFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:dogFrame.png
+
 #begin duck.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -252,6 +312,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:duck.png
+
+#begin duckFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:duckFrame.png
 
 #begin ElectricCompany.jpg
 /importer:TextureImporter
@@ -306,6 +378,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:hat.png
+
+#begin hatFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:hatFrame.png
 
 #begin IllinoisAve.jpg
 /importer:TextureImporter

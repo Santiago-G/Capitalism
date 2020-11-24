@@ -140,6 +140,15 @@ namespace Capitalism
         Texture2D pixel2;
         Texture2D itsBeanTime;
         Texture2D PlayerTitle;
+
+        Texture2D boatFrame;
+        Texture2D bootFrame;
+        Texture2D carFrame;
+        Texture2D catFrame;
+        Texture2D dogFrame;
+        Texture2D duckFrame;
+        Texture2D hatFrame;
+        
         SpriteFont font;
         #endregion
 
@@ -206,6 +215,14 @@ namespace Capitalism
             dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
             itsBeanTime = Content.Load<Texture2D>("bean");
             font = Content.Load<SpriteFont>("smallSize");
+
+            boatFrame = Content.Load<Texture2D>("boatFrame");
+            bootFrame = Content.Load<Texture2D>("bootFrame"); 
+            carFrame = Content.Load<Texture2D>("carFrame");
+            catFrame = Content.Load<Texture2D>("catFrame");
+            dogFrame = Content.Load<Texture2D>("dogFrame");
+            duckFrame = Content.Load<Texture2D>("duckFrame");
+            hatFrame = Content.Load<Texture2D>("hatFrame");
 
             #region Properties
 
@@ -602,6 +619,36 @@ namespace Capitalism
                 for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
                     CurrentPlayer.properties[i].Draw(batch);
+                }
+
+                //properties
+                if (CurrentPlayer.Token == "Car")
+                {
+                    batch.Draw(carFrame, new Vector2(1506, 500), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Boat")
+                {
+                    batch.Draw(boatFrame, new Vector2(1506, 500), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Boot")
+                {
+                    batch.Draw(bootFrame, new Vector2(1506, 500), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Cat")
+                {
+                    batch.Draw(catFrame, new Vector2(1506, 500), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Dog")
+                {
+                    batch.Draw(dogFrame, new Vector2(1506, 500), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Duck")
+                {
+                    batch.Draw(duckFrame, new Vector2(1506, 500), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Hat")
+                {
+                    batch.Draw(hatFrame, new Vector2(1506, 500), Color.White);
                 }
 
 
