@@ -148,7 +148,7 @@ namespace Capitalism
         Texture2D dogFrame;
         Texture2D duckFrame;
         Texture2D hatFrame;
-        
+
         SpriteFont font;
         #endregion
 
@@ -217,7 +217,7 @@ namespace Capitalism
             font = Content.Load<SpriteFont>("smallSize");
 
             boatFrame = Content.Load<Texture2D>("boatFrame");
-            bootFrame = Content.Load<Texture2D>("bootFrame"); 
+            bootFrame = Content.Load<Texture2D>("bootFrame");
             carFrame = Content.Load<Texture2D>("carFrame");
             catFrame = Content.Load<Texture2D>("catFrame");
             dogFrame = Content.Load<Texture2D>("dogFrame");
@@ -508,14 +508,20 @@ namespace Capitalism
                         Properties.Remove(CurrentPlayer.Position);
 
                         if (CurrentPlayer.properties.Count == 1)
+                        { 
+                            //CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 650, )
+                        }
+
+
+                        if (CurrentPlayer.properties.Count == 1)
                         {
-                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1510, 220, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
+                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 650, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
                         }
                         else
                         {
-                            int temp = 1510;
-                            temp += (((CurrentPlayer.properties.Count-1) % 3) *  (CurrentPlayer.properties[i].Image.Width / 2));
-                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 220, CurrentPlayer.properties[i].Image.Width / 2, CurrentPlayer.properties[i].Image.Height / 2);
+                            int temp = 1630;
+                            temp += (((CurrentPlayer.properties.Count - 1) % 3) * (CurrentPlayer.properties[i].Image.Width / 2));
+                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 650, CurrentPlayer.properties[i].Image.Width / 2, CurrentPlayer.properties[i].Image.Height / 2);
                         }
 
                         if (currentPlayerIndex + 1 < playerCount)
@@ -589,10 +595,6 @@ namespace Capitalism
         public void Draw(SpriteBatch batch)
         {
             batch.Draw(Purchase, new Vector2(27, 640), Color.White);
-            if (CurrentPlayer != null)
-            {
-                batch.DrawString(font, $"{CurrentPlayer.Money}", new Vector2(1600, 500), Color.White);
-            }
 
             batch.Draw(PlayerTitle, new Vector2(1506, 0), Color.White);
             noButton.Draw(batch);
@@ -624,38 +626,38 @@ namespace Capitalism
                 //properties
                 if (CurrentPlayer.Token == "Car")
                 {
-                    batch.Draw(carFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(carFrame, new Vector2(1496, 200), Color.White);
                 }
                 else if (CurrentPlayer.Token == "Boat")
                 {
-                    batch.Draw(boatFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(boatFrame, new Vector2(1515, 200), Color.White);
                 }
                 else if (CurrentPlayer.Token == "Boot")
                 {
-                    batch.Draw(bootFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(bootFrame, new Vector2(1515, 200), Color.White);
                 }
                 else if (CurrentPlayer.Token == "Cat")
                 {
-                    batch.Draw(catFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(catFrame, new Vector2(1515, 200), Color.White);
                 }
                 else if (CurrentPlayer.Token == "Dog")
                 {
-                    batch.Draw(dogFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(dogFrame, new Vector2(1475, 200), Color.White);
                 }
                 else if (CurrentPlayer.Token == "Duck")
                 {
-                    batch.Draw(duckFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(duckFrame, new Vector2(1506, 200), Color.White);
                 }
                 else if (CurrentPlayer.Token == "Hat")
                 {
-                    batch.Draw(hatFrame, new Vector2(1506, 500), Color.White);
+                    batch.Draw(hatFrame, new Vector2(1515, 200), Color.White);
                 }
 
+                batch.DrawString(font, $"M : {CurrentPlayer.Money}", new Vector2(1610, 610), Color.White);
 
             }
 
             CurrentPlayer?.Draw(batch);
-
 
             for (int i = 0; i < Players.Length; i++)
             {

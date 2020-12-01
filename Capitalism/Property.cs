@@ -51,7 +51,7 @@ namespace Capitalism
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(Image, Hitbox, Tint);
+            batch.Draw(Image, Hitbox, null, Tint, 0.5f, new Vector2(Hitbox.Width/2, Hitbox.Height/2), SpriteEffects.None, 1);
         }
 
     }
