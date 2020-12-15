@@ -15,6 +15,8 @@ namespace Capitalism
         public Color Tint;
         public Rectangle Hitbox;
 
+        public float Rotation = -0.5f;
+
         public int Cost;
         public int Rent;
         public int With1House;
@@ -51,7 +53,7 @@ namespace Capitalism
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(Image, Hitbox, null, Tint, 0.5f, new Vector2(Hitbox.Width/2, Hitbox.Height/2), SpriteEffects.None, 1);
+            batch.Draw(Image, Hitbox, null, Tint, Rotation, new Vector2(Hitbox.Width/2, Hitbox.Height/2), SpriteEffects.None, 1);
         }
 
     }

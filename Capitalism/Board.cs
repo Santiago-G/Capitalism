@@ -27,6 +27,7 @@ namespace Capitalism
         bool bean = true;
         bool diceFlashing = true;
         bool moneyStolenOnce = false;
+        bool RedEatsNoTerrarian = true;
         //bool firstLap = true;
 
         int rollValue = 0;
@@ -295,6 +296,21 @@ namespace Capitalism
                 Players[0].Tint = Color.Purple;
                 ;
                 bean = false;
+
+                CurrentPlayer.properties.Add(Properties[new Vector2(1067.90015f, 920)]);
+
+                CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 680, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
+                CurrentPlayer.properties[0].Rotation -= .01f;
+
+
+                CurrentPlayer.properties.Add(Properties[new Vector2(689.4001f, 920)]);
+
+                int temp = 1500;
+
+                int i7 = 1;
+                temp += ((CurrentPlayer.properties.Count - 1) * 100);
+                CurrentPlayer.properties[i7].Hitbox = new Rectangle(temp, 650, CurrentPlayer.properties[i7].Image.Width / 2, CurrentPlayer.properties[i7].Image.Height / 2);
+                CurrentPlayer.properties[i7].Rotation -= (CurrentPlayer.properties[i7 - 1].Rotation + 0.25f);
             }
 
             #region Property/Testing
@@ -508,20 +524,18 @@ namespace Capitalism
                         Properties.Remove(CurrentPlayer.Position);
 
                         if (CurrentPlayer.properties.Count == 1)
-                        { 
-                            //CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 650, )
-                        }
-
-
-                        if (CurrentPlayer.properties.Count == 1)
                         {
-                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 650, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
+                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 680, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
+                            CurrentPlayer.properties[0].Rotation -= .01f;
                         }
                         else
                         {
-                            int temp = 1630;
-                            temp += (((CurrentPlayer.properties.Count - 1) % 3) * (CurrentPlayer.properties[i].Image.Width / 2));
+                            //int temp = 1600;
+                            //temp += (((CurrentPlayer.properties.Count - 1) % 3) * (CurrentPlayer.properties[i].Image.Width / 2));
+                            int temp = 1500;
+                            temp += ((CurrentPlayer.properties.Count - 1) * 100);
                             CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 650, CurrentPlayer.properties[i].Image.Width / 2, CurrentPlayer.properties[i].Image.Height / 2);
+                            CurrentPlayer.properties[i].Rotation -= (CurrentPlayer.properties[i - 1].Rotation - 0.03f);
                         }
 
                         if (currentPlayerIndex + 1 < playerCount)
@@ -544,18 +558,21 @@ namespace Capitalism
                     }
 
                 }
+
                 else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
                 {
                     for (int i = 0; i < Players.Length; i++)
                     {
-                        if (Players[i] != CurrentPlayer)
+                        if (Players[i] != CurrentPlayer && RedEatsNoTerrarian)
                         {
                             for (int j = 0; j < Players[i].properties.Count; j++)
                             {
-                                if (Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position])
+                                if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
                                 {
-                                    CurrentPlayer.Money -= Properties[CurrentPlayer.Position].Rent;
-                                    Players[i].Money += Properties[CurrentPlayer.Position].Rent;
+                                    CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
+                                    Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                    RedEatsNoTerrarian = false;
+                                    break;
                                 }
                             }
                         }
@@ -564,6 +581,7 @@ namespace Capitalism
                 //buying and rent
                 else
                 {
+                    RedEatsNoTerrarian = true;
                     if (currentPlayerIndex + 1 < playerCount)
                     {
                         currentPlayerIndex++;
