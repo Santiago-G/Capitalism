@@ -297,20 +297,8 @@ namespace Capitalism
                 ;
                 bean = false;
 
-                CurrentPlayer.properties.Add(Properties[new Vector2(1067.90015f, 920)]);
-
-                CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 680, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
-                CurrentPlayer.properties[0].Rotation -= .01f;
 
 
-                CurrentPlayer.properties.Add(Properties[new Vector2(689.4001f, 920)]);
-
-                int temp = 1500;
-
-                int i7 = 1;
-                temp += ((CurrentPlayer.properties.Count - 1) * 100);
-                CurrentPlayer.properties[i7].Hitbox = new Rectangle(temp, 650, CurrentPlayer.properties[i7].Image.Width / 2, CurrentPlayer.properties[i7].Image.Height / 2);
-                CurrentPlayer.properties[i7].Rotation -= (CurrentPlayer.properties[i7 - 1].Rotation + 0.25f);
             }
 
             #region Property/Testing
@@ -403,10 +391,7 @@ namespace Capitalism
                         diceMoving = true;
                     }
                 }
-                else
-                {
-                    diceFlashing = true;
-                }
+
 
             }
             #endregion
@@ -492,7 +477,7 @@ namespace Capitalism
                 //taxes
 
 
-                //buying and rent
+                //buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
                 {
                     if (noButton.IsClicked)
@@ -525,17 +510,14 @@ namespace Capitalism
 
                         if (CurrentPlayer.properties.Count == 1)
                         {
-                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 680, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  //Position = new Vector2(1510, 220);
-                            CurrentPlayer.properties[0].Rotation -= .01f;
+                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  
                         }
                         else
-                        {
-                            //int temp = 1600;
-                            //temp += (((CurrentPlayer.properties.Count - 1) % 3) * (CurrentPlayer.properties[i].Image.Width / 2));
+                        { 
                             int temp = 1500;
-                            temp += ((CurrentPlayer.properties.Count - 1) * 100);
-                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 650, CurrentPlayer.properties[i].Image.Width / 2, CurrentPlayer.properties[i].Image.Height / 2);
-                            CurrentPlayer.properties[i].Rotation -= (CurrentPlayer.properties[i - 1].Rotation - 0.03f);
+                            temp += ((CurrentPlayer.properties.Count - 1) * 70);
+                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 700, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
+                            CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                         }
 
                         if (currentPlayerIndex + 1 < playerCount)
@@ -559,6 +541,7 @@ namespace Capitalism
 
                 }
 
+                //rent
                 else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
                 {
                     for (int i = 0; i < Players.Length; i++)
@@ -578,7 +561,7 @@ namespace Capitalism
                         }
                     }
                 }
-                //buying and rent
+
                 else
                 {
                     RedEatsNoTerrarian = true;
@@ -598,6 +581,29 @@ namespace Capitalism
                     diceFlashing = true;
                     moneyStolenOnce = false;
                 }
+
+                // loop over all properties
+
+
+
+                foreach (var prop in CurrentPlayer.properties)
+                {
+                    if (prop.Hitbox.Contains(ms.Position))
+                    {
+                        // mouse was inside the hitbox for property
+                        
+
+                        prop.Hitbox.Width = prop.Hitbox.Width * 2;
+                        prop.Hitbox.Height = prop.Hitbox.Height * 2;
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+
+
             }
 
             lms = ms;
@@ -608,7 +614,7 @@ namespace Capitalism
             spritebatch.Draw(pixel, new Rectangle(0, 0, 1500, 1400), new Color(Color.Black, 0.5f));
         }
 
-        Property prop;
+
 
         public void Draw(SpriteBatch batch)
         {
