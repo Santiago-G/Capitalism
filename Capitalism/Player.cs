@@ -18,6 +18,8 @@ namespace Capitalism
         public int currentTileIndex;
         public int Money;
 
+        bool goMoney = true;
+
         public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * Size), (int)(Image.Height * Size));
 
         public string Token = "";
@@ -40,10 +42,16 @@ namespace Capitalism
             { 
                 //game over
             }
+            //if GetTilePosition != Position 0 then reset goMoney to false
+            if (GetTilePosition() !=  Vector2.Zero)
+            {
+                goMoney = false;
+            }
 
-            if (currentTileIndex == 0)
+            if (currentTileIndex == 1 && goMoney == false)
             {
                 Money += 200;
+                goMoney = true;
             }
         }
 

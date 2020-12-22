@@ -28,8 +28,11 @@ namespace Capitalism
         public int HouseCost;
         public int HotelCost;
 
+        public bool expanded = false;
         //Add Mortgage
 
+        int originalWidth;
+        int originalHeight;
 
         public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel)
         {
@@ -47,13 +50,31 @@ namespace Capitalism
             WithHotel = rentWHotel;
             HouseCost = houseCost;
             HotelCost = hotel;
+
         }
 
+        public void Expand()
+        {
+            originalWidth = Hitbox.Width;
+            originalHeight = Hitbox.Height;
+            Hitbox.Width = (int)((double)(Hitbox.Width) * 1.25);
+            Hitbox.Height = (int)((double)(Hitbox.Width) * 1.25);
 
+            expanded = true;
+        }
+
+        public void Shrink()
+        {
+            Hitbox.Width = originalWidth;
+            Hitbox.Height = originalHeight;
+
+            expanded = false;
+        }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(Image, Hitbox, null, Tint, Rotation, new Vector2(Hitbox.Width/2, Hitbox.Height/2), SpriteEffects.None, 1);
+            batch.Draw(Image, Hitbox, null, Tint, Rotation, new Vector2(Hitbox.Width/2, Hitbox.Height/2-Hitbox.Height/3-Hitbox.Height/4), SpriteEffects.None, 1);
+            //batch.Draw(Image, Hitbox, Color.Red);
         }
 
     }

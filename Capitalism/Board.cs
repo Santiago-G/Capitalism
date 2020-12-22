@@ -30,6 +30,8 @@ namespace Capitalism
         bool RedEatsNoTerrarian = true;
         //bool firstLap = true;
 
+        Property prop;
+
         int rollValue = 0;
         int currentPlayerIndex = 0;
         Vector2 val;
@@ -125,10 +127,6 @@ namespace Capitalism
             return player;
         }
 
-        static public void RestartingDice()
-        {
-
-        }
         #endregion
 
         #region Textures
@@ -257,10 +255,11 @@ namespace Capitalism
             Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, 40, 100, 300, 450, 600, 50, 50, Content));
             Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            //Properties.Add(PropertiesEnum.ReadingR, Content.Load<Texture2D>("ReadingRailroad"));
-            //Properties.Add(PropertiesEnum.PennsylvaniaR, Content.Load<Texture2D>("PennsylvaniaRR"));
-            //Properties.Add(PropertiesEnum.BOR, Content.Load<Texture2D>("B&ORailroad"));
-            //Properties.Add(PropertiesEnum.ShortLineR, Content.Load<Texture2D>("ShortLineRR"));
+            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
+
             //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
             //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
@@ -349,7 +348,6 @@ namespace Capitalism
 
                         dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
                         dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
-
 
                         dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
                         dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
@@ -513,10 +511,27 @@ namespace Capitalism
                             CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  
                         }
                         else
-                        { 
+                        {
                             int temp = 1500;
-                            temp += ((CurrentPlayer.properties.Count - 1) * 70);
-                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, 700, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
+                            int temp2 = 710;
+
+                            if (CurrentPlayer.properties.Count > 5)
+                            {
+                                temp2 = 810;
+                            }
+
+
+                            temp += ((CurrentPlayer.properties.Count - 1) * 65);
+                            if (CurrentPlayer.properties.Count < 4)
+                            {
+                                temp2 -= (CurrentPlayer.properties.Count - 1) * 10;
+                            }
+                            else 
+                            {
+                                temp2 += (CurrentPlayer.properties.Count - 1) * 10;
+                            }
+
+                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, temp2, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
                             CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                         }
 
@@ -555,6 +570,22 @@ namespace Capitalism
                                     CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
                                     Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
                                     RedEatsNoTerrarian = false;
+
+                                    if (currentPlayerIndex + 1 < playerCount)
+                                    {
+                                        currentPlayerIndex++;
+                                    }
+                                    else
+                                    {
+                                        currentPlayerIndex = 0;
+                                    }
+
+                                    CurrentPlayer = Players[currentPlayerIndex];
+
+                                    rollDice = true;
+                                    itsMoneyTime = false;
+                                    diceFlashing = true;
+                                    moneyStolenOnce = false;
                                     break;
                                 }
                             }
@@ -586,19 +617,40 @@ namespace Capitalism
 
 
 
-                foreach (var prop in CurrentPlayer.properties)
+                for(int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
-                    if (prop.Hitbox.Contains(ms.Position))
+                    if (CurrentPlayer.properties[i].Hitbox.Contains(ms.Position))
                     {
                         // mouse was inside the hitbox for property
-                        
+                        //Is any other property that the player owns expanded
 
-                        prop.Hitbox.Width = prop.Hitbox.Width * 2;
-                        prop.Hitbox.Height = prop.Hitbox.Height * 2;
+
+
+                        if (!CurrentPlayer.properties[i].expanded)
+                        {
+                            bool expand = true;
+                            foreach (Property prop in CurrentPlayer.properties)
+                            {
+                                if (prop.expanded)
+                                {
+                                    expand = false;
+                                }
+                            }
+
+                            if (expand)
+                            {
+                                CurrentPlayer.properties[i].Expand();
+                            }
+                        }
+
                     }
                     else
                     {
-
+                        if (CurrentPlayer.properties[i].expanded)
+                        {
+                            CurrentPlayer.properties[i].Shrink();
+                        }
+                        //reset the height and width if it goes from true to false
                     }
 
                 }
@@ -611,7 +663,7 @@ namespace Capitalism
 
         public void DarkenScreen(SpriteBatch spritebatch)
         {
-            spritebatch.Draw(pixel, new Rectangle(0, 0, 1500, 1400), new Color(Color.Black, 0.5f));
+            spritebatch.Draw(pixel, new Rectangle(0, 0, 130000, 478150), new Color(Color.Black, 0.5f));
         }
 
 
