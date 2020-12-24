@@ -43,7 +43,7 @@ namespace Capitalism
                 //game over
             }
             //if GetTilePosition != Position 0 then reset goMoney to false
-            if (GetTilePosition() !=  Vector2.Zero)
+            if (GetTilePosition() !=  PositionArea[0] && GetTilePosition() != Vector2.Zero)
             {
                 goMoney = false;
             }

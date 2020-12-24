@@ -513,22 +513,24 @@ namespace Capitalism
                         else
                         {
                             int temp = 1500;
-                            int temp2 = 710;
+                            int temp2 = 690;
 
-                            if (CurrentPlayer.properties.Count > 5)
+                            if (CurrentPlayer.properties.Count%6 == 0)
                             {
-                                temp2 = 810;
+                                temp2 = CurrentPlayer.properties[i - 1].Hitbox.Y + 100;
+                                temp = 1500;
+                                CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
                             }
 
 
-                            temp += ((CurrentPlayer.properties.Count - 1) * 65);
-                            if (CurrentPlayer.properties.Count < 4)
+                            temp += ((CurrentPlayer.properties.Count%5 - 1) * 65);
+                            if (CurrentPlayer.properties.Count%5 < 4)
                             {
-                                temp2 -= (CurrentPlayer.properties.Count - 1) * 10;
+                                temp2 -= (CurrentPlayer.properties.Count%5 - 1) * 10;
                             }
                             else 
                             {
-                                temp2 += (CurrentPlayer.properties.Count - 1) * 10;
+                                temp2 += (CurrentPlayer.properties.Count%5 - 4) * 10;
                             }
 
                             CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, temp2, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
@@ -559,36 +561,67 @@ namespace Capitalism
                 //rent
                 else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
                 {
-                    for (int i = 0; i < Players.Length; i++)
+                    Property temp = BoughtProperties[CurrentPlayer.Position];
+
+                    bool temp2 = false;
+
+                    for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                     {
-                        if (Players[i] != CurrentPlayer && RedEatsNoTerrarian)
+                        if (temp == CurrentPlayer.properties[i])
                         {
-                            for (int j = 0; j < Players[i].properties.Count; j++)
+                            RedEatsNoTerrarian = true;
+                            if (currentPlayerIndex + 1 < playerCount)
                             {
-                                if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
+                                currentPlayerIndex++;
+                            }
+                            else
+                            {
+                                currentPlayerIndex = 0;
+                            }
+
+                            CurrentPlayer = Players[currentPlayerIndex];
+
+                            rollDice = true;
+                            itsMoneyTime = false;
+                            diceFlashing = true;
+                            moneyStolenOnce = false;
+                            temp2 = true;
+                        }
+                    }
+                    if (!temp2)
+                    {
+                        for (int i = 0; i < Players.Length; i++)
+                        {
+                            if (Players[i] != CurrentPlayer && RedEatsNoTerrarian)
+                            {
+                                for (int j = 0; j < Players[i].properties.Count; j++)
                                 {
-                                    CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
-                                    Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
-                                    RedEatsNoTerrarian = false;
-
-                                    if (currentPlayerIndex + 1 < playerCount)
+                                    if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
                                     {
-                                        currentPlayerIndex++;
-                                    }
-                                    else
-                                    {
-                                        currentPlayerIndex = 0;
-                                    }
+                                        CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
+                                        Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                        RedEatsNoTerrarian = false;
 
-                                    CurrentPlayer = Players[currentPlayerIndex];
+                                        if (currentPlayerIndex + 1 < playerCount)
+                                        {
+                                            currentPlayerIndex++;
+                                        }
+                                        else
+                                        {
+                                            currentPlayerIndex = 0;
+                                        }
 
-                                    rollDice = true;
-                                    itsMoneyTime = false;
-                                    diceFlashing = true;
-                                    moneyStolenOnce = false;
-                                    break;
+                                        CurrentPlayer = Players[currentPlayerIndex];
+
+                                        rollDice = true;
+                                        itsMoneyTime = false;
+                                        diceFlashing = true;
+                                        moneyStolenOnce = false;
+                                        break;
+                                    }
                                 }
                             }
+
                         }
                     }
                 }
@@ -697,6 +730,14 @@ namespace Capitalism
                 for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
                     CurrentPlayer.properties[i].Draw(batch);
+                }
+
+                foreach (Property prop in CurrentPlayer.properties)
+                {
+                    if (prop.expanded)
+                    {
+                        prop.Draw(batch);
+                    }
                 }
 
                 //properties
