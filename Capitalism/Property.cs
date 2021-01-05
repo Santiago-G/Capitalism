@@ -24,17 +24,21 @@ namespace Capitalism
         public int With3House;
         public int With4House;
         public int WithHotel;
+        public int houseCounter = 0;
+        public int hotelCounter = 0;
 
         public int HouseCost;
         public int HotelCost;
 
         public bool expanded = false;
+        public bool isRailroad = false;
+        public bool isUtility = false;
         //Add Mortgage
 
         int originalWidth;
         int originalHeight;
 
-        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel)
+        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, bool Railroad, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel)
         {
             Image = image;
             Tint = tint;
@@ -52,6 +56,8 @@ namespace Capitalism
             HotelCost = hotel;
 
         }
+
+
 
         public void Expand()
         {

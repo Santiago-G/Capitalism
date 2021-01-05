@@ -17,6 +17,8 @@ namespace Capitalism
         public Vector2[] PositionArea;
         public int currentTileIndex;
         public int Money;
+        public int railroadCounter = 0;
+        public int utillityCounter = 0;
 
         bool goMoney = true;
 
@@ -39,11 +41,11 @@ namespace Capitalism
         public void Update()
         {
             if (Money == 0)
-            { 
+            {
                 //game over
             }
             //if GetTilePosition != Position 0 then reset goMoney to false
-            if (GetTilePosition() !=  PositionArea[0] && GetTilePosition() != Vector2.Zero)
+            if (GetTilePosition() != PositionArea[0] && GetTilePosition() != Vector2.Zero)
             {
                 goMoney = false;
             }
@@ -53,6 +55,12 @@ namespace Capitalism
                 Money += 200;
                 goMoney = true;
             }
+        }
+
+
+        public Property mostRecentPurchase()
+        {
+            return properties[properties.Count - 1];
         }
 
         public Vector2 GetTilePosition()

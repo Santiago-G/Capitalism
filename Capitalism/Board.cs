@@ -177,15 +177,15 @@ namespace Capitalism
         TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
         TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
 
-        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
+        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
             if (fliped)
             {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
             else
             {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
         }
         Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
@@ -225,40 +225,40 @@ namespace Capitalism
 
             #region Properties
 
-            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, 10, 30, 90, 160, 250, 50, 50, Content));
-            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, 20, 60, 180, 320, 450, 50, 50, Content));
+            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, 10, 30, 90, 160, 250, 50, 50, Content));
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, 20, 60, 180, 320, 450, 50, 50, Content));
 
-            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, 30, 90, 270, 400, 550, 50, 50, Content));
-            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, 40, 100, 300, 450, 600, 50, 50, Content));
-            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, 40, 100, 300, 450, 600, 50, 50, Content));
 
-            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
-            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
-            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
-            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
 
             //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
             //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
@@ -430,7 +430,6 @@ namespace Capitalism
                 }
                 else
                 {
-                    rollValue = 0;
                     characterMoving = false;
                     itsMoneyTime = true;
                     showingDice = false;
@@ -506,6 +505,53 @@ namespace Capitalism
                         BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
                         Properties.Remove(CurrentPlayer.Position);
 
+                        #region Railroads
+                        if (CurrentPlayer.mostRecentPurchase().isRailroad)
+                        {
+                            CurrentPlayer.railroadCounter++;
+
+                            for (int j = 0; j < CurrentPlayer.properties.Count; j++)
+                            {
+                                if (CurrentPlayer.properties[j].isRailroad)
+                                {
+                                    if (CurrentPlayer.railroadCounter < 3)
+                                    {
+                                        CurrentPlayer.properties[j].Rent = 25 * CurrentPlayer.railroadCounter;
+                                    }
+                                    else
+                                    {
+                                        CurrentPlayer.properties[j].Rent = 100 * (CurrentPlayer.railroadCounter - 2);
+                                    }
+                                }
+                            }
+                        }
+                        #endregion
+
+                        #region Utility
+
+                        if (CurrentPlayer.mostRecentPurchase().isUtility)
+                        {
+                            CurrentPlayer.utillityCounter++;
+
+                            if (CurrentPlayer.utillityCounter < 2)
+                            {
+                                CurrentPlayer.mostRecentPurchase().Rent = 4;
+                            }
+                            else
+                            {
+                                for (int k = 0; k < CurrentPlayer.properties.Count; k++)
+                                {
+                                    if (CurrentPlayer.properties[k].isUtility)
+                                    {
+                                        CurrentPlayer.properties[k].Rent = 10;
+                                    }
+                                }
+                            }
+                        }
+
+                        #endregion
+
+                        #region Property Placement
                         if (CurrentPlayer.properties.Count == 1)
                         {
                             CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);  
@@ -536,6 +582,8 @@ namespace Capitalism
                             CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, temp2, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
                             CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                         }
+
+                        #endregion
 
                         if (currentPlayerIndex + 1 < playerCount)
                         {
@@ -598,8 +646,17 @@ namespace Capitalism
                                 {
                                     if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
                                     {
-                                        CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
-                                        Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                        if (BoughtProperties[CurrentPlayer.Position].isUtility)
+                                        {
+                                            CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * rollValue;
+                                            Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * rollValue; ;
+                                        }
+                                        else 
+                                        {
+                                            CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
+                                            Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                        }
+
                                         RedEatsNoTerrarian = false;
 
                                         if (currentPlayerIndex + 1 < playerCount)
