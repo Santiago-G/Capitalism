@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Board.cs" />
+    <Compile Include="ChanceCards.cs" />
     <Compile Include="HighlightButton.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Game1.cs" />

@@ -31,6 +31,7 @@ namespace Capitalism
         //bool firstLap = true;
 
         Property prop;
+        Queue<ChanceCards> chanceCards = new Queue<ChanceCards>();
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
@@ -222,6 +223,10 @@ namespace Capitalism
             dogFrame = Content.Load<Texture2D>("dogFrame");
             duckFrame = Content.Load<Texture2D>("duckFrame");
             hatFrame = Content.Load<Texture2D>("hatFrame");
+
+            //ChanceCards advanceTest = new ChanceCards(..., ..., ..., CardTypes.Advance, 1);
+
+            chanceCards.Enqueue();
 
             #region Properties
 
