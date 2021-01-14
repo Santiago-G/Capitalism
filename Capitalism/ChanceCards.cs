@@ -11,15 +11,15 @@ namespace Capitalism
 
     public enum CardTypes
     {
-        BankCollect,
-        BankStealing,
-        GainFromOthers,
+        BankCollectsMoney,
+        YouStealBankCash,
         GiveToOthers,
         Advance,
         GoBack3,
         GetOutOfJail,
         GoInJail,
-        HouseRepair
+        HouseRepair,
+        GoToGo
     }
 
     public class ChanceCards

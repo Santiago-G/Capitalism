@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -132,518 +133,492 @@ namespace Capitalism
         {
             return new Queue<T>(queue.Shuffle());
         }
- 
 
-    #endregion
-
-    #region Textures
-    Texture2D Frame;
-    Texture2D Yes;
-    Texture2D No;
-    Texture2D Purchase;
-    Texture2D RedDice;
-    Texture2D pixel;
-    Texture2D pixel2;
-    Texture2D itsBeanTime;
-    Texture2D PlayerTitle;
-
-    Texture2D boatFrame;
-    Texture2D bootFrame;
-    Texture2D carFrame;
-    Texture2D catFrame;
-    Texture2D dogFrame;
-    Texture2D duckFrame;
-    Texture2D hatFrame;
-
-    Texture2D advanceToGo;
-    Texture2D bankError;
-    Texture2D doctorsFee;
-    Texture2D getOutOfJail;
-    Texture2D goToJail;
-    Texture2D grandOperaOpening;
-    Texture2D incomingTaxRefund;
-    Texture2D lifeInsuranceMatures;
-    Texture2D payHospital;
-    Texture2D paySchoolTax;
-    Texture2D receiveForServices;
-    Texture2D saleOfStocks;
-
-    SpriteFont font;
-    #endregion
-
-    HighlightButton yesButton;
-    HighlightButton noButton;
-    NormalButton diceOnBoard1;
-    NormalButton diceOnBoard2;
-
-
-    Animation dice1;
-    Animation dice2;
-
-    Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
-    Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
-
-    PropertyNames? selectedValue = null;
-
-    MouseState lms;
-
-    Vector2[] listOfPositions = new Vector2[40];
-
-    TimeSpan previousTime = TimeSpan.Zero;
-    TimeSpan TESTINGpreviousTime = TimeSpan.Zero;
-    TimeSpan tokenMovingTime = TimeSpan.Zero;
-
-    TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
-    TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
-    TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
-
-    Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
-    {
-        if (fliped)
-        {
-            return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
-        }
-        else
-        {
-            return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
-        }
-    }
-    Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
-    {
-        return new PropertySprite(image, Position, Tint);
-    }
-
-
-    int target;
-
-    public Board(ContentManager Content)
-    {
-        //Testing Testing Testing
-        charPostitions = MakingPositions();
-        goPositions = MakingGoPositions();
-        //Testing Testing Testing
-
-        Players = new Player[playerCount];
-
-        PlayerTitle = Content.Load<Texture2D>("PlayerTitle2");
-        pixel = Content.Load<Texture2D>("FFFFFF-1");
-        pixel2 = Content.Load<Texture2D>("pixel");
-        diceOnBoard1 = new NormalButton(pixel, Vector2.Zero, Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
-        RedDice = Content.Load<Texture2D>("RedDice");
-        dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
-        dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
-        itsBeanTime = Content.Load<Texture2D>("bean");
-        font = Content.Load<SpriteFont>("smallSize");
-
-        boatFrame = Content.Load<Texture2D>("boatFrame");
-        bootFrame = Content.Load<Texture2D>("bootFrame");
-        carFrame = Content.Load<Texture2D>("carFrame");
-        catFrame = Content.Load<Texture2D>("catFrame");
-        dogFrame = Content.Load<Texture2D>("dogFrame");
-        duckFrame = Content.Load<Texture2D>("duckFrame");
-        hatFrame = Content.Load<Texture2D>("hatFrame");
-
-            //ChanceCards advanceTest = new ChanceCards(..., ..., ..., CardTypes.Advance, 1);
-
-            chanceCards.Enqueue(new ChanceCards());
-
-        chanceCards = ShuffleQueue(chanceCards);
-
-        #region Properties
-
-        Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, 10, 30, 90, 160, 250, 50, 50, Content));
-        Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, 20, 60, 180, 320, 450, 50, 50, Content));
-
-        Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content));
-        Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content));
-        Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, 40, 100, 300, 450, 600, 50, 50, Content));
-        Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, 40, 100, 300, 450, 600, 50, 50, Content));
-
-        Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
-        Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
-        Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
-        Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
-
-        //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
-        //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
         #endregion
 
-        Frame = Content.Load<Texture2D>("Frame");
-        Yes = Content.Load<Texture2D>("Yes");
-        No = Content.Load<Texture2D>("No");
-        Purchase = Content.Load<Texture2D>("PurchaseThisProp");
+        #region Textures
+        Texture2D Frame;
+        Texture2D Yes;
+        Texture2D No;
+        Texture2D Purchase;
+        Texture2D RedDice;
+        Texture2D pixel;
+        Texture2D pixel2;
+        Texture2D itsBeanTime;
+        Texture2D PlayerTitle;
 
-        noButton = new HighlightButton(No, new Vector2(326, 662), Color.White);
-        yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White);
-    }
+        Texture2D boatFrame;
+        Texture2D bootFrame;
+        Texture2D carFrame;
+        Texture2D catFrame;
+        Texture2D dogFrame;
+        Texture2D duckFrame;
+        Texture2D hatFrame;
 
-    public void Update(MouseState ms, GameTime gameTime)
-    {
-        if (bean)
-        {
-            if (playerCount != Players.Length)
-            {
-                Players = new Player[playerCount];
-            }
-            for (int i = 0; i < playerCount; i++)
-            {
-                Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
-                Players[i].PositionArea = charPostitions;
-                Players[i].currentTileIndex = 1;
-            }
+        Texture2D advanceToGo;
+        Texture2D bankError;
+        Texture2D doctorsFee;
+        Texture2D getOutOfJail;
+        Texture2D goToJail;
+        Texture2D grandOperaOpening;
+        Texture2D incomingTaxRefund;
+        Texture2D lifeInsuranceMatures;
+        Texture2D payHospital;
+        Texture2D paySchoolTax;
+        Texture2D receiveForServices;
+        Texture2D saleOfStocks;
+        Texture2D secondPrizeBeautyContest;
+        Texture2D streetRepairs;
+        Texture2D xmasFundMatures;
+        Texture2D youInherit100;
 
-            CurrentPlayer = Players[0];
-
-
-            Players[0].Tint = Color.Purple;
-            ;
-            bean = false;
-
-
-
-        }
-
-        #region Property/Testing
-
-        if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
-        {
-            Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
-        }
-
-        //if (gameTime.TotalGameTime - TESTINGpreviousTime >= TESTINGinterval)
-        //{
-        //    CurrentPlayer.Position = charPostitions[TESTINGCounter];
-        //    TESTINGCounter++;
-        //    TESTINGpreviousTime = gameTime.TotalGameTime;
-        //}
-
+        SpriteFont font;
         #endregion
 
-        for (int i = 0; i < Players.Length; i++)
+        HighlightButton yesButton;
+        HighlightButton noButton;
+        NormalButton diceOnBoard1;
+        NormalButton diceOnBoard2;
+
+
+        Animation dice1;
+        Animation dice2;
+
+        Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
+        Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
+
+        PropertyNames? selectedValue = null;
+
+        MouseState lms;
+
+        Vector2[] listOfPositions = new Vector2[40];
+
+        TimeSpan previousTime = TimeSpan.Zero;
+        TimeSpan TESTINGpreviousTime = TimeSpan.Zero;
+        TimeSpan tokenMovingTime = TimeSpan.Zero;
+
+        TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
+        TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
+        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
+
+        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
-            if (Players[i].Money == 0)
+            if (fliped)
             {
-                //game over
-            }
-        }
-
-        CurrentPlayer.Update();
-        noButton.Update(ms, true);
-        yesButton.Update(ms, true);
-
-        if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
-        {
-            diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
-            previousTime = gameTime.TotalGameTime;
-        }
-
-        #region DiceRolling
-
-        if (rollDice)
-        {
-            if (diceMoving)
-            {
-                ;
-                if (dice2.dest.X != 24)
-                {
-                    dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
-                    dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
-
-                    dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
-                    dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
-
-                    dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
-                    dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
-
-                    dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
-                    dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
-                }
-                else
-                {
-                    diceMoving = false;
-                    darkenScreen = false;
-                    diceRolling = false;
-                    characterMoving = true;
-                    diceFlashing = false;
-                    rollDice = false;
-                }
-            }
-
-            diceOnBoard1.Update(ms);
-
-            if (diceOnBoard1.IsClicked(ms))
-            {
-                diceRolling = true;
-                darkenScreen = true;
-            }
-
-            if (diceRolling)
-            {
-                diceFlashing = false;
-                showingDice = true;
-                dice1.Update(gameTime, true);
-                dice2.Update(gameTime, true);
-
-                rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
-                target = rollValue + (CurrentPlayer.currentTileIndex);
-
-                if (dice1.stopped)
-                {
-                    diceMoving = true;
-                }
-            }
-
-
-        }
-        #endregion
-
-        #region Movement
-        if (characterMoving)
-        {
-            // do this once when you roll
-
-            if (target >= 40)
-            {
-                target %= 40;
-                shouldMove = true;
-            }
-
-            if (CurrentPlayer.currentTileIndex >= 40)
-            {
-                CurrentPlayer.currentTileIndex %= 40;
-            }
-
-            if (CurrentPlayer.currentTileIndex < target || shouldMove)
-            {
-                Console.WriteLine($"Roll Val + Pos = {target}");
-                Console.WriteLine($"Roll Val = {rollValue}");
-                Console.WriteLine($"Pos = {CurrentPlayer.currentTileIndex}");
-
-                val = charPostitions[CurrentPlayer.currentTileIndex];
-
-                if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
-                {
-                    //CurrentPlayer.Position = Vector2.Lerp(CurrentPlayer.Position, val, .1f);
-
-                    CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
-                    CurrentPlayer.currentTileIndex++;
-                    //urrentPlayer.currentTileIndex++;
-                    tokenMovingTime = gameTime.TotalGameTime;
-                }
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
             else
             {
-                characterMoving = false;
-                itsMoneyTime = true;
-                showingDice = false;
-
-                tokenMovingTime = TimeSpan.Zero;
-                shouldMove = false;
-                dice1.Restart();
-                dice2.Restart();
-
-                dice1.dest.Width = 128;
-                dice1.dest.Height = 128;
-                dice1.dest.X = 800;
-                dice1.dest.Y = 430;
-
-                dice2.dest.X = 600;
-                dice2.dest.Y = 430;
-                dice2.dest.Width = dice1.dest.Width;
-                dice2.dest.Height = dice1.dest.Height;
-            }
-
-            if (CurrentPlayer.currentTileIndex == target)
-            {
-                shouldMove = false;
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost);
             }
         }
-        #endregion
-
-        if (itsMoneyTime)
+        Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
         {
-            //taxes
-            if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
+            return new PropertySprite(image, Position, Tint);
+        }
+
+
+        int target;
+
+        public Board(ContentManager Content)
+        {
+            //Testing Testing Testing
+            charPostitions = MakingPositions();
+            goPositions = MakingGoPositions();
+            //Testing Testing Testing
+
+            Players = new Player[playerCount];
+
+            PlayerTitle = Content.Load<Texture2D>("PlayerTitle2");
+            pixel = Content.Load<Texture2D>("FFFFFF-1");
+            pixel2 = Content.Load<Texture2D>("pixel");
+            diceOnBoard1 = new NormalButton(pixel, Vector2.Zero, Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
+            RedDice = Content.Load<Texture2D>("RedDice");
+            dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
+            dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
+            itsBeanTime = Content.Load<Texture2D>("bean");
+            font = Content.Load<SpriteFont>("smallSize");
+
+            boatFrame = Content.Load<Texture2D>("boatFrame");
+            bootFrame = Content.Load<Texture2D>("bootFrame");
+            carFrame = Content.Load<Texture2D>("carFrame");
+            catFrame = Content.Load<Texture2D>("catFrame");
+            dogFrame = Content.Load<Texture2D>("dogFrame");
+            duckFrame = Content.Load<Texture2D>("duckFrame");
+            hatFrame = Content.Load<Texture2D>("hatFrame");
+
+            //advanceToGo = Content.Load<Texture2D>("AdvanceToGo");
+            //bankError = Content.Load<Texture2D>("BankError");
+            //doctorsFee = Content.Load<Texture2D>("DoctorsFee");
+            //getOutOfJail = Content.Load<Texture2D>("GetOutOfJail");
+            //goToJail = Content.Load<Texture2D>("GoToJail");
+            //grandOperaOpening = Content.Load<Texture2D>("GrandOperaOpening");
+            //incomingTaxRefund = Content.Load<Texture2D>("IncomeTaxRefund");
+            //lifeInsuranceMatures = Content.Load<Texture2D>("LifeInsuranceMatures");
+            //payHospital = Content.Load<Texture2D>("PayHospital");
+            //paySchoolTax = Content.Load<Texture2D>("PaySchoolTax");
+            //receiveForServices = Content.Load<Texture2D>("ReceiveForServices");
+            //saleOfStocks = Content.Load<Texture2D>("SaleOfStocks");
+            //secondPrizeBeautyContest = Content.Load<Texture2D>("SecondPrizeBeautyContest");;
+            //streetRepairs = Content.Load<Texture2D>("StreetRepairs");
+            //xmasFundMatures = Content.Load<Texture2D>("xmasFundMatures");
+            //youInherit100 = Content.Load<Texture2D>("YouInherit100");
+            //ChanceCards advanceTest = new ChanceCards(..., ..., ..., CardTypes.Advance, 1);
+
+            //chanceCards.Enqueue(new ChanceCards(advanceToGo, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(bankError, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(doctorsFee, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(getOutOfJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(goToJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(grandOperaOpening, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(incomingTaxRefund, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(lifeInsuranceMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(payHospital, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(paySchoolTax, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(receiveForServices, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(saleOfStocks, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(secondPrizeBeautyContest, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(streetRepairs, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(xmasFundMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            //chanceCards.Enqueue(new ChanceCards(youInherit100, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+
+            string chancePath = Directory.GetCurrentDirectory();
+            int binFolderIndex = chancePath.IndexOf("bin");
+
+            string basePath = "";
+
+            for (int i = 0; i < binFolderIndex; i++)
             {
-                CurrentPlayer.Money -= 200;
-                moneyStolenOnce = true;
+                basePath += chancePath[i];
             }
 
-            else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
-            {
-                CurrentPlayer.Money -= 100;
-                moneyStolenOnce = true;
-            }
-            //taxes
+            var path = Path.Combine(basePath, @"Content\\Chance");
+            var files = Directory.GetFiles(path);
 
-
-            //buying
-            if (Properties.ContainsKey(CurrentPlayer.Position))
+            string[] chanceFileNames = new string[files.Length];
+            string extension = ".png";
+            int count = 0;
+            foreach (var filePath in files)
             {
-                if (noButton.IsClicked)
+                for (int i = path.Length + 1; i < filePath.Length - extension.Length; i++)
                 {
-                    if (currentPlayerIndex + 1 < playerCount)
-                    {
-                        currentPlayerIndex++;
-                    }
-                    else
-                    {
-                        currentPlayerIndex = 0;
-                    }
+                    chanceFileNames[count] += filePath[i];
+                }
+                count++;
+            }
 
-                    CurrentPlayer = Players[currentPlayerIndex];
+            // load content for chance cards
 
-                    rollDice = true;
-                    itsMoneyTime = false;
-                    diceFlashing = true;
-                    moneyStolenOnce = false;
+            for (int i = 0; i < chanceFileNames.Length; i++)
+            {
+                string filename = chanceFileNames[i];
+                Texture2D text = Content.Load<Texture2D>(filename);
+
+                chanceCards.Enqueue(new ChanceCards(text, text.Bounds, Color.White, GetCardType(filename)));
+            }
+
+            chanceCards = ShuffleQueue(chanceCards);
+
+            #region Properties
+
+            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, 10, 30, 90, 160, 250, 50, 50, Content));
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, 20, 60, 180, 320, 450, 50, 50, Content));
+
+            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content));
+            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, 40, 100, 300, 450, 600, 50, 50, Content));
+            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, 40, 100, 300, 450, 600, 50, 50, Content));
+
+            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content));
+
+            //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
+            //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+
+            #endregion
+
+            Frame = Content.Load<Texture2D>("Frame");
+            Yes = Content.Load<Texture2D>("Yes");
+            No = Content.Load<Texture2D>("No");
+            Purchase = Content.Load<Texture2D>("PurchaseThisProp");
+
+            noButton = new HighlightButton(No, new Vector2(326, 662), Color.White);
+            yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White);
+        }
+
+        private CardTypes GetCardType(string filename)
+        {
+            // CardTypes cardType;
+
+            if (filename.Contains("goToGo"))
+            {
+                return CardTypes.GoToGo;
+            }
+            else if (filename.Contains("goToJail"))
+            {
+                return CardTypes.GoInJail;
+            }
+            else if (filename.Contains("goTo"))
+            {
+                return CardTypes.Advance;
+            }
+            else if (filename.Contains("goBack3"))
+            {
+                return CardTypes.GoBack3;
+            }
+            else if (filename.Contains("bankPays") || filename.Contains("building&Loan"))
+            {
+                return CardTypes.YouStealBankCash;
+            }
+            else if (filename.Contains("generalRepairs"))
+            {
+                return CardTypes.HouseRepair;
+            }
+            else if (filename.Contains("chairman"))
+            {
+                return CardTypes.GiveToOthers;
+            }
+            else if (filename.Contains("getOutOFJail"))
+            {
+                return CardTypes.GetOutOfJail;
+            }
+
+
+            //var cardType = Enum.Parse(typeof(CardTypes), filename);
+
+           // return cardType;
+        }
+
+        public void Update(MouseState ms, GameTime gameTime)
+        {
+            if (bean)
+            {
+                if (playerCount != Players.Length)
+                {
+                    Players = new Player[playerCount];
+                }
+                for (int i = 0; i < playerCount; i++)
+                {
+                    Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
+                    Players[i].PositionArea = charPostitions;
+                    Players[i].currentTileIndex = 1;
                 }
 
-                if (yesButton.IsClicked)
-                {
-                    CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
-                    CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
-
-                    int i = CurrentPlayer.properties.Count - 1;
-                    BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
-                    Properties.Remove(CurrentPlayer.Position);
-
-                    #region Railroads
-                    if (CurrentPlayer.mostRecentPurchase().isRailroad)
-                    {
-                        CurrentPlayer.railroadCounter++;
-
-                        for (int j = 0; j < CurrentPlayer.properties.Count; j++)
-                        {
-                            if (CurrentPlayer.properties[j].isRailroad)
-                            {
-                                if (CurrentPlayer.railroadCounter < 3)
-                                {
-                                    CurrentPlayer.properties[j].Rent = 25 * CurrentPlayer.railroadCounter;
-                                }
-                                else
-                                {
-                                    CurrentPlayer.properties[j].Rent = 100 * (CurrentPlayer.railroadCounter - 2);
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-
-                    #region Utility
-
-                    if (CurrentPlayer.mostRecentPurchase().isUtility)
-                    {
-                        CurrentPlayer.utillityCounter++;
-
-                        if (CurrentPlayer.utillityCounter < 2)
-                        {
-                            CurrentPlayer.mostRecentPurchase().Rent = 4;
-                        }
-                        else
-                        {
-                            for (int k = 0; k < CurrentPlayer.properties.Count; k++)
-                            {
-                                if (CurrentPlayer.properties[k].isUtility)
-                                {
-                                    CurrentPlayer.properties[k].Rent = 10;
-                                }
-                            }
-                        }
-                    }
-
-                    #endregion
-
-                    #region Property Placement
-                    if (CurrentPlayer.properties.Count == 1)
-                    {
-                        CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);
-                    }
-                    else
-                    {
-                        int temp = 1500;
-                        int temp2 = 690;
-
-                        if (CurrentPlayer.properties.Count % 6 == 0)
-                        {
-                            temp2 = CurrentPlayer.properties[i - 1].Hitbox.Y + 100;
-                            temp = 1500;
-                            CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
-                        }
+                CurrentPlayer = Players[0];
 
 
-                        temp += ((CurrentPlayer.properties.Count % 5 - 1) * 65);
-                        if (CurrentPlayer.properties.Count % 5 < 4)
-                        {
-                            temp2 -= (CurrentPlayer.properties.Count % 5 - 1) * 10;
-                        }
-                        else
-                        {
-                            temp2 += (CurrentPlayer.properties.Count % 5 - 4) * 10;
-                        }
-
-                        CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, temp2, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
-                        CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
-                    }
-
-                    #endregion
-
-                    if (currentPlayerIndex + 1 < playerCount)
-                    {
-                        currentPlayerIndex++;
-                    }
-                    else
-                    {
-                        currentPlayerIndex = 0;
-                    }
-
-                    CurrentPlayer = Players[currentPlayerIndex];
-
-                    rollDice = true;
-                    itsMoneyTime = false;
-                    diceFlashing = true;
-                    moneyStolenOnce = false;
+                Players[0].Tint = Color.Purple;
+                ;
+                bean = false;
 
 
-                }
 
             }
 
-            //rent
-            else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
+            #region Property/Testing
+
+            if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
             {
-                Property temp = BoughtProperties[CurrentPlayer.Position];
+                Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
+            }
 
-                bool temp2 = false;
+            //if (gameTime.TotalGameTime - TESTINGpreviousTime >= TESTINGinterval)
+            //{
+            //    CurrentPlayer.Position = charPostitions[TESTINGCounter];
+            //    TESTINGCounter++;
+            //    TESTINGpreviousTime = gameTime.TotalGameTime;
+            //}
 
-                for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+            #endregion
+
+            for (int i = 0; i < Players.Length; i++)
+            {
+                if (Players[i].Money == 0)
                 {
-                    if (temp == CurrentPlayer.properties[i])
+                    //game over
+                }
+            }
+
+            CurrentPlayer.Update();
+            noButton.Update(ms, true);
+            yesButton.Update(ms, true);
+
+            if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
+            {
+                diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
+                previousTime = gameTime.TotalGameTime;
+            }
+
+            #region DiceRolling
+
+            if (rollDice)
+            {
+                if (diceMoving)
+                {
+                    ;
+                    if (dice2.dest.X != 24)
                     {
-                        RedEatsNoTerrarian = true;
+                        dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
+                        dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
+
+                        dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
+                        dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
+
+                        dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
+                        dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
+
+                        dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
+                        dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
+                    }
+                    else
+                    {
+                        diceMoving = false;
+                        darkenScreen = false;
+                        diceRolling = false;
+                        characterMoving = true;
+                        diceFlashing = false;
+                        rollDice = false;
+                    }
+                }
+
+                diceOnBoard1.Update(ms);
+
+                if (diceOnBoard1.IsClicked(ms))
+                {
+                    diceRolling = true;
+                    darkenScreen = true;
+                }
+
+                if (diceRolling)
+                {
+                    diceFlashing = false;
+                    showingDice = true;
+                    dice1.Update(gameTime, true);
+                    dice2.Update(gameTime, true);
+
+                    rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
+                    target = rollValue + (CurrentPlayer.currentTileIndex);
+
+                    if (dice1.stopped)
+                    {
+                        diceMoving = true;
+                    }
+                }
+
+
+            }
+            #endregion
+
+            #region Movement
+            if (characterMoving)
+            {
+                // do this once when you roll
+
+                if (target >= 40)
+                {
+                    target %= 40;
+                    shouldMove = true;
+                }
+
+                if (CurrentPlayer.currentTileIndex >= 40)
+                {
+                    CurrentPlayer.currentTileIndex %= 40;
+                }
+
+                if (CurrentPlayer.currentTileIndex < target || shouldMove)
+                {
+                    Console.WriteLine($"Roll Val + Pos = {target}");
+                    Console.WriteLine($"Roll Val = {rollValue}");
+                    Console.WriteLine($"Pos = {CurrentPlayer.currentTileIndex}");
+
+                    val = charPostitions[CurrentPlayer.currentTileIndex];
+
+                    if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
+                    {
+                        //CurrentPlayer.Position = Vector2.Lerp(CurrentPlayer.Position, val, .1f);
+
+                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
+                        CurrentPlayer.currentTileIndex++;
+                        //urrentPlayer.currentTileIndex++;
+                        tokenMovingTime = gameTime.TotalGameTime;
+                    }
+                }
+                else
+                {
+                    characterMoving = false;
+                    itsMoneyTime = true;
+                    showingDice = false;
+
+                    tokenMovingTime = TimeSpan.Zero;
+                    shouldMove = false;
+                    dice1.Restart();
+                    dice2.Restart();
+
+                    dice1.dest.Width = 128;
+                    dice1.dest.Height = 128;
+                    dice1.dest.X = 800;
+                    dice1.dest.Y = 430;
+
+                    dice2.dest.X = 600;
+                    dice2.dest.Y = 430;
+                    dice2.dest.Width = dice1.dest.Width;
+                    dice2.dest.Height = dice1.dest.Height;
+                }
+
+                if (CurrentPlayer.currentTileIndex == target)
+                {
+                    shouldMove = false;
+                }
+            }
+            #endregion
+
+            if (itsMoneyTime)
+            {
+                //taxes
+                if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
+                {
+                    CurrentPlayer.Money -= 200;
+                    moneyStolenOnce = true;
+                }
+
+                else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
+                {
+                    CurrentPlayer.Money -= 100;
+                    moneyStolenOnce = true;
+                }
+                //taxes
+
+
+                //buying
+                if (Properties.ContainsKey(CurrentPlayer.Position))
+                {
+                    if (noButton.IsClicked)
+                    {
                         if (currentPlayerIndex + 1 < playerCount)
                         {
                             currentPlayerIndex++;
@@ -659,227 +634,366 @@ namespace Capitalism
                         itsMoneyTime = false;
                         diceFlashing = true;
                         moneyStolenOnce = false;
-                        temp2 = true;
                     }
-                }
-                if (!temp2)
-                {
-                    for (int i = 0; i < Players.Length; i++)
+
+                    if (yesButton.IsClicked)
                     {
-                        if (Players[i] != CurrentPlayer && RedEatsNoTerrarian)
+                        CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
+                        CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
+
+                        int i = CurrentPlayer.properties.Count - 1;
+                        BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
+                        Properties.Remove(CurrentPlayer.Position);
+
+                        #region Railroads
+                        if (CurrentPlayer.mostRecentPurchase().isRailroad)
                         {
-                            for (int j = 0; j < Players[i].properties.Count; j++)
+                            CurrentPlayer.railroadCounter++;
+
+                            for (int j = 0; j < CurrentPlayer.properties.Count; j++)
                             {
-                                if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
+                                if (CurrentPlayer.properties[j].isRailroad)
                                 {
-                                    if (BoughtProperties[CurrentPlayer.Position].isUtility)
+                                    if (CurrentPlayer.railroadCounter < 3)
                                     {
-                                        CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * rollValue;
-                                        Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * rollValue; ;
+                                        CurrentPlayer.properties[j].Rent = 25 * CurrentPlayer.railroadCounter;
                                     }
                                     else
                                     {
-                                        CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
-                                        Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                        CurrentPlayer.properties[j].Rent = 100 * (CurrentPlayer.railroadCounter - 2);
                                     }
+                                }
+                            }
+                        }
+                        #endregion
 
-                                    RedEatsNoTerrarian = false;
+                        #region Utility
 
-                                    if (currentPlayerIndex + 1 < playerCount)
+                        if (CurrentPlayer.mostRecentPurchase().isUtility)
+                        {
+                            CurrentPlayer.utillityCounter++;
+
+                            if (CurrentPlayer.utillityCounter < 2)
+                            {
+                                CurrentPlayer.mostRecentPurchase().Rent = 4;
+                            }
+                            else
+                            {
+                                for (int k = 0; k < CurrentPlayer.properties.Count; k++)
+                                {
+                                    if (CurrentPlayer.properties[k].isUtility)
                                     {
-                                        currentPlayerIndex++;
+                                        CurrentPlayer.properties[k].Rent = 10;
                                     }
-                                    else
-                                    {
-                                        currentPlayerIndex = 0;
-                                    }
-
-                                    CurrentPlayer = Players[currentPlayerIndex];
-
-                                    rollDice = true;
-                                    itsMoneyTime = false;
-                                    diceFlashing = true;
-                                    moneyStolenOnce = false;
-                                    break;
                                 }
                             }
                         }
 
+                        #endregion
+
+                        #region Property Placement
+                        if (CurrentPlayer.properties.Count == 1)
+                        {
+                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);
+                        }
+                        else
+                        {
+                            int temp = 1500;
+                            int temp2 = 690;
+
+                            if (CurrentPlayer.properties.Count % 6 == 0)
+                            {
+                                temp2 = CurrentPlayer.properties[i - 1].Hitbox.Y + 100;
+                                temp = 1500;
+                                CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
+                            }
+
+
+                            temp += ((CurrentPlayer.properties.Count % 5 - 1) * 65);
+                            if (CurrentPlayer.properties.Count % 5 < 4)
+                            {
+                                temp2 -= (CurrentPlayer.properties.Count % 5 - 1) * 10;
+                            }
+                            else
+                            {
+                                temp2 += (CurrentPlayer.properties.Count % 5 - 4) * 10;
+                            }
+
+                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, temp2, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
+                            CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
+                        }
+
+                        #endregion
+
+                        if (currentPlayerIndex + 1 < playerCount)
+                        {
+                            currentPlayerIndex++;
+                        }
+                        else
+                        {
+                            currentPlayerIndex = 0;
+                        }
+
+                        CurrentPlayer = Players[currentPlayerIndex];
+
+                        rollDice = true;
+                        itsMoneyTime = false;
+                        diceFlashing = true;
+                        moneyStolenOnce = false;
+
+
+                    }
+
+                }
+
+                //rent
+                else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
+                {
+                    Property temp = BoughtProperties[CurrentPlayer.Position];
+
+                    bool temp2 = false;
+
+                    for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+                    {
+                        if (temp == CurrentPlayer.properties[i])
+                        {
+                            RedEatsNoTerrarian = true;
+                            if (currentPlayerIndex + 1 < playerCount)
+                            {
+                                currentPlayerIndex++;
+                            }
+                            else
+                            {
+                                currentPlayerIndex = 0;
+                            }
+
+                            CurrentPlayer = Players[currentPlayerIndex];
+
+                            rollDice = true;
+                            itsMoneyTime = false;
+                            diceFlashing = true;
+                            moneyStolenOnce = false;
+                            temp2 = true;
+                        }
+                    }
+                    if (!temp2)
+                    {
+                        for (int i = 0; i < Players.Length; i++)
+                        {
+                            if (Players[i] != CurrentPlayer && RedEatsNoTerrarian)
+                            {
+                                for (int j = 0; j < Players[i].properties.Count; j++)
+                                {
+                                    if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
+                                    {
+                                        if (BoughtProperties[CurrentPlayer.Position].isUtility)
+                                        {
+                                            CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * rollValue;
+                                            Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * rollValue; ;
+                                        }
+                                        else
+                                        {
+                                            CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
+                                            Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                        }
+
+                                        RedEatsNoTerrarian = false;
+
+                                        if (currentPlayerIndex + 1 < playerCount)
+                                        {
+                                            currentPlayerIndex++;
+                                        }
+                                        else
+                                        {
+                                            currentPlayerIndex = 0;
+                                        }
+
+                                        CurrentPlayer = Players[currentPlayerIndex];
+
+                                        rollDice = true;
+                                        itsMoneyTime = false;
+                                        diceFlashing = true;
+                                        moneyStolenOnce = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
                     }
                 }
-            }
 
-            else
-            {
-                RedEatsNoTerrarian = true;
-                if (currentPlayerIndex + 1 < playerCount)
-                {
-                    currentPlayerIndex++;
-                }
                 else
                 {
-                    currentPlayerIndex = 0;
+                    RedEatsNoTerrarian = true;
+                    if (currentPlayerIndex + 1 < playerCount)
+                    {
+                        currentPlayerIndex++;
+                    }
+                    else
+                    {
+                        currentPlayerIndex = 0;
+                    }
+
+                    CurrentPlayer = Players[currentPlayerIndex];
+
+                    rollDice = true;
+                    itsMoneyTime = false;
+                    diceFlashing = true;
+                    moneyStolenOnce = false;
                 }
 
-                CurrentPlayer = Players[currentPlayerIndex];
-
-                rollDice = true;
-                itsMoneyTime = false;
-                diceFlashing = true;
-                moneyStolenOnce = false;
-            }
-
-            // loop over all properties
+                // loop over all properties
 
 
 
-            for (int i = 0; i < CurrentPlayer.properties.Count; i++)
-            {
-                if (CurrentPlayer.properties[i].Hitbox.Contains(ms.Position))
+                for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
-                    // mouse was inside the hitbox for property
-                    //Is any other property that the player owns expanded
-
-
-
-                    if (!CurrentPlayer.properties[i].expanded)
+                    if (CurrentPlayer.properties[i].Hitbox.Contains(ms.Position))
                     {
-                        bool expand = true;
-                        foreach (Property prop in CurrentPlayer.properties)
+                        // mouse was inside the hitbox for property
+                        //Is any other property that the player owns expanded
+
+
+
+                        if (!CurrentPlayer.properties[i].expanded)
                         {
-                            if (prop.expanded)
+                            bool expand = true;
+                            foreach (Property prop in CurrentPlayer.properties)
                             {
-                                expand = false;
+                                if (prop.expanded)
+                                {
+                                    expand = false;
+                                }
+                            }
+
+                            if (expand)
+                            {
+                                CurrentPlayer.properties[i].Expand();
                             }
                         }
 
-                        if (expand)
-                        {
-                            CurrentPlayer.properties[i].Expand();
-                        }
                     }
-
-                }
-                else
-                {
-                    if (CurrentPlayer.properties[i].expanded)
+                    else
                     {
-                        CurrentPlayer.properties[i].Shrink();
+                        if (CurrentPlayer.properties[i].expanded)
+                        {
+                            CurrentPlayer.properties[i].Shrink();
+                        }
+                        //reset the height and width if it goes from true to false
                     }
-                    //reset the height and width if it goes from true to false
+
                 }
 
+
             }
 
-
+            lms = ms;
         }
 
-        lms = ms;
-    }
-
-    public void DarkenScreen(SpriteBatch spritebatch)
-    {
-        spritebatch.Draw(pixel, new Rectangle(0, 0, 130000, 478150), new Color(Color.Black, 0.5f));
-    }
-
-
-
-    public void Draw(SpriteBatch batch)
-    {
-        batch.Draw(Purchase, new Vector2(27, 640), Color.White);
-
-        batch.Draw(PlayerTitle, new Vector2(1506, 0), Color.White);
-        noButton.Draw(batch);
-        yesButton.Draw(batch);
-
-        batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
-
-        if (CurrentPlayer != null && Properties.ContainsKey(CurrentPlayer.Position))
+        public void DarkenScreen(SpriteBatch spritebatch)
         {
-            prop = Properties[CurrentPlayer.Position];
-        }
-        else
-        {
-            prop = null;
+            spritebatch.Draw(pixel, new Rectangle(0, 0, 130000, 478150), new Color(Color.Black, 0.5f));
         }
 
-        if (prop != null)
-        {
-            batch.Draw(prop.Image, new Rectangle(91, 265, 226, 279), Color.White);
-        }
 
-        if (CurrentPlayer != null)
+
+        public void Draw(SpriteBatch batch)
         {
-            for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+            batch.Draw(Purchase, new Vector2(27, 640), Color.White);
+
+            batch.Draw(PlayerTitle, new Vector2(1506, 0), Color.White);
+            noButton.Draw(batch);
+            yesButton.Draw(batch);
+
+            batch.Draw(Frame, position: new Vector2(25, 200), color: Color.White);
+
+            if (CurrentPlayer != null && Properties.ContainsKey(CurrentPlayer.Position))
             {
-                CurrentPlayer.properties[i].Draw(batch);
+                prop = Properties[CurrentPlayer.Position];
+            }
+            else
+            {
+                prop = null;
             }
 
-            foreach (Property prop in CurrentPlayer.properties)
+            if (prop != null)
             {
-                if (prop.expanded)
+                batch.Draw(prop.Image, new Rectangle(91, 265, 226, 279), Color.White);
+            }
+
+            if (CurrentPlayer != null)
+            {
+                for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
-                    prop.Draw(batch);
+                    CurrentPlayer.properties[i].Draw(batch);
                 }
+
+                foreach (Property prop in CurrentPlayer.properties)
+                {
+                    if (prop.expanded)
+                    {
+                        prop.Draw(batch);
+                    }
+                }
+
+                //properties
+                if (CurrentPlayer.Token == "Car")
+                {
+                    batch.Draw(carFrame, new Vector2(1496, 200), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Boat")
+                {
+                    batch.Draw(boatFrame, new Vector2(1515, 200), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Boot")
+                {
+                    batch.Draw(bootFrame, new Vector2(1515, 200), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Cat")
+                {
+                    batch.Draw(catFrame, new Vector2(1515, 200), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Dog")
+                {
+                    batch.Draw(dogFrame, new Vector2(1475, 200), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Duck")
+                {
+                    batch.Draw(duckFrame, new Vector2(1506, 200), Color.White);
+                }
+                else if (CurrentPlayer.Token == "Hat")
+                {
+                    batch.Draw(hatFrame, new Vector2(1515, 200), Color.White);
+                }
+
+                batch.DrawString(font, $"M : {CurrentPlayer.Money}", new Vector2(1610, 610), Color.White);
+
             }
 
-            //properties
-            if (CurrentPlayer.Token == "Car")
+            CurrentPlayer?.Draw(batch);
+
+            for (int i = 0; i < Players.Length; i++)
             {
-                batch.Draw(carFrame, new Vector2(1496, 200), Color.White);
+
+                Players[i]?.Draw(batch);
             }
-            else if (CurrentPlayer.Token == "Boat")
+            ;
+            diceOnBoard1.Draw(batch);
+
+
+            if (darkenScreen)
             {
-                batch.Draw(boatFrame, new Vector2(1515, 200), Color.White);
-            }
-            else if (CurrentPlayer.Token == "Boot")
-            {
-                batch.Draw(bootFrame, new Vector2(1515, 200), Color.White);
-            }
-            else if (CurrentPlayer.Token == "Cat")
-            {
-                batch.Draw(catFrame, new Vector2(1515, 200), Color.White);
-            }
-            else if (CurrentPlayer.Token == "Dog")
-            {
-                batch.Draw(dogFrame, new Vector2(1475, 200), Color.White);
-            }
-            else if (CurrentPlayer.Token == "Duck")
-            {
-                batch.Draw(duckFrame, new Vector2(1506, 200), Color.White);
-            }
-            else if (CurrentPlayer.Token == "Hat")
-            {
-                batch.Draw(hatFrame, new Vector2(1515, 200), Color.White);
+                DarkenScreen(batch);
             }
 
-            batch.DrawString(font, $"M : {CurrentPlayer.Money}", new Vector2(1610, 610), Color.White);
+            if (showingDice)
+            {
+                dice1.Draw(batch);
+                dice2.Draw(batch);
+            }
+
 
         }
-
-        CurrentPlayer?.Draw(batch);
-
-        for (int i = 0; i < Players.Length; i++)
-        {
-
-            Players[i]?.Draw(batch);
-        }
-        ;
-        diceOnBoard1.Draw(batch);
-
-
-        if (darkenScreen)
-        {
-            DarkenScreen(batch);
-        }
-
-        if (showingDice)
-        {
-            dice1.Draw(batch);
-            dice2.Draw(batch);
-        }
-
-
     }
-}
 }
