@@ -134,7 +134,109 @@ namespace Capitalism
             return new Queue<T>(queue.Shuffle());
         }
 
+        static private CardTypes GetCardType(string filename)
+        {
+            // CardTypes cardType;
 
+            if (filename.Contains("goToGo"))
+            {
+                return CardTypes.GoToGo;
+            }
+            else if (filename.Contains("goToJail"))
+            {
+                return CardTypes.GoInJail;
+            }
+            else if (filename.Contains("goTo"))
+            {
+                return CardTypes.Advance;
+            }
+            else if (filename.Contains("goBack3"))
+            {
+                return CardTypes.GoBack3;
+            }
+            else if (filename.Contains("bankPays") || filename.Contains("building&Loan"))
+            {
+                return CardTypes.YouStealBankCash;
+            }
+            else if (filename.Contains("generalRepairs"))
+            {
+                return CardTypes.HouseRepair;
+            }
+            else if (filename.Contains("chairman"))
+            {
+                return CardTypes.GiveToOthers;
+            }
+            else if (filename.Contains("getOutOFJail"))
+            {
+                return CardTypes.GetOutOfJail;
+            }
+            else if (filename.Contains("payPoorTax"))
+            {
+                return CardTypes.BankCollectsMoney;
+            }
+
+            return CardTypes.Invalid;
+            //var cardType = Enum.Parse(typeof(CardTypes), filename);
+
+            // return cardType;
+        }
+
+        static private Property Destination(CardTypes cardTypes, string filename, Dictionary<Vector2, Property> Properties)
+        {
+            if (cardTypes == CardTypes.Advance)
+            {
+                string propertyName = null;
+
+                if (filename.Contains("Boardwalk"))
+                {
+                    propertyName = "Boardwalk";
+                }
+                else if (filename.Contains("Illinois"))
+                {
+                    propertyName = "IllinoisAve";
+                }
+                else if (filename.Contains("NearestRail"))
+                {
+                    //good luck
+                }
+                else if (filename.Contains("NearestUtillity"))
+                { 
+                    //good luck
+                }
+                else if (filename.Contains("ReadingRailroad"))
+                {
+                    propertyName = "ReadingRailroad";
+                }
+                else if (filename.Contains("StCharles"))
+                {
+                    propertyName = "StCharlesPlace";
+                }
+
+                foreach (var kvp in Properties)
+                {
+                    if (kvp.Value.Image.Name == propertyName)
+                    {
+                        return kvp.Value;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        static private int Cash(CardTypes cardTypes, string filename)
+        {
+            if (cardTypes == CardTypes.BankCollectsMoney)
+            {
+                //lose money
+                
+            }
+            else if (cardTypes == CardTypes.YouStealBankCash)
+            { 
+                //gain money
+                //bank pays 50, building&Loan, 
+            }
+        }
         #endregion
 
         #region Textures
@@ -310,16 +412,6 @@ namespace Capitalism
 
             // load content for chance cards
 
-            for (int i = 0; i < chanceFileNames.Length; i++)
-            {
-                string filename = chanceFileNames[i];
-                Texture2D text = Content.Load<Texture2D>(filename);
-
-                chanceCards.Enqueue(new ChanceCards(text, text.Bounds, Color.White, GetCardType(filename)));
-            }
-
-            chanceCards = ShuffleQueue(chanceCards);
-
             #region Properties
 
             Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, 10, 30, 90, 160, 250, 50, 50, Content));
@@ -362,6 +454,24 @@ namespace Capitalism
 
             #endregion
 
+            for (int i = 0; i < chanceFileNames.Length; i++)
+            {
+                string filename = chanceFileNames[i];
+                Texture2D text = Content.Load<Texture2D>(filename);
+
+                CardTypes cardType = GetCardType(filename);
+
+
+                Property property = null;
+                
+                chanceCards.Enqueue(new ChanceCards(text, text.Bounds, Color.White, cardType, Destination(cardType, filename, Properties),  /*ask about order after*/));
+            }
+
+            chanceCards = ShuffleQueue(chanceCards);
+            ;
+
+            
+
             Frame = Content.Load<Texture2D>("Frame");
             Yes = Content.Load<Texture2D>("Yes");
             No = Content.Load<Texture2D>("No");
@@ -371,48 +481,6 @@ namespace Capitalism
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White);
         }
 
-        private CardTypes GetCardType(string filename)
-        {
-            // CardTypes cardType;
-
-            if (filename.Contains("goToGo"))
-            {
-                return CardTypes.GoToGo;
-            }
-            else if (filename.Contains("goToJail"))
-            {
-                return CardTypes.GoInJail;
-            }
-            else if (filename.Contains("goTo"))
-            {
-                return CardTypes.Advance;
-            }
-            else if (filename.Contains("goBack3"))
-            {
-                return CardTypes.GoBack3;
-            }
-            else if (filename.Contains("bankPays") || filename.Contains("building&Loan"))
-            {
-                return CardTypes.YouStealBankCash;
-            }
-            else if (filename.Contains("generalRepairs"))
-            {
-                return CardTypes.HouseRepair;
-            }
-            else if (filename.Contains("chairman"))
-            {
-                return CardTypes.GiveToOthers;
-            }
-            else if (filename.Contains("getOutOFJail"))
-            {
-                return CardTypes.GetOutOfJail;
-            }
-
-
-            //var cardType = Enum.Parse(typeof(CardTypes), filename);
-
-           // return cardType;
-        }
 
         public void Update(MouseState ms, GameTime gameTime)
         {
@@ -435,9 +503,6 @@ namespace Capitalism
                 Players[0].Tint = Color.Purple;
                 ;
                 bean = false;
-
-
-
             }
 
             #region Property/Testing

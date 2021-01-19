@@ -19,7 +19,8 @@ namespace Capitalism
         GetOutOfJail,
         GoInJail,
         HouseRepair,
-        GoToGo
+        GoToGo,
+        Invalid
     }
 
     public class ChanceCards
@@ -34,13 +35,13 @@ namespace Capitalism
         public Property destination;
         public int money;
 
-        public ChanceCards(Texture2D image, Rectangle hitbox, Color tint, CardTypes cardTypes, Property destination=null, int money=0)
+        public ChanceCards(Texture2D image, Rectangle hitbox, Color tint, CardTypes CardTypes, Property destination=null, int money=0)
         {
             Image = image;
             Hitbox = hitbox;
             Tint = tint;
             Position = hitbox.Location.ToVector2();
-
+            cardTypes = CardTypes;
             
         }
 
