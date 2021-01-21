@@ -166,7 +166,7 @@ namespace Capitalism
             {
                 return CardTypes.GiveToOthers;
             }
-            else if (filename.Contains("getOutOFJail"))
+            else if (filename.Contains("getOutOfJail"))
             {
                 return CardTypes.GetOutOfJail;
             }
@@ -228,14 +228,29 @@ namespace Capitalism
         {
             if (cardTypes == CardTypes.BankCollectsMoney)
             {
-                //lose money
-                
+                if (filename.Contains("payPoorTax"))
+                {
+                    return -15;
+                }
+
             }
             else if (cardTypes == CardTypes.YouStealBankCash)
-            { 
-                //gain money
-                //bank pays 50, building&Loan, 
+            {
+                if (filename.Contains("bankPays50"))
+                {
+                    return 50;
+                }
+                else if (filename.Contains("building&Loan"))
+                {
+                    return 150;
+                }
+                else if (filename.Contains(""))
+                { 
+                
+                }
             }
+
+            return -1;
         }
         #endregion
 
@@ -385,33 +400,6 @@ namespace Capitalism
             //chanceCards.Enqueue(new ChanceCards(xmasFundMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
             //chanceCards.Enqueue(new ChanceCards(youInherit100, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
 
-            string chancePath = Directory.GetCurrentDirectory();
-            int binFolderIndex = chancePath.IndexOf("bin");
-
-            string basePath = "";
-
-            for (int i = 0; i < binFolderIndex; i++)
-            {
-                basePath += chancePath[i];
-            }
-
-            var path = Path.Combine(basePath, @"Content\\Chance");
-            var files = Directory.GetFiles(path);
-
-            string[] chanceFileNames = new string[files.Length];
-            string extension = ".png";
-            int count = 0;
-            foreach (var filePath in files)
-            {
-                for (int i = path.Length + 1; i < filePath.Length - extension.Length; i++)
-                {
-                    chanceFileNames[count] += filePath[i];
-                }
-                count++;
-            }
-
-            // load content for chance cards
-
             #region Properties
 
             Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, 10, 30, 90, 160, 250, 50, 50, Content));
@@ -454,6 +442,35 @@ namespace Capitalism
 
             #endregion
 
+            #region Chance Cards
+
+            string chancePath = Directory.GetCurrentDirectory();
+            int binFolderIndex = chancePath.IndexOf("bin");
+
+            string basePath = "";
+
+            for (int i = 0; i < binFolderIndex; i++)
+            {
+                basePath += chancePath[i];
+            }
+
+            var path = Path.Combine(basePath, @"Content\\Chance");
+            var files = Directory.GetFiles(path);
+
+            string[] chanceFileNames = new string[files.Length];
+            string extension = ".png";
+            int count = 0;
+            foreach (var filePath in files)
+            {
+                for (int i = path.Length + 1; i < filePath.Length - extension.Length; i++)
+                {
+                    chanceFileNames[count] += filePath[i];
+                }
+                count++;
+            }
+
+
+
             for (int i = 0; i < chanceFileNames.Length; i++)
             {
                 string filename = chanceFileNames[i];
@@ -461,16 +478,15 @@ namespace Capitalism
 
                 CardTypes cardType = GetCardType(filename);
 
-
                 Property property = null;
                 
-                chanceCards.Enqueue(new ChanceCards(text, text.Bounds, Color.White, cardType, Destination(cardType, filename, Properties),  /*ask about order after*/));
+                chanceCards.Enqueue(new ChanceCards(text, text.Bounds, Color.White, cardType, Destination(cardType, filename, Properties), Cash(cardType, filename)  /*ask about order after*/));
+                ;
             }
-
+            
             chanceCards = ShuffleQueue(chanceCards);
             ;
-
-            
+            #endregion
 
             Frame = Content.Load<Texture2D>("Frame");
             Yes = Content.Load<Texture2D>("Yes");
@@ -498,7 +514,6 @@ namespace Capitalism
                 }
 
                 CurrentPlayer = Players[0];
-
 
                 Players[0].Tint = Color.Purple;
                 ;
@@ -662,6 +677,8 @@ namespace Capitalism
             }
             #endregion
 
+            #region Financial stuff 
+
             if (itsMoneyTime)
             {
                 //taxes
@@ -678,8 +695,7 @@ namespace Capitalism
                 }
                 //taxes
 
-
-                //buying
+                #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
                 {
                     if (noButton.IsClicked)
@@ -811,7 +827,9 @@ namespace Capitalism
 
                 }
 
-                //rent
+                #endregion
+
+                #region Rent
                 else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
                 {
                     Property temp = BoughtProperties[CurrentPlayer.Position];
@@ -883,10 +901,34 @@ namespace Capitalism
                                     }
                                 }
                             }
-
                         }
                     }
                 }
+
+                #endregion
+
+                #region Chance Card
+                else if (CurrentPlayer.currentTileIndex == 12 || CurrentPlayer.currentTileIndex == 22 || CurrentPlayer.currentTileIndex == 36)
+                {
+                    ChanceCards chanceCard = chanceCards.Dequeue();
+
+                    if (chanceCard.money > 0)
+                    {
+                        CurrentPlayer.Money += chanceCard.money;
+                    }
+                    else if (chanceCard.destination != null)
+                    {
+                        CurrentPlayer.Position = chanceCard.destination.Position;
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GoToGo)
+                    {
+                        CurrentPlayer.Position = ;
+                    }
+                
+
+                    chanceCards.Enqueue(chanceCard);
+                }
+                #endregion
 
                 else
                 {
@@ -952,6 +994,7 @@ namespace Capitalism
 
 
             }
+            #endregion
 
             lms = ms;
         }

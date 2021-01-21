@@ -30,7 +30,7 @@ namespace Capitalism
         public Color Tint;
         public Rectangle Hitbox;
 
-        CardTypes cardTypes;
+        public CardTypes cardTypes;
 
         public Property destination;
         public int money;
@@ -42,7 +42,8 @@ namespace Capitalism
             Tint = tint;
             Position = hitbox.Location.ToVector2();
             cardTypes = CardTypes;
-            
+            this.destination = destination;
+            this.money = money;
         }
 
 
