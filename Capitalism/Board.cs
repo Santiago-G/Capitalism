@@ -29,6 +29,7 @@ namespace Capitalism
         bool diceFlashing = true;
         bool moneyStolenOnce = false;
         bool RedEatsNoTerrarian = true;
+        bool drawedACard = false;
         //bool firstLap = true;
 
         Property prop;
@@ -154,9 +155,9 @@ namespace Capitalism
             {
                 return CardTypes.GoBack3;
             }
-            else if (filename.Contains("bankPays") || filename.Contains("building&Loan"))
+            else if (filename.Contains("bankPays") || filename.Contains("building&Loan") || filename.Contains("payPoorTax"))
             {
-                return CardTypes.YouStealBankCash;
+                return CardTypes.BankMoney;
             }
             else if (filename.Contains("generalRepairs"))
             {
@@ -170,10 +171,7 @@ namespace Capitalism
             {
                 return CardTypes.GetOutOfJail;
             }
-            else if (filename.Contains("payPoorTax"))
-            {
-                return CardTypes.BankCollectsMoney;
-            }
+
 
             return CardTypes.Invalid;
             //var cardType = Enum.Parse(typeof(CardTypes), filename);
@@ -181,7 +179,7 @@ namespace Capitalism
             // return cardType;
         }
 
-        static private Property Destination(CardTypes cardTypes, string filename, Dictionary<Vector2, Property> Properties)
+        static private Vector2 Destination(CardTypes cardTypes, string filename, Vector2[] positions)
         {
             if (cardTypes == CardTypes.Advance)
             {
@@ -189,11 +187,11 @@ namespace Capitalism
 
                 if (filename.Contains("Boardwalk"))
                 {
-                    propertyName = "Boardwalk";
+                    return positions[39];
                 }
                 else if (filename.Contains("Illinois"))
                 {
-                    propertyName = "IllinoisAve";
+                    return positions[24];
                 }
                 else if (filename.Contains("NearestRail"))
                 {
@@ -205,38 +203,26 @@ namespace Capitalism
                 }
                 else if (filename.Contains("ReadingRailroad"))
                 {
-                    propertyName = "ReadingRailroad";
+                    return positions[5];
                 }
                 else if (filename.Contains("StCharles"))
                 {
-                    propertyName = "StCharlesPlace";
-                }
-
-                foreach (var kvp in Properties)
-                {
-                    if (kvp.Value.Image.Name == propertyName)
-                    {
-                        return kvp.Value;
-                    }
+                    return positions[11];
                 }
             }
 
-            return null;
+            return Vector2.Zero;
         }
 
         static private int Cash(CardTypes cardTypes, string filename)
         {
-            if (cardTypes == CardTypes.BankCollectsMoney)
+            if (cardTypes == CardTypes.BankMoney)
             {
                 if (filename.Contains("payPoorTax"))
                 {
                     return -15;
                 }
-
-            }
-            else if (cardTypes == CardTypes.YouStealBankCash)
-            {
-                if (filename.Contains("bankPays50"))
+                else if (filename.Contains("bankPays50"))
                 {
                     return 50;
                 }
@@ -244,13 +230,14 @@ namespace Capitalism
                 {
                     return 150;
                 }
-                else if (filename.Contains(""))
-                { 
-                
-                }
             }
 
-            return -1;
+            if (cardTypes == CardTypes.GiveToOthers)
+            {
+                return -50;
+            }
+
+            return 0;
         }
         #endregion
 
@@ -583,6 +570,8 @@ namespace Capitalism
                         characterMoving = true;
                         diceFlashing = false;
                         rollDice = false;
+
+                        
                     }
                 }
 
@@ -602,7 +591,8 @@ namespace Capitalism
                     dice2.Update(gameTime, true);
 
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
-                    target = rollValue + (CurrentPlayer.currentTileIndex);
+                    //target = rollValue + (CurrentPlayer.currentTileIndex);
+                    target = 8;
 
                     if (dice1.stopped)
                     {
@@ -715,6 +705,7 @@ namespace Capitalism
                         itsMoneyTime = false;
                         diceFlashing = true;
                         moneyStolenOnce = false;
+                        drawedACard = false;
                     }
 
                     if (yesButton.IsClicked)
@@ -821,6 +812,7 @@ namespace Capitalism
                         itsMoneyTime = false;
                         diceFlashing = true;
                         moneyStolenOnce = false;
+                        drawedACard = false;
 
 
                     }
@@ -857,6 +849,7 @@ namespace Capitalism
                             diceFlashing = true;
                             moneyStolenOnce = false;
                             temp2 = true;
+                            drawedACard = false;
                         }
                     }
                     if (!temp2)
@@ -897,6 +890,7 @@ namespace Capitalism
                                         itsMoneyTime = false;
                                         diceFlashing = true;
                                         moneyStolenOnce = false;
+                                        drawedACard = false;
                                         break;
                                     }
                                 }
@@ -908,11 +902,13 @@ namespace Capitalism
                 #endregion
 
                 #region Chance Card
-                else if (CurrentPlayer.currentTileIndex == 12 || CurrentPlayer.currentTileIndex == 22 || CurrentPlayer.currentTileIndex == 36)
+
+
+                if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 36) && !drawedACard)
                 {
                     ChanceCards chanceCard = chanceCards.Dequeue();
 
-                    if (chanceCard.money > 0)
+                    if (chanceCard.money != 0)
                     {
                         CurrentPlayer.Money += chanceCard.money;
                     }
@@ -922,11 +918,39 @@ namespace Capitalism
                     }
                     else if (chanceCard.cardTypes == CardTypes.GoToGo)
                     {
-                        CurrentPlayer.Position = ;
+                        CurrentPlayer.Position = chanceCard.destination.Position;
                     }
-                
+                    else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
+                    { 
+                        //out of jail
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
+                    {
+                        for (int i = 0; i < playerCount; i++)
+                        {
+                            if (Players[i] != CurrentPlayer)
+                            {
+                                Players[i].Money += 50;
+                            }
+                        }
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GoBack3)
+                    {
+                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GoInJail)
+                    {
+                        //jail
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.HouseRepair)
+                    {
+                        //houses
+                    }
+
+
 
                     chanceCards.Enqueue(chanceCard);
+                    drawedACard = true;
                 }
                 #endregion
 
@@ -948,6 +972,7 @@ namespace Capitalism
                     itsMoneyTime = false;
                     diceFlashing = true;
                     moneyStolenOnce = false;
+                    drawedACard = false;
                 }
 
                 // loop over all properties

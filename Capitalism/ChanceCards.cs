@@ -11,8 +11,7 @@ namespace Capitalism
 
     public enum CardTypes
     {
-        BankCollectsMoney,
-        YouStealBankCash,
+        BankMoney,
         GiveToOthers,
         Advance,
         GoBack3,
