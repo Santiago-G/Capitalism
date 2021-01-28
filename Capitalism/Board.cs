@@ -30,8 +30,10 @@ namespace Capitalism
         bool moneyStolenOnce = false;
         bool RedEatsNoTerrarian = true;
         bool drawedACard = false;
+        bool drawChanceCards = false;
         //bool firstLap = true;
 
+        ChanceCards chanceCard;
         Property prop;
         Queue<ChanceCards> chanceCards = new Queue<ChanceCards>();
 
@@ -238,6 +240,11 @@ namespace Capitalism
             }
 
             return 0;
+        }
+
+        static float Lerp(float start_value, float end_value, float pct)
+        {
+            return (start_value + (end_value - start_value) * pct);
         }
         #endregion
 
@@ -467,7 +474,7 @@ namespace Capitalism
 
                 Property property = null;
                 
-                chanceCards.Enqueue(new ChanceCards(text, text.Bounds, Color.White, cardType, Destination(cardType, filename, Properties), Cash(cardType, filename)  /*ask about order after*/));
+                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300,300, 100, 100), Color.White, cardType, Destination(cardType, filename, charPostitions), Cash(cardType, filename)  /*ask about order after*/));
                 ;
             }
             
@@ -906,19 +913,17 @@ namespace Capitalism
 
                 if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 36) && !drawedACard)
                 {
-                    ChanceCards chanceCard = chanceCards.Dequeue();
+                    chanceCard = chanceCards.Dequeue();
+
+                    drawChanceCards = true;
 
                     if (chanceCard.money != 0)
                     {
                         CurrentPlayer.Money += chanceCard.money;
                     }
-                    else if (chanceCard.destination != null)
+                    else if (chanceCard.destination == Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
                     {
-                        CurrentPlayer.Position = chanceCard.destination.Position;
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GoToGo)
-                    {
-                        CurrentPlayer.Position = chanceCard.destination.Position;
+                        CurrentPlayer.Position = chanceCard.destination;
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
                     { 
@@ -947,10 +952,23 @@ namespace Capitalism
                         //houses
                     }
 
-
-
                     chanceCards.Enqueue(chanceCard);
                     drawedACard = true;
+
+                    ;
+                }
+
+                if (drawChanceCards)
+                {
+                    if (chanceCard.rotation < 2 * 3.14f)
+                    {
+                        chanceCard.rotation = Lerp(chanceCard.rotation, 0.349066f, .1f);
+                    }
+                    else
+                    {
+                        drawChanceCards = false;
+                        chanceCard = null;
+                    }
                 }
                 #endregion
 
@@ -1126,7 +1144,10 @@ namespace Capitalism
                 dice2.Draw(batch);
             }
 
-
+            if (drawChanceCards)
+            {
+                chanceCard.Draw(batch);
+            }
         }
     }
 }

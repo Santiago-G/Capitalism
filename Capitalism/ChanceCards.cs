@@ -31,10 +31,11 @@ namespace Capitalism
 
         public CardTypes cardTypes;
 
-        public Property destination;
+        public Vector2 destination;
         public int money;
+        public float rotation = 0f;
 
-        public ChanceCards(Texture2D image, Rectangle hitbox, Color tint, CardTypes CardTypes, Property destination=null, int money=0)
+        public ChanceCards(Texture2D image, Rectangle hitbox, Color tint, CardTypes CardTypes, Vector2 destination, int money=0)
         {
             Image = image;
             Hitbox = hitbox;
@@ -49,7 +50,8 @@ namespace Capitalism
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Image, Hitbox, Tint);
+            //spriteBatch.Draw(Image, Hitbox, null, Tint, 0.0f, new Vector2(0,0) , null, 0);
+            spriteBatch.Draw(Image, Hitbox, null, Tint, rotation, new Vector2(Hitbox.X + (Image.Width/2), Hitbox.Y + (Image.Height/2)), SpriteEffects.None, 1);
         }
 
     }

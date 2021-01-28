@@ -20,6 +20,8 @@ namespace Capitalism
         public int railroadCounter = 0;
         public int utillityCounter = 0;
 
+        public bool GetOutOfJailFree = false;
+
         bool goMoney = true;
 
         public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * Size), (int)(Image.Height * Size));
