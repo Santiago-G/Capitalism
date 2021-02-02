@@ -51,7 +51,7 @@ namespace Capitalism
         public void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(Image, Hitbox, null, Tint, 0.0f, new Vector2(0,0) , null, 0);
-            spriteBatch.Draw(Image, Hitbox, null, Tint, rotation, new Vector2(Hitbox.X + (Image.Width/2), Hitbox.Y + (Image.Height/2)), SpriteEffects.None, 1);
+            spriteBatch.Draw(Image, Hitbox, null, Tint, rotation, new Vector2((Image.Width/2), (Image.Height/2)), SpriteEffects.None, 1);
         }
 
     }

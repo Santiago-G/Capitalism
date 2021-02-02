@@ -73,7 +73,7 @@ namespace Capitalism
 
             TheStartingScreen = new Starting_Screen(Content);
             
-            TheBoard = new Board(Content);
+            TheBoard = new Board(Content, GraphicsDevice.Viewport.Bounds);
 
 
 
@@ -120,7 +120,7 @@ namespace Capitalism
                 if (TheStartingScreen.StartingScreenFinished)
                 {
                     ChangeResolution(1870, 1048);
-
+                    TheBoard.Bounds = GraphicsDevice.Viewport.Bounds;
                     StartingScreen = false;
                 }
             }

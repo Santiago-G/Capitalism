@@ -42,6 +42,8 @@ namespace Capitalism
         Vector2 val;
         public int playerCount => SelectingPlayers.playerCount;
 
+        public Rectangle Bounds { get; set; }
+
         Vector2[] charPostitions;
         Vector2[] goPositions;
 
@@ -306,12 +308,10 @@ namespace Capitalism
         Vector2[] listOfPositions = new Vector2[40];
 
         TimeSpan previousTime = TimeSpan.Zero;
-        TimeSpan TESTINGpreviousTime = TimeSpan.Zero;
         TimeSpan tokenMovingTime = TimeSpan.Zero;
-
         TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
-        TimeSpan TESTINGinterval = TimeSpan.FromMilliseconds(500);
         TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
+        TimeSpan chanceCardPrevTime = TimeSpan.Zero;
 
         Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -332,7 +332,7 @@ namespace Capitalism
 
         int target;
 
-        public Board(ContentManager Content)
+        public Board(ContentManager Content, Rectangle bounds)
         {
             //Testing Testing Testing
             charPostitions = MakingPositions();
@@ -474,7 +474,7 @@ namespace Capitalism
 
                 Property property = null;
                 
-                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300,300, 100, 100), Color.White, cardType, Destination(cardType, filename, charPostitions), Cash(cardType, filename)  /*ask about order after*/));
+                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300,300, 190/4, 150/4), Color.White, cardType, Destination(cardType, filename, charPostitions), Cash(cardType, filename)  /*ask about order after*/));
                 ;
             }
             
@@ -489,6 +489,7 @@ namespace Capitalism
 
             noButton = new HighlightButton(No, new Vector2(326, 662), Color.White);
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White);
+            Bounds = bounds;
         }
 
 
@@ -520,13 +521,6 @@ namespace Capitalism
             {
                 Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
             }
-
-            //if (gameTime.TotalGameTime - TESTINGpreviousTime >= TESTINGinterval)
-            //{
-            //    CurrentPlayer.Position = charPostitions[TESTINGCounter];
-            //    TESTINGCounter++;
-            //    TESTINGpreviousTime = gameTime.TotalGameTime;
-            //}
 
             #endregion
 
@@ -952,22 +946,56 @@ namespace Capitalism
                         //houses
                     }
 
+                    if (CurrentPlayer.currentTileIndex == 8)
+                    {
+                        chanceCard.Hitbox.X = (int)charPostitions[8].X;
+                        chanceCard.Hitbox.Y = (int)charPostitions[8].Y;
+                    }
+                    else if (CurrentPlayer.currentTileIndex == 23)
+                    {
+                        chanceCard.Hitbox.X = (int)charPostitions[23].X;
+                        chanceCard.Hitbox.Y = (int)charPostitions[23].Y;
+                    }
+                    else 
+                    {
+                        chanceCard.Hitbox.X = (int)charPostitions[36].X;
+                        chanceCard.Hitbox.Y = (int)charPostitions[36].Y;
+                    }
+
                     chanceCards.Enqueue(chanceCard);
                     drawedACard = true;
-
-                    ;
                 }
 
                 if (drawChanceCards)
                 {
-                    if (chanceCard.rotation < 2 * 3.14f)
+
+                    if (chanceCard.rotation < 8 * 3.14f)
                     {
-                        chanceCard.rotation = Lerp(chanceCard.rotation, 0.349066f, .1f);
+                        chanceCard.rotation += .2f;
+                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width/2, .03f);
+                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height/2, .03f);
+
+                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
+                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
+                      
+                        Console.WriteLine($"{chanceCard.Hitbox}");
                     }
                     else
                     {
-                        drawChanceCards = false;
-                        chanceCard = null;
+                        chanceCardPrevTime += gameTime.ElapsedGameTime;
+
+                        //if (gameTime.TotalGameTime - chanceCardPrevTime > TimeSpan.FromSeconds(3))
+                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
+                        {
+                            chanceCardPrevTime = TimeSpan.Zero;
+                            drawChanceCards = false;
+                            chanceCard = null;
+                        }
+                        //else 
+                        //{
+                        //    //drawChanceCards = false;
+                        //    //chanceCard = null;
+                        //}
                     }
                 }
                 #endregion
