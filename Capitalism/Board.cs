@@ -474,7 +474,7 @@ namespace Capitalism
 
                 Property property = null;
                 
-                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300,300, 190/4, 150/4), Color.White, cardType, Destination(cardType, filename, charPostitions), Cash(cardType, filename)  /*ask about order after*/));
+                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300,300, 290/4, 160/4), Color.White, cardType, Destination(cardType, filename, charPostitions), Cash(cardType, filename)  /*ask about order after*/));
                 ;
             }
             
@@ -592,8 +592,8 @@ namespace Capitalism
                     dice2.Update(gameTime, true);
 
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
-                    //target = rollValue + (CurrentPlayer.currentTileIndex);
-                    target = 8;
+                    target = rollValue + (CurrentPlayer.currentTileIndex);
+                    //target = 8;
 
                     if (dice1.stopped)
                     {
@@ -641,24 +641,49 @@ namespace Capitalism
                 }
                 else
                 {
-                    characterMoving = false;
-                    itsMoneyTime = true;
-                    showingDice = false;
+                    if (dice1.DiceRollValue == dice2.DiceRollValue)
+                    {
+                        diceFlashing = true;
+                        characterMoving = false;
+                        rollDice = true;
+                        showingDice = false;
 
-                    tokenMovingTime = TimeSpan.Zero;
-                    shouldMove = false;
-                    dice1.Restart();
-                    dice2.Restart();
+                        tokenMovingTime = TimeSpan.Zero;
+                        shouldMove = false;
+                        dice1.Restart();
+                        dice2.Restart();
 
-                    dice1.dest.Width = 128;
-                    dice1.dest.Height = 128;
-                    dice1.dest.X = 800;
-                    dice1.dest.Y = 430;
+                        dice1.dest.Width = 128;
+                        dice1.dest.Height = 128;
+                        dice1.dest.X = 800;
+                        dice1.dest.Y = 430;
 
-                    dice2.dest.X = 600;
-                    dice2.dest.Y = 430;
-                    dice2.dest.Width = dice1.dest.Width;
-                    dice2.dest.Height = dice1.dest.Height;
+                        dice2.dest.X = 600;
+                        dice2.dest.Y = 430;
+                        dice2.dest.Width = dice1.dest.Width;
+                        dice2.dest.Height = dice1.dest.Height;
+                    }
+                    else 
+                    {
+                        characterMoving = false;
+                        itsMoneyTime = true;
+                        showingDice = false;
+
+                        tokenMovingTime = TimeSpan.Zero;
+                        shouldMove = false;
+                        dice1.Restart();
+                        dice2.Restart();
+
+                        dice1.dest.Width = 128;
+                        dice1.dest.Height = 128;
+                        dice1.dest.X = 800;
+                        dice1.dest.Y = 430;
+
+                        dice2.dest.X = 600;
+                        dice2.dest.Y = 430;
+                        dice2.dest.Width = dice1.dest.Width;
+                        dice2.dest.Height = dice1.dest.Height;
+                    }
                 }
 
                 if (CurrentPlayer.currentTileIndex == target)
@@ -685,6 +710,12 @@ namespace Capitalism
                     moneyStolenOnce = true;
                 }
                 //taxes
+
+                //jail
+                if (CurrentPlayer.currentTileIndex == 31)
+                {
+                    CurrentPlayer.inJail = true;
+                }
 
                 #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
@@ -915,7 +946,7 @@ namespace Capitalism
                     {
                         CurrentPlayer.Money += chanceCard.money;
                     }
-                    else if (chanceCard.destination == Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
+                    else if (chanceCard.destination != Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
                     {
                         CurrentPlayer.Position = chanceCard.destination;
                     }
@@ -946,21 +977,8 @@ namespace Capitalism
                         //houses
                     }
 
-                    if (CurrentPlayer.currentTileIndex == 8)
-                    {
-                        chanceCard.Hitbox.X = (int)charPostitions[8].X;
-                        chanceCard.Hitbox.Y = (int)charPostitions[8].Y;
-                    }
-                    else if (CurrentPlayer.currentTileIndex == 23)
-                    {
-                        chanceCard.Hitbox.X = (int)charPostitions[23].X;
-                        chanceCard.Hitbox.Y = (int)charPostitions[23].Y;
-                    }
-                    else 
-                    {
-                        chanceCard.Hitbox.X = (int)charPostitions[36].X;
-                        chanceCard.Hitbox.Y = (int)charPostitions[36].Y;
-                    }
+                    chanceCard.Hitbox.X = 1100;
+                    chanceCard.Hitbox.Y = 680;
 
                     chanceCards.Enqueue(chanceCard);
                     drawedACard = true;
@@ -983,10 +1001,10 @@ namespace Capitalism
                     else
                     {
                         chanceCardPrevTime += gameTime.ElapsedGameTime;
-
                         //if (gameTime.TotalGameTime - chanceCardPrevTime > TimeSpan.FromSeconds(3))
                         if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
                         {
+                            chanceCard.rotation = 0;
                             chanceCardPrevTime = TimeSpan.Zero;
                             drawChanceCards = false;
                             chanceCard = null;

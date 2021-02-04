@@ -20,6 +20,9 @@ namespace Capitalism
         public int railroadCounter = 0;
         public int utillityCounter = 0;
 
+        public int jailTimer = 0;
+        public bool inJail = false;
+
         public bool GetOutOfJailFree = false;
 
         bool goMoney = true;
@@ -56,6 +59,11 @@ namespace Capitalism
             {
                 Money += 200;
                 goMoney = true;
+            }
+
+            if (inJail)
+            {
+                Position = new Vector2(523, 885);
             }
         }
 
