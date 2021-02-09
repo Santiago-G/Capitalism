@@ -64,6 +64,12 @@ namespace Capitalism
             if (inJail)
             {
                 Position = new Vector2(523, 885);
+                currentTileIndex = 11;
+                if (jailTimer == 4)
+                {
+                    inJail = false;
+                    jailTimer = 0;
+                }
             }
         }
 

@@ -513,6 +513,8 @@ namespace Capitalism
                 Players[0].Tint = Color.Purple;
                 ;
                 bean = false;
+
+                CurrentPlayer.inJail = true;
             }
 
             #region Property/Testing
@@ -543,9 +545,9 @@ namespace Capitalism
             }
 
             #region DiceRolling
-
             if (rollDice)
             {
+
                 if (diceMoving)
                 {
                     ;
@@ -597,7 +599,27 @@ namespace Capitalism
 
                     if (dice1.stopped)
                     {
-                        diceMoving = true;
+                        if (CurrentPlayer.inJail)
+                        {
+                            if (dice1.DiceRollValue != dice2.DiceRollValue)
+                            {
+                                rollValue = 0;
+                                target = rollValue + (CurrentPlayer.currentTileIndex);
+
+                                CurrentPlayer.jailTimer++;
+
+                                diceMoving = true;
+                            }
+                            else 
+                            {
+                                CurrentPlayer.inJail = false;
+                                CurrentPlayer.jailTimer = 0;
+                            }
+                        }
+                        else 
+                        {
+                            diceMoving = true;
+                        }
                     }
                 }
 
@@ -608,8 +630,6 @@ namespace Capitalism
             #region Movement
             if (characterMoving)
             {
-                // do this once when you roll
-
                 if (target >= 40)
                 {
                     target %= 40;
@@ -635,7 +655,6 @@ namespace Capitalism
 
                         CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
                         CurrentPlayer.currentTileIndex++;
-                        //urrentPlayer.currentTileIndex++;
                         tokenMovingTime = gameTime.TotalGameTime;
                     }
                 }
@@ -715,7 +734,9 @@ namespace Capitalism
                 if (CurrentPlayer.currentTileIndex == 31)
                 {
                     CurrentPlayer.inJail = true;
+                    CurrentPlayer.jailTimer++;
                 }
+                //jail
 
                 #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
@@ -935,7 +956,6 @@ namespace Capitalism
 
                 #region Chance Card
 
-
                 if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 36) && !drawedACard)
                 {
                     chanceCard = chanceCards.Dequeue();
@@ -970,7 +990,7 @@ namespace Capitalism
                     }
                     else if (chanceCard.cardTypes == CardTypes.GoInJail)
                     {
-                        //jail
+                        CurrentPlayer.inJail = true;
                     }
                     else if (chanceCard.cardTypes == CardTypes.HouseRepair)
                     {
