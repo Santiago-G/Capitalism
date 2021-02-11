@@ -44,6 +44,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="ChanceCards.cs" />
+    <Compile Include="CommunityChests.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HighlightButton.cs" />
     <Compile Include="Enums.cs" />

@@ -31,11 +31,14 @@ namespace Capitalism
         bool RedEatsNoTerrarian = true;
         bool drawedACard = false;
         bool drawChanceCards = false;
+        bool agagagagaga = true;
         //bool firstLap = true;
 
         ChanceCards chanceCard;
+        CommunityChests communityCards;
         Property prop;
         Queue<ChanceCards> chanceCards = new Queue<ChanceCards>();
+        Queue<CommunityChests> chestCards = new Queue<CommunityChests>();
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
@@ -176,6 +179,41 @@ namespace Capitalism
                 return CardTypes.GetOutOfJail;
             }
 
+
+            return CardTypes.Invalid;
+            //var cardType = Enum.Parse(typeof(CardTypes), filename);
+
+            // return cardType;
+        }
+
+        static private CommunityCardTypes GetCardType2(string filename)
+        {
+            // CardTypes cardType;
+
+            if (filename.Contains("AdvanceToGo"))
+            {
+                return CommunityCardTypes.GoToGo;
+            }
+            else if (filename.Contains("GoToJail"))
+            {
+                return CommunityCardTypes.GoInJail;
+            }
+            else if (filename.Contains("StreetRepairs"))
+            {
+                return CommunityCardTypes.HouseRepair;
+            }
+            else if (filename.Contains("chairman"))
+            {
+                return CommunityCardTypes.GetFromOthers;
+            }
+            else if (filename.Contains("getOutOfJail"))
+            {
+                return CommunityCardTypes.GetOutOfJail;
+            }
+            else
+            {
+                return CommunityCardTypes.BankMoney;
+            }
 
             return CardTypes.Invalid;
             //var cardType = Enum.Parse(typeof(CardTypes), filename);
@@ -359,40 +397,39 @@ namespace Capitalism
             duckFrame = Content.Load<Texture2D>("duckFrame");
             hatFrame = Content.Load<Texture2D>("hatFrame");
 
-            //advanceToGo = Content.Load<Texture2D>("AdvanceToGo");
-            //bankError = Content.Load<Texture2D>("BankError");
-            //doctorsFee = Content.Load<Texture2D>("DoctorsFee");
-            //getOutOfJail = Content.Load<Texture2D>("GetOutOfJail");
-            //goToJail = Content.Load<Texture2D>("GoToJail");
-            //grandOperaOpening = Content.Load<Texture2D>("GrandOperaOpening");
-            //incomingTaxRefund = Content.Load<Texture2D>("IncomeTaxRefund");
-            //lifeInsuranceMatures = Content.Load<Texture2D>("LifeInsuranceMatures");
-            //payHospital = Content.Load<Texture2D>("PayHospital");
-            //paySchoolTax = Content.Load<Texture2D>("PaySchoolTax");
-            //receiveForServices = Content.Load<Texture2D>("ReceiveForServices");
-            //saleOfStocks = Content.Load<Texture2D>("SaleOfStocks");
-            //secondPrizeBeautyContest = Content.Load<Texture2D>("SecondPrizeBeautyContest");;
-            //streetRepairs = Content.Load<Texture2D>("StreetRepairs");
-            //xmasFundMatures = Content.Load<Texture2D>("xmasFundMatures");
-            //youInherit100 = Content.Load<Texture2D>("YouInherit100");
-            //ChanceCards advanceTest = new ChanceCards(..., ..., ..., CardTypes.Advance, 1);
+            advanceToGo = Content.Load<Texture2D>("AdvanceToGo");
+            bankError = Content.Load<Texture2D>("BankError");
+            doctorsFee = Content.Load<Texture2D>("DoctorsFee");
+            getOutOfJail = Content.Load<Texture2D>("GetOutOfJail");
+            goToJail = Content.Load<Texture2D>("GoToJail");
+            grandOperaOpening = Content.Load<Texture2D>("GrandOperaOpening");
+            incomingTaxRefund = Content.Load<Texture2D>("IncomeTaxRefund");
+            lifeInsuranceMatures = Content.Load<Texture2D>("LifeInsuranceMatures");
+            payHospital = Content.Load<Texture2D>("PayHospital");
+            paySchoolTax = Content.Load<Texture2D>("PaySchoolTax");
+            receiveForServices = Content.Load<Texture2D>("ReceiveForServices");
+            saleOfStocks = Content.Load<Texture2D>("SaleOfStocks");
+            secondPrizeBeautyContest = Content.Load<Texture2D>("SecondPrizeBeautyContest"); ;
+            streetRepairs = Content.Load<Texture2D>("StreetRepairs");
+            xmasFundMatures = Content.Load<Texture2D>("xmasFundMatures");
+            youInherit100 = Content.Load<Texture2D>("YouInherit100");
 
-            //chanceCards.Enqueue(new ChanceCards(advanceToGo, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(bankError, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(doctorsFee, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(getOutOfJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(goToJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(grandOperaOpening, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(incomingTaxRefund, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(lifeInsuranceMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(payHospital, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(paySchoolTax, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(receiveForServices, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(saleOfStocks, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(secondPrizeBeautyContest, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(streetRepairs, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(xmasFundMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            //chanceCards.Enqueue(new ChanceCards(youInherit100, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(advanceToGo, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(bankError, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(doctorsFee, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(getOutOfJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(goToJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(grandOperaOpening, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(incomingTaxRefund, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(lifeInsuranceMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(payHospital, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(paySchoolTax, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(receiveForServices, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(saleOfStocks, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(secondPrizeBeautyContest, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(streetRepairs, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(xmasFundMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
+            chanceCards.Enqueue(new ChanceCards(youInherit100, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
 
             #region Properties
 
@@ -551,7 +588,7 @@ namespace Capitalism
                 if (diceMoving)
                 {
                     ;
-                    if (dice2.dest.X != 24)
+                    if (dice2.dest.X != 24 && !CurrentPlayer.inJail)
                     {
                         dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
                         dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
@@ -573,8 +610,8 @@ namespace Capitalism
                         characterMoving = true;
                         diceFlashing = false;
                         rollDice = false;
+                        agagagagaga = true;
 
-                        
                     }
                 }
 
@@ -606,7 +643,11 @@ namespace Capitalism
                                 rollValue = 0;
                                 target = rollValue + (CurrentPlayer.currentTileIndex);
 
-                                CurrentPlayer.jailTimer++;
+                                if (agagagagaga)
+                                {
+                                    CurrentPlayer.jailTimer++;
+                                    agagagagaga = false;
+                                }
 
                                 diceMoving = true;
                             }
@@ -614,6 +655,7 @@ namespace Capitalism
                             {
                                 CurrentPlayer.inJail = false;
                                 CurrentPlayer.jailTimer = 0;
+                                
                             }
                         }
                         else 
