@@ -28,20 +28,18 @@ namespace Capitalism
         public Color Tint;
         public Rectangle Hitbox;
 
-        public CardTypes cardTypes;
+        public CommunityCardTypes cardTypes;
 
-        public Vector2 destination;
         public int money;
         public float rotation = 0f;
 
-        public CommunityChests(Texture2D image, Rectangle hitbox, Color tint, CardTypes CardTypes, Vector2 destination, int money = 0)
+        public CommunityChests(Texture2D image, Rectangle hitbox, Color tint, CommunityCardTypes CardTypes, int money = 0)
         {
             Image = image;
             Hitbox = hitbox;
             Tint = tint;
             Position = hitbox.Location.ToVector2();
             cardTypes = CardTypes;
-            this.destination = destination;
             this.money = money;
         }
 

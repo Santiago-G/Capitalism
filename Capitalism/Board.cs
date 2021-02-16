@@ -18,6 +18,7 @@ namespace Capitalism
     {
         Random gen = new Random();
 
+        #region bools
         bool rollDice = true;
         bool showingDice = false;
         bool diceRolling = false;
@@ -31,8 +32,10 @@ namespace Capitalism
         bool RedEatsNoTerrarian = true;
         bool drawedACard = false;
         bool drawChanceCards = false;
+        bool drawCommunityCards = false;
         bool agagagagaga = true;
         //bool firstLap = true;
+        #endregion
 
         ChanceCards chanceCard;
         CommunityChests communityCards;
@@ -42,7 +45,6 @@ namespace Capitalism
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
-        Vector2 val;
         public int playerCount => SelectingPlayers.playerCount;
 
         public Rectangle Bounds { get; set; }
@@ -57,9 +59,9 @@ namespace Capitalism
 
         bool shouldMove;
 
-
         #region Functions
 
+        //FUNCTIONS\\
         static public Vector2[] MakingPositions()
         {
             //there are 40 positions
@@ -215,7 +217,7 @@ namespace Capitalism
                 return CommunityCardTypes.BankMoney;
             }
 
-            return CardTypes.Invalid;
+            return CommunityCardTypes.Invalid;
             //var cardType = Enum.Parse(typeof(CardTypes), filename);
 
             // return cardType;
@@ -240,7 +242,7 @@ namespace Capitalism
                     //good luck
                 }
                 else if (filename.Contains("NearestUtillity"))
-                { 
+                {
                     //good luck
                 }
                 else if (filename.Contains("ReadingRailroad"))
@@ -256,7 +258,53 @@ namespace Capitalism
             return Vector2.Zero;
         }
 
-        static private int Cash(CardTypes cardTypes, string filename)
+        static private int CommunityMoney(CommunityCardTypes cardTypes, string filename)
+        {
+            if (cardTypes == CommunityCardTypes.BankMoney)
+            {
+                if (filename.Contains("BankError"))
+                {
+                    return 200;
+                }
+                else if (filename.Contains("DoctorsFee"))
+                {
+                    return 50;
+                }
+                else if (filename.Contains("IncomeTaxRefund"))
+                {
+                    return 20;
+                }
+                else if (filename.Contains("LifeInsuranceMatures") || filename.Contains("xmasFundMatures") || filename.Contains("YouInherit100"))
+                {
+                    return 100;
+                }
+                else if (filename.Contains("PayHospital") || filename.Contains("PaySchoolTax"))
+                {
+                    return -150;
+                }
+                else if (filename.Contains("ReceiveForServices"))
+                {
+                    return 25;
+                }
+                else if (filename.Contains("SaleOfStocks"))
+                {
+                    return 45;
+                }
+                else if (filename.Contains("SecondPrizeBeautyContest"))
+                {
+                    return 10;
+                }
+            }
+
+            if (cardTypes == CommunityCardTypes.GetFromOthers)
+            {
+                return 50;
+            }
+
+            return 0;
+        }
+
+        static private int ChestMoney(CardTypes cardTypes, string filename)
         {
             if (cardTypes == CardTypes.BankMoney)
             {
@@ -286,6 +334,8 @@ namespace Capitalism
         {
             return (start_value + (end_value - start_value) * pct);
         }
+        //FUNCTIONS\\
+
         #endregion
 
         #region Textures
@@ -397,39 +447,6 @@ namespace Capitalism
             duckFrame = Content.Load<Texture2D>("duckFrame");
             hatFrame = Content.Load<Texture2D>("hatFrame");
 
-            advanceToGo = Content.Load<Texture2D>("AdvanceToGo");
-            bankError = Content.Load<Texture2D>("BankError");
-            doctorsFee = Content.Load<Texture2D>("DoctorsFee");
-            getOutOfJail = Content.Load<Texture2D>("GetOutOfJail");
-            goToJail = Content.Load<Texture2D>("GoToJail");
-            grandOperaOpening = Content.Load<Texture2D>("GrandOperaOpening");
-            incomingTaxRefund = Content.Load<Texture2D>("IncomeTaxRefund");
-            lifeInsuranceMatures = Content.Load<Texture2D>("LifeInsuranceMatures");
-            payHospital = Content.Load<Texture2D>("PayHospital");
-            paySchoolTax = Content.Load<Texture2D>("PaySchoolTax");
-            receiveForServices = Content.Load<Texture2D>("ReceiveForServices");
-            saleOfStocks = Content.Load<Texture2D>("SaleOfStocks");
-            secondPrizeBeautyContest = Content.Load<Texture2D>("SecondPrizeBeautyContest"); ;
-            streetRepairs = Content.Load<Texture2D>("StreetRepairs");
-            xmasFundMatures = Content.Load<Texture2D>("xmasFundMatures");
-            youInherit100 = Content.Load<Texture2D>("YouInherit100");
-
-            chanceCards.Enqueue(new ChanceCards(advanceToGo, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(bankError, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(doctorsFee, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(getOutOfJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(goToJail, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(grandOperaOpening, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(incomingTaxRefund, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(lifeInsuranceMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(payHospital, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(paySchoolTax, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(receiveForServices, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(saleOfStocks, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(secondPrizeBeautyContest, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(streetRepairs, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(xmasFundMatures, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
-            chanceCards.Enqueue(new ChanceCards(youInherit100, new Rectangle(400, 400, 400, 400), Color.White, CardTypes.GoToGo));
 
             #region Properties
 
@@ -510,13 +527,59 @@ namespace Capitalism
                 CardTypes cardType = GetCardType(filename);
 
                 Property property = null;
-                
-                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300,300, 290/4, 160/4), Color.White, cardType, Destination(cardType, filename, charPostitions), Cash(cardType, filename)  /*ask about order after*/));
+
+                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, Destination(cardType, filename, charPostitions), ChestMoney(cardType, filename)  /*ask about order after*/));
                 ;
             }
-            
+
             chanceCards = ShuffleQueue(chanceCards);
             ;
+            #endregion
+
+            #region CommunityChest
+            string chestPath = Directory.GetCurrentDirectory();
+            int binFolderIndex2 = chancePath.IndexOf("bin");
+
+            string basePath2 = "";
+
+            for (int i = 0; i < binFolderIndex2; i++)
+            {
+                basePath2 += chestPath[i];
+            }
+
+            var path2 = Path.Combine(basePath2, @"Content\\Community");
+            var files2 = Directory.GetFiles(path2);
+
+            string[] chestFileNames = new string[files2.Length];
+            string extension2 = ".png";
+            int count2 = 0;
+            foreach (var filePath in files2)
+            {
+                for (int i = path2.Length + 1; i < filePath.Length - extension2.Length; i++)
+                {
+                    chestFileNames[count2] += filePath[i];
+                }
+                count2++;
+            }
+
+
+
+            for (int i = 0; i < chestFileNames.Length; i++)
+            {
+                string filename2 = "Community\\"+chestFileNames[i];
+
+                Texture2D text = Content.Load<Texture2D>(filename2);
+
+                CommunityCardTypes cardType = GetCardType2(filename2);
+
+                Property property = null;
+
+                chestCards.Enqueue(new CommunityChests(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, CommunityMoney(cardType, filename2)));
+
+                ;
+            }
+
+            chestCards = ShuffleQueue(chestCards);
             #endregion
 
             Frame = Content.Load<Texture2D>("Frame");
@@ -550,8 +613,6 @@ namespace Capitalism
                 Players[0].Tint = Color.Purple;
                 ;
                 bean = false;
-
-                CurrentPlayer.inJail = true;
             }
 
             #region Property/Testing
@@ -651,14 +712,14 @@ namespace Capitalism
 
                                 diceMoving = true;
                             }
-                            else 
+                            else
                             {
                                 CurrentPlayer.inJail = false;
                                 CurrentPlayer.jailTimer = 0;
-                                
+
                             }
                         }
-                        else 
+                        else
                         {
                             diceMoving = true;
                         }
@@ -688,8 +749,6 @@ namespace Capitalism
                     Console.WriteLine($"Roll Val + Pos = {target}");
                     Console.WriteLine($"Roll Val = {rollValue}");
                     Console.WriteLine($"Pos = {CurrentPlayer.currentTileIndex}");
-
-                    val = charPostitions[CurrentPlayer.currentTileIndex];
 
                     if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
                     {
@@ -724,7 +783,7 @@ namespace Capitalism
                         dice2.dest.Width = dice1.dest.Width;
                         dice2.dest.Height = dice1.dest.Height;
                     }
-                    else 
+                    else
                     {
                         characterMoving = false;
                         itsMoneyTime = true;
@@ -1013,7 +1072,7 @@ namespace Capitalism
                         CurrentPlayer.Position = chanceCard.destination;
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
-                    { 
+                    {
                         //out of jail
                     }
                     else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
@@ -1052,12 +1111,82 @@ namespace Capitalism
                     if (chanceCard.rotation < 8 * 3.14f)
                     {
                         chanceCard.rotation += .2f;
-                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width/2, .03f);
-                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height/2, .03f);
+                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
+                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
 
                         chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
                         chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
-                      
+
+                        Console.WriteLine($"{chanceCard.Hitbox}");
+                    }
+                    else
+                    {
+                        chanceCardPrevTime += gameTime.ElapsedGameTime;
+                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
+                        {
+                            chanceCard.rotation = 0;
+                            chanceCardPrevTime = TimeSpan.Zero;
+                            drawChanceCards = false;
+                            chanceCard = null;
+                        }
+                    }
+                }
+                #endregion
+
+                #region CommunityChest Cards
+
+                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 33) && !drawedACard)
+                {
+                    communityCards = chestCards.Dequeue();
+
+                    drawCommunityCards = true;
+
+                    if (communityCards.money != 0)
+                    {
+                        CurrentPlayer.Money += communityCards.money;
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GetOutOfJail)
+                    {
+                        //out of jail
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GetFromOthers)
+                    {
+                        for (int i = 0; i < playerCount; i++)
+                        {
+                            if (Players[i] != CurrentPlayer)
+                            {
+                                Players[i].Money -= 50;
+                            }
+                        }
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GoInJail)
+                    {
+                        CurrentPlayer.inJail = true;
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.HouseRepair)
+                    {
+                        //houses
+                    }
+
+                    communityCards.Hitbox.X = 1100;
+                    communityCards.Hitbox.Y = 680;
+
+                    chestCards.Enqueue(communityCards);
+                    drawedACard = true;
+                }
+
+                if (drawCommunityCards)
+                {
+
+                    if (chanceCard.rotation < 8 * 3.14f)
+                    {
+                        chanceCard.rotation += .2f;
+                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
+                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
+                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
+
                         Console.WriteLine($"{chanceCard.Hitbox}");
                     }
                     else
@@ -1078,6 +1207,7 @@ namespace Capitalism
                         //}
                     }
                 }
+
                 #endregion
 
                 else
