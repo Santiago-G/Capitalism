@@ -227,7 +227,6 @@ namespace Capitalism
         {
             if (cardTypes == CardTypes.Advance)
             {
-                string propertyName = null;
 
                 if (filename.Contains("Boardwalk"))
                 {
@@ -356,31 +355,12 @@ namespace Capitalism
         Texture2D dogFrame;
         Texture2D duckFrame;
         Texture2D hatFrame;
-
-        Texture2D advanceToGo;
-        Texture2D bankError;
-        Texture2D doctorsFee;
-        Texture2D getOutOfJail;
-        Texture2D goToJail;
-        Texture2D grandOperaOpening;
-        Texture2D incomingTaxRefund;
-        Texture2D lifeInsuranceMatures;
-        Texture2D payHospital;
-        Texture2D paySchoolTax;
-        Texture2D receiveForServices;
-        Texture2D saleOfStocks;
-        Texture2D secondPrizeBeautyContest;
-        Texture2D streetRepairs;
-        Texture2D xmasFundMatures;
-        Texture2D youInherit100;
-
         SpriteFont font;
         #endregion
 
         HighlightButton yesButton;
         HighlightButton noButton;
         NormalButton diceOnBoard1;
-        NormalButton diceOnBoard2;
 
 
         Animation dice1;
@@ -389,7 +369,6 @@ namespace Capitalism
         Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
         Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
 
-        PropertyNames? selectedValue = null;
 
         MouseState lms;
 
@@ -400,6 +379,7 @@ namespace Capitalism
         TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
         TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
         TimeSpan chanceCardPrevTime = TimeSpan.Zero;
+        TimeSpan communityChestPrevTime = TimeSpan.Zero;
 
         Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content)
         {
@@ -572,7 +552,6 @@ namespace Capitalism
 
                 CommunityCardTypes cardType = GetCardType2(filename2);
 
-                Property property = null;
 
                 chestCards.Enqueue(new CommunityChests(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, CommunityMoney(cardType, filename2)));
 
@@ -592,7 +571,7 @@ namespace Capitalism
             Bounds = bounds;
         }
 
-
+        ////////////UPDATE\\\\\\\\\\\\
         public void Update(MouseState ms, GameTime gameTime)
         {
             if (bean)
@@ -692,8 +671,8 @@ namespace Capitalism
                     dice2.Update(gameTime, true);
 
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
-                    target = rollValue + (CurrentPlayer.currentTileIndex);
-                    //target = 8;
+                    //target = rollValue + (CurrentPlayer.currentTileIndex);
+                    target = 8;
 
                     if (dice1.stopped)
                     {
@@ -1105,32 +1084,7 @@ namespace Capitalism
                     drawedACard = true;
                 }
 
-                if (drawChanceCards)
-                {
-
-                    if (chanceCard.rotation < 8 * 3.14f)
-                    {
-                        chanceCard.rotation += .2f;
-                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
-                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
-
-                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
-                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
-
-                        Console.WriteLine($"{chanceCard.Hitbox}");
-                    }
-                    else
-                    {
-                        chanceCardPrevTime += gameTime.ElapsedGameTime;
-                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
-                        {
-                            chanceCard.rotation = 0;
-                            chanceCardPrevTime = TimeSpan.Zero;
-                            drawChanceCards = false;
-                            chanceCard = null;
-                        }
-                    }
-                }
+               
                 #endregion
 
                 #region CommunityChest Cards
@@ -1175,7 +1129,8 @@ namespace Capitalism
                     drawedACard = true;
                 }
 
-                if (drawCommunityCards)
+
+                if (drawChanceCards)
                 {
 
                     if (chanceCard.rotation < 8 * 3.14f)
@@ -1192,7 +1147,6 @@ namespace Capitalism
                     else
                     {
                         chanceCardPrevTime += gameTime.ElapsedGameTime;
-                        //if (gameTime.TotalGameTime - chanceCardPrevTime > TimeSpan.FromSeconds(3))
                         if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
                         {
                             chanceCard.rotation = 0;
@@ -1200,11 +1154,33 @@ namespace Capitalism
                             drawChanceCards = false;
                             chanceCard = null;
                         }
-                        //else 
-                        //{
-                        //    //drawChanceCards = false;
-                        //    //chanceCard = null;
-                        //}
+                    }
+                }
+                else if (drawCommunityCards)
+                {
+
+                    if (communityCards.rotation < 8 * 3.14f)
+                    {
+                        communityCards.rotation += .2f;
+                        communityCards.Hitbox.X = (int)Lerp(communityCards.Hitbox.X, Bounds.Width / 2, .03f);
+                        communityCards.Hitbox.Y = (int)Lerp(communityCards.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                        communityCards.Hitbox.Width = (int)Lerp(communityCards.Hitbox.Width, 190, .05f);
+                        communityCards.Hitbox.Height = (int)Lerp(communityCards.Hitbox.Height, 150, .05f);
+
+                        Console.WriteLine($"{communityCards.Hitbox}");
+                    }
+                    else
+                    {
+                        communityChestPrevTime += gameTime.ElapsedGameTime;
+
+                        if (communityChestPrevTime >= TimeSpan.FromSeconds(3))
+                        {
+                            communityCards.rotation = 0;
+                            communityChestPrevTime = TimeSpan.Zero;
+                            drawCommunityCards = false;
+                            communityCards = null;
+                        }
                     }
                 }
 
@@ -1279,7 +1255,8 @@ namespace Capitalism
 
             lms = ms;
         }
-
+        ////////////UPDATE\\\\\\\\\\\\
+        
         public void DarkenScreen(SpriteBatch spritebatch)
         {
             spritebatch.Draw(pixel, new Rectangle(0, 0, 130000, 478150), new Color(Color.Black, 0.5f));
@@ -1385,6 +1362,11 @@ namespace Capitalism
             if (drawChanceCards)
             {
                 chanceCard.Draw(batch);
+            }
+
+            if (drawCommunityCards)
+            {
+                communityCards.Draw(batch);
             }
         }
     }

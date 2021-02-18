@@ -28,8 +28,6 @@ namespace Capitalism.Screens
         Texture2D yes;
         Texture2D discount_cart;
         Texture2D the_shape_of_italy;
-        Texture2D black_magic;
-        Texture2D F_O_O_D;
         Texture2D weakling;
 
         HighlightButton Car;
@@ -39,7 +37,6 @@ namespace Capitalism.Screens
         HighlightButton Dog;
         HighlightButton Wheelbarrow;
         HighlightButton Boot;
-        HighlightButton Plane;
         HighlightButton Duck;
 
         bool[] alreadySelected = new bool[9];
