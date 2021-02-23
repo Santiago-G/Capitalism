@@ -43,6 +43,27 @@ namespace Capitalism
             Money = cash;
         }
 
+        public bool allOfOneColor(string colorName)
+        {
+            colorName.ToLower();
+            int count = 0;
+
+            for (int i = 0; i < properties.Count; i++)
+            {
+                if (Enum.GetName(typeof(PropertyColor), properties[i].PropColor) == colorName)
+                {
+                    count++;
+
+                    if (((colorName == "brown" || colorName == "darkblue") && count == 2) || count == 3)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public void Update()
         {
             if (Money == 0)

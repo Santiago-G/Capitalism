@@ -8,6 +8,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Capitalism
 {
+    public enum PropertyColor
+    { 
+        brown,
+        lightblue,
+        pink,
+        orange,
+        red,
+        yellow,
+        green,
+        darkblue,
+        nully,
+    }
+
+
     public class Property
     {
         public Texture2D Image;
@@ -38,7 +52,9 @@ namespace Capitalism
         int originalWidth;
         int originalHeight;
 
-        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, bool Railroad, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel)
+        public PropertyColor PropColor;
+
+        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, bool Railroad, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel, PropertyColor propColor)
         {
             Image = image;
             Tint = tint;
@@ -54,6 +70,8 @@ namespace Capitalism
             WithHotel = rentWHotel;
             HouseCost = houseCost;
             HotelCost = hotel;
+            PropColor = propColor;
+
 
         }
 
