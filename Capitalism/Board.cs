@@ -34,6 +34,7 @@ namespace Capitalism
         bool drawChanceCards = false;
         bool drawCommunityCards = false;
         bool agagagagaga = true;
+        bool glowingHouse = false;
         //bool firstLap = true;
         #endregion
 
@@ -355,12 +356,15 @@ namespace Capitalism
         Texture2D dogFrame;
         Texture2D duckFrame;
         Texture2D hatFrame;
+        Texture2D houseIcon;
         SpriteFont font;
         #endregion
 
         HighlightButton yesButton;
         HighlightButton noButton;
         NormalButton diceOnBoard1;
+
+        HighlightButton house;
 
 
         Animation dice1;
@@ -427,6 +431,8 @@ namespace Capitalism
             duckFrame = Content.Load<Texture2D>("duckFrame");
             hatFrame = Content.Load<Texture2D>("hatFrame");
 
+            houseIcon = Content.Load<Texture2D>("housey2");
+            house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White);
 
             #region Properties
 
@@ -614,6 +620,8 @@ namespace Capitalism
             CurrentPlayer.Update();
             noButton.Update(ms, true);
             yesButton.Update(ms, true);
+
+            house.Update(ms, glowingHouse);
 
             if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
             {
@@ -817,6 +825,13 @@ namespace Capitalism
                     CurrentPlayer.jailTimer++;
                 }
                 //jail
+
+                glowingHouse = true;
+                if (house.IsClicked)
+                { 
+                    
+                }
+
 
                 #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
@@ -1205,6 +1220,7 @@ namespace Capitalism
                     diceFlashing = true;
                     moneyStolenOnce = false;
                     drawedACard = false;
+                    glowingHouse = false;
                 }
 
                 //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
@@ -1346,6 +1362,8 @@ namespace Capitalism
             }
             ;
             diceOnBoard1.Draw(batch);
+
+            house.Draw(batch);
 
 
             if (darkenScreen)
