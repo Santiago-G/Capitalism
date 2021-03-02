@@ -169,6 +169,18 @@
 /processorParam:TextureFormat=Color
 /build:bean.png
 
+#begin BlueProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:BlueProp.jpg
+
 #begin Boardwalk.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -931,6 +943,18 @@
 /processorParam:TextureFormat=Color
 /build:goToStCharlesPlace.png
 
+#begin GreenProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GreenProp.jpg
+
 #begin hat.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1002,6 +1026,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:KentuckyAve.jpg
+
+#begin LightBlueProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LightBlueProp.jpg
 
 #begin MarvinGardens.jpg
 /importer:TextureImporter
@@ -1094,6 +1130,18 @@
 /processorParam:TextureFormat=Color
 /build:NoTwo.jpg
 
+#begin Orange.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Orange.jpg
+
 #begin OrientalAve.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1166,6 +1214,18 @@
 /processorParam:TextureFormat=Color
 /build:PennsylvaniaRR.jpg
 
+#begin PinkProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PinkProp.jpg
+
 #begin pixel.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1209,6 +1269,18 @@
 /processorParam:TextureFormat=Color
 /build:PurchaseThisProp.jpg
 
+#begin PurpleProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PurpleProp.jpg
+
 #begin ReadingRailroad.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1232,6 +1304,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RedDice.png
+
+#begin RedProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:RedProp.jpg
 
 #begin ShortLineRR.jpg
 /importer:TextureImporter
@@ -1318,6 +1402,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:StJamesPlace.jpg
+
+#begin template.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:template.png
 
 #begin TennesseeAve.jpg
 /importer:TextureImporter
@@ -1438,6 +1534,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:WhiteSquare.png
+
+#begin YellowProp.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:YellowProp.jpg
 
 #begin Yes.jpg
 /importer:TextureImporter

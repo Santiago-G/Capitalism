@@ -35,6 +35,7 @@ namespace Capitalism
         bool drawCommunityCards = false;
         bool agagagagaga = true;
         bool glowingHouse = false;
+        bool buyingHouses = false;
         //bool firstLap = true;
         #endregion
 
@@ -357,6 +358,17 @@ namespace Capitalism
         Texture2D duckFrame;
         Texture2D hatFrame;
         Texture2D houseIcon;
+        Texture2D houseBuyingUI;
+
+        Texture2D PurplePropSprite;
+        Texture2D LightBluePropSprite;
+        Texture2D PinkPropSprite;
+        Texture2D OrangePropSprite;
+        Texture2D RedPropSprite;
+        Texture2D YellowPropSprite;
+        Texture2D GreenPropSprite;
+        Texture2D BluePropSprite;
+
         SpriteFont font;
         #endregion
 
@@ -433,6 +445,7 @@ namespace Capitalism
 
             houseIcon = Content.Load<Texture2D>("housey2");
             house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White);
+            houseBuyingUI = Content.Load<Texture2D>("template");
 
             #region Properties
 
@@ -828,10 +841,19 @@ namespace Capitalism
 
                 glowingHouse = true;
                 if (house.IsClicked)
+                {
+                    buyingHouses = true;
+                    darkenScreen = true;
+                }
+
+                if (buyingHouses)
                 { 
                     
                 }
 
+                //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
+                //if they own all of 1 color property, the properties will be highlighted, otherwise they will be darkened
+                //when they click on the property 
 
                 #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
@@ -1223,9 +1245,6 @@ namespace Capitalism
                     glowingHouse = false;
                 }
 
-                //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
-                //if they own all of 1 color property, the properties will be highlighted, otherwise they will be darkened
-                //when they click on the property 
 
                 for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
@@ -1369,6 +1388,12 @@ namespace Capitalism
             if (darkenScreen)
             {
                 DarkenScreen(batch);
+            }
+
+            if (buyingHouses)
+            {
+                batch.Draw(houseBuyingUI, new Vector2(430, 135), Color.White);
+
             }
 
             if (showingDice)
