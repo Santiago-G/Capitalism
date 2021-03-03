@@ -376,7 +376,15 @@ namespace Capitalism
         HighlightButton noButton;
         NormalButton diceOnBoard1;
 
-        HighlightButton house;
+        HighlightButton PurpleProp;
+        HighlightButton LightBlueProp;
+        HighlightButton PinkProp;
+        HighlightButton OrangeProp;
+        HighlightButton RedProp;
+        HighlightButton YellowProp;
+        HighlightButton GreenProp;
+        HighlightButton BlueProp;
+
 
 
         Animation dice1;
@@ -446,6 +454,24 @@ namespace Capitalism
             houseIcon = Content.Load<Texture2D>("housey2");
             house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White);
             houseBuyingUI = Content.Load<Texture2D>("template");
+
+            PurplePropSprite = Content.Load<Texture2D>("PurpleProp");
+            LightBluePropSprite = Content.Load<Texture2D>("LightBlueProp");
+            PinkPropSprite = Content.Load<Texture2D>("PinkProp"); 
+            OrangePropSprite = Content.Load<Texture2D>("OrangeProp"); 
+            RedPropSprite = Content.Load<Texture2D>("RedProp"); 
+            YellowPropSprite = Content.Load<Texture2D>("YellowProp");
+            GreenPropSprite = Content.Load<Texture2D>("GreenProp"); 
+            BluePropSprite = Content.Load<Texture2D>("BlueProp");
+
+            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(50, 900), Color.White);
+            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(50, 900), Color.White);
+            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(50, 900), Color.White);
+            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(50, 900), Color.White);
+            RedProp = new HighlightButton(RedPropSprite, new Vector2(50, 900), Color.White);
+            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(50, 900), Color.White);
+            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(50, 900), Color.White);
+            BlueProp = new HighlightButton(BlueProp, new Vector2(50, 900), Color.White);
 
             #region Properties
 
@@ -1394,6 +1420,7 @@ namespace Capitalism
             {
                 batch.Draw(houseBuyingUI, new Vector2(430, 135), Color.White);
 
+                
             }
 
             if (showingDice)
