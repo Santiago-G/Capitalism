@@ -375,6 +375,7 @@ namespace Capitalism
         HighlightButton yesButton;
         HighlightButton noButton;
         NormalButton diceOnBoard1;
+        HighlightButton house;
 
         HighlightButton PurpleProp;
         HighlightButton LightBlueProp;
@@ -458,20 +459,20 @@ namespace Capitalism
             PurplePropSprite = Content.Load<Texture2D>("PurpleProp");
             LightBluePropSprite = Content.Load<Texture2D>("LightBlueProp");
             PinkPropSprite = Content.Load<Texture2D>("PinkProp"); 
-            OrangePropSprite = Content.Load<Texture2D>("OrangeProp"); 
+            OrangePropSprite = Content.Load<Texture2D>("Orange"); 
             RedPropSprite = Content.Load<Texture2D>("RedProp"); 
             YellowPropSprite = Content.Load<Texture2D>("YellowProp");
             GreenPropSprite = Content.Load<Texture2D>("GreenProp"); 
             BluePropSprite = Content.Load<Texture2D>("BlueProp");
 
-            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(50, 900), Color.White);
-            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(50, 900), Color.White);
-            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(50, 900), Color.White);
-            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(50, 900), Color.White);
-            RedProp = new HighlightButton(RedPropSprite, new Vector2(50, 900), Color.White);
-            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(50, 900), Color.White);
-            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(50, 900), Color.White);
-            BlueProp = new HighlightButton(BlueProp, new Vector2(50, 900), Color.White);
+            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 150), Color.White);
+            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(660, 150), Color.White);
+            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(920, 150), Color.White);
+            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(1220, 150), Color.White);
+            RedProp = new HighlightButton(RedPropSprite, new Vector2(440, 180), Color.White);
+            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(700, 180), Color.White);
+            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(900, 180), Color.White);
+            BlueProp = new HighlightButton(BluePropSprite, new Vector2(50, 500), Color.White);
 
             #region Properties
 
@@ -660,6 +661,15 @@ namespace Capitalism
             noButton.Update(ms, true);
             yesButton.Update(ms, true);
 
+            PurpleProp.Update(ms, true);
+            LightBlueProp.Update(ms, true);
+            PinkProp.Update(ms, true);
+            OrangeProp.Update(ms, true);
+            RedProp.Update(ms, true);
+            YellowProp.Update(ms, true);
+            GreenProp.Update(ms, true);
+            BlueProp.Update(ms, true);
+
             house.Update(ms, glowingHouse);
 
             if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
@@ -719,7 +729,8 @@ namespace Capitalism
 
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
-                    target = 8;
+                    //target = rollValue + currentPlayerIndex + 1;
+                    target = 2;
 
                     if (dice1.stopped)
                     {
@@ -857,6 +868,13 @@ namespace Capitalism
                 }
                 //taxes
 
+                glowingHouse = true;
+                if (house.IsClicked)
+                {
+                    buyingHouses = true;
+                    darkenScreen = true;
+                }
+
                 //jail
                 if (CurrentPlayer.currentTileIndex == 31)
                 {
@@ -864,13 +882,6 @@ namespace Capitalism
                     CurrentPlayer.jailTimer++;
                 }
                 //jail
-
-                glowingHouse = true;
-                if (house.IsClicked)
-                {
-                    buyingHouses = true;
-                    darkenScreen = true;
-                }
 
                 if (buyingHouses)
                 { 
@@ -880,6 +891,158 @@ namespace Capitalism
                 //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
                 //if they own all of 1 color property, the properties will be highlighted, otherwise they will be darkened
                 //when they click on the property 
+
+                #region Chance Card
+
+                if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 36) && !drawedACard)
+                {
+                    chanceCard = chanceCards.Dequeue();
+
+                    drawChanceCards = true;
+
+                    if (chanceCard.money != 0)
+                    {
+                        CurrentPlayer.Money += chanceCard.money;
+                    }
+                    else if (chanceCard.destination != Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
+                    {
+                        CurrentPlayer.Position = chanceCard.destination;
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
+                    {
+                        //out of jail
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
+                    {
+                        for (int i = 0; i < playerCount; i++)
+                        {
+                            if (Players[i] != CurrentPlayer)
+                            {
+                                Players[i].Money += 50;
+                            }
+                        }
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GoBack3)
+                    {
+                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.GoInJail)
+                    {
+                        CurrentPlayer.inJail = true;
+                    }
+                    else if (chanceCard.cardTypes == CardTypes.HouseRepair)
+                    {
+                        //houses
+                    }
+
+                    chanceCard.Hitbox.X = 1100;
+                    chanceCard.Hitbox.Y = 680;
+
+                    chanceCards.Enqueue(chanceCard);
+                    drawedACard = true;
+                }
+
+
+                #endregion
+
+                #region CommunityChest Cards
+
+                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 33) && !drawedACard)
+                {
+                    communityCards = chestCards.Dequeue();
+
+                    drawCommunityCards = true;
+
+                    if (communityCards.money != 0)
+                    {
+                        CurrentPlayer.Money += communityCards.money;
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GetOutOfJail)
+                    {
+                        //out of jail
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GetFromOthers)
+                    {
+                        for (int i = 0; i < playerCount; i++)
+                        {
+                            if (Players[i] != CurrentPlayer)
+                            {
+                                Players[i].Money -= 50;
+                            }
+                        }
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GoInJail)
+                    {
+                        CurrentPlayer.inJail = true;
+                    }
+                    else if (communityCards.cardTypes == CommunityCardTypes.HouseRepair)
+                    {
+                        //houses
+                    }
+
+                    communityCards.Hitbox.X = 1100;
+                    communityCards.Hitbox.Y = 680;
+
+                    chestCards.Enqueue(communityCards);
+                    drawedACard = true;
+                }
+
+
+                if (drawChanceCards)
+                {
+
+                    if (chanceCard.rotation < 8 * 3.14f)
+                    {
+                        chanceCard.rotation += .2f;
+                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
+                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
+                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
+
+                        Console.WriteLine($"{chanceCard.Hitbox}");
+                    }
+                    else
+                    {
+                        chanceCardPrevTime += gameTime.ElapsedGameTime;
+                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
+                        {
+                            chanceCard.rotation = 0;
+                            chanceCardPrevTime = TimeSpan.Zero;
+                            drawChanceCards = false;
+                            chanceCard = null;
+                        }
+                    }
+                }
+                else if (drawCommunityCards)
+                {
+
+                    if (communityCards.rotation < 8 * 3.14f)
+                    {
+                        communityCards.rotation += .2f;
+                        communityCards.Hitbox.X = (int)Lerp(communityCards.Hitbox.X, Bounds.Width / 2, .03f);
+                        communityCards.Hitbox.Y = (int)Lerp(communityCards.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                        communityCards.Hitbox.Width = (int)Lerp(communityCards.Hitbox.Width, 190, .05f);
+                        communityCards.Hitbox.Height = (int)Lerp(communityCards.Hitbox.Height, 150, .05f);
+
+                        Console.WriteLine($"{communityCards.Hitbox}");
+                    }
+                    else
+                    {
+                        communityChestPrevTime += gameTime.ElapsedGameTime;
+
+                        if (communityChestPrevTime >= TimeSpan.FromSeconds(3))
+                        {
+                            communityCards.rotation = 0;
+                            communityChestPrevTime = TimeSpan.Zero;
+                            drawCommunityCards = false;
+                            communityCards = null;
+                        }
+                    }
+                }
+
+                #endregion
 
                 #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position))
@@ -1097,158 +1260,6 @@ namespace Capitalism
 
                 #endregion
 
-                #region Chance Card
-
-                if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 36) && !drawedACard)
-                {
-                    chanceCard = chanceCards.Dequeue();
-
-                    drawChanceCards = true;
-
-                    if (chanceCard.money != 0)
-                    {
-                        CurrentPlayer.Money += chanceCard.money;
-                    }
-                    else if (chanceCard.destination != Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
-                    {
-                        CurrentPlayer.Position = chanceCard.destination;
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
-                    {
-                        //out of jail
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
-                    {
-                        for (int i = 0; i < playerCount; i++)
-                        {
-                            if (Players[i] != CurrentPlayer)
-                            {
-                                Players[i].Money += 50;
-                            }
-                        }
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GoBack3)
-                    {
-                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GoInJail)
-                    {
-                        CurrentPlayer.inJail = true;
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.HouseRepair)
-                    {
-                        //houses
-                    }
-
-                    chanceCard.Hitbox.X = 1100;
-                    chanceCard.Hitbox.Y = 680;
-
-                    chanceCards.Enqueue(chanceCard);
-                    drawedACard = true;
-                }
-
-               
-                #endregion
-
-                #region CommunityChest Cards
-
-                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 33) && !drawedACard)
-                {
-                    communityCards = chestCards.Dequeue();
-
-                    drawCommunityCards = true;
-
-                    if (communityCards.money != 0)
-                    {
-                        CurrentPlayer.Money += communityCards.money;
-                    }
-                    else if (communityCards.cardTypes == CommunityCardTypes.GetOutOfJail)
-                    {
-                        //out of jail
-                    }
-                    else if (communityCards.cardTypes == CommunityCardTypes.GetFromOthers)
-                    {
-                        for (int i = 0; i < playerCount; i++)
-                        {
-                            if (Players[i] != CurrentPlayer)
-                            {
-                                Players[i].Money -= 50;
-                            }
-                        }
-                    }
-                    else if (communityCards.cardTypes == CommunityCardTypes.GoInJail)
-                    {
-                        CurrentPlayer.inJail = true;
-                    }
-                    else if (communityCards.cardTypes == CommunityCardTypes.HouseRepair)
-                    {
-                        //houses
-                    }
-
-                    communityCards.Hitbox.X = 1100;
-                    communityCards.Hitbox.Y = 680;
-
-                    chestCards.Enqueue(communityCards);
-                    drawedACard = true;
-                }
-
-
-                if (drawChanceCards)
-                {
-
-                    if (chanceCard.rotation < 8 * 3.14f)
-                    {
-                        chanceCard.rotation += .2f;
-                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
-                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
-
-                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
-                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
-
-                        Console.WriteLine($"{chanceCard.Hitbox}");
-                    }
-                    else
-                    {
-                        chanceCardPrevTime += gameTime.ElapsedGameTime;
-                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
-                        {
-                            chanceCard.rotation = 0;
-                            chanceCardPrevTime = TimeSpan.Zero;
-                            drawChanceCards = false;
-                            chanceCard = null;
-                        }
-                    }
-                }
-                else if (drawCommunityCards)
-                {
-
-                    if (communityCards.rotation < 8 * 3.14f)
-                    {
-                        communityCards.rotation += .2f;
-                        communityCards.Hitbox.X = (int)Lerp(communityCards.Hitbox.X, Bounds.Width / 2, .03f);
-                        communityCards.Hitbox.Y = (int)Lerp(communityCards.Hitbox.Y, Bounds.Height / 2, .03f);
-
-                        communityCards.Hitbox.Width = (int)Lerp(communityCards.Hitbox.Width, 190, .05f);
-                        communityCards.Hitbox.Height = (int)Lerp(communityCards.Hitbox.Height, 150, .05f);
-
-                        Console.WriteLine($"{communityCards.Hitbox}");
-                    }
-                    else
-                    {
-                        communityChestPrevTime += gameTime.ElapsedGameTime;
-
-                        if (communityChestPrevTime >= TimeSpan.FromSeconds(3))
-                        {
-                            communityCards.rotation = 0;
-                            communityChestPrevTime = TimeSpan.Zero;
-                            drawCommunityCards = false;
-                            communityCards = null;
-                        }
-                    }
-                }
-
-                #endregion
-
                 else
                 {
                     RedEatsNoTerrarian = true;
@@ -1418,9 +1429,16 @@ namespace Capitalism
 
             if (buyingHouses)
             {
-                batch.Draw(houseBuyingUI, new Vector2(430, 135), Color.White);
+                batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
 
-                
+                PurpleProp.Draw(batch);
+                LightBlueProp.Draw(batch);
+                PinkProp.Draw(batch);
+                OrangeProp.Draw(batch);
+                //RedProp.Draw(batch);
+                //YellowProp.Draw(batch);
+                //GreenProp.Draw(batch);
+                //BlueProp.Draw(batch);
             }
 
             if (showingDice)
