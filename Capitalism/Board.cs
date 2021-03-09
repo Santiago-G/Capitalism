@@ -240,11 +240,11 @@ namespace Capitalism
                 }
                 else if (filename.Contains("NearestRail"))
                 {
-                    //good luck
+                    return Vector2.One;
                 }
                 else if (filename.Contains("NearestUtillity"))
                 {
-                    //good luck
+                    return new Vector2(2, 2);
                 }
                 else if (filename.Contains("ReadingRailroad"))
                 {
@@ -253,6 +253,10 @@ namespace Capitalism
                 else if (filename.Contains("StCharles"))
                 {
                     return positions[11];
+                }
+                else if (filename.Contains("goToGo"))
+                {
+                    return positions[1];
                 }
             }
 
@@ -458,11 +462,11 @@ namespace Capitalism
 
             PurplePropSprite = Content.Load<Texture2D>("PurpleProp");
             LightBluePropSprite = Content.Load<Texture2D>("LightBlueProp");
-            PinkPropSprite = Content.Load<Texture2D>("PinkProp"); 
-            OrangePropSprite = Content.Load<Texture2D>("Orange"); 
-            RedPropSprite = Content.Load<Texture2D>("RedProp"); 
+            PinkPropSprite = Content.Load<Texture2D>("PinkProp");
+            OrangePropSprite = Content.Load<Texture2D>("Orange");
+            RedPropSprite = Content.Load<Texture2D>("RedProp");
             YellowPropSprite = Content.Load<Texture2D>("YellowProp");
-            GreenPropSprite = Content.Load<Texture2D>("GreenProp"); 
+            GreenPropSprite = Content.Load<Texture2D>("GreenProp");
             BluePropSprite = Content.Load<Texture2D>("BlueProp");
 
             PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 150), Color.White);
@@ -592,7 +596,7 @@ namespace Capitalism
 
             for (int i = 0; i < chestFileNames.Length; i++)
             {
-                string filename2 = "Community\\"+chestFileNames[i];
+                string filename2 = "Community\\" + chestFileNames[i];
 
                 Texture2D text = Content.Load<Texture2D>(filename2);
 
@@ -730,7 +734,7 @@ namespace Capitalism
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
                     //target = rollValue + currentPlayerIndex + 1;
-                    target = 2;
+                    target = 8;
 
                     if (dice1.stopped)
                     {
@@ -753,7 +757,6 @@ namespace Capitalism
                             {
                                 CurrentPlayer.inJail = false;
                                 CurrentPlayer.jailTimer = 0;
-
                             }
                         }
                         else
@@ -884,8 +887,8 @@ namespace Capitalism
                 //jail
 
                 if (buyingHouses)
-                { 
-                    
+                {
+
                 }
 
                 //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
@@ -900,17 +903,53 @@ namespace Capitalism
 
                     drawChanceCards = true;
 
-                    if (chanceCard.money != 0)
+                    if (chanceCard.money > 0)
                     {
                         CurrentPlayer.Money += chanceCard.money;
                     }
                     else if (chanceCard.destination != Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
                     {
+                        if (chanceCard.destination == Vector2.One)
+                        {
+                            //Nearest Railroad.
+
+                            int county = currentPlayerIndex;
+
+                            while (true)
+                            {
+                                if (Properties[charPostitions[county]].isRailroad)
+                                {
+                                    chanceCard.destination = charPostitions[county];
+                                    break;
+                                }
+
+                                county++;
+                            }
+                        }
+
+                        else if (chanceCard.destination == new Vector2(2,2))
+                        {
+                            //Nearest Utility
+
+                            int thingy = currentPlayerIndex;
+
+                            while (true)
+                            {
+                                if (Properties[charPostitions[thingy]].isUtility)
+                                {
+                                    chanceCard.destination = charPostitions[thingy];
+                                    break;
+                                }
+
+                                thingy++;
+                            }
+                        }
+                        
                         CurrentPlayer.Position = chanceCard.destination;
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
                     {
-                        //out of jail
+                        //get out of jail
                     }
                     else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
                     {
@@ -942,6 +981,31 @@ namespace Capitalism
                     drawedACard = true;
                 }
 
+                if (drawChanceCards)
+                {
+                    if (chanceCard.rotation < 8 * 3.14f)
+                    {
+                        chanceCard.rotation += .2f;
+                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
+                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
+                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
+
+                        Console.WriteLine($"{chanceCard.Hitbox}");
+                    }
+                    else
+                    {
+                        chanceCardPrevTime += gameTime.ElapsedGameTime;
+                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
+                        {
+                            chanceCard.rotation = 0;
+                            chanceCardPrevTime = TimeSpan.Zero;
+                            drawChanceCards = false;
+                            chanceCard = null;
+                        }
+                    }
+                }
 
                 #endregion
 
@@ -986,35 +1050,7 @@ namespace Capitalism
                     chestCards.Enqueue(communityCards);
                     drawedACard = true;
                 }
-
-
-                if (drawChanceCards)
-                {
-
-                    if (chanceCard.rotation < 8 * 3.14f)
-                    {
-                        chanceCard.rotation += .2f;
-                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
-                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
-
-                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
-                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
-
-                        Console.WriteLine($"{chanceCard.Hitbox}");
-                    }
-                    else
-                    {
-                        chanceCardPrevTime += gameTime.ElapsedGameTime;
-                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
-                        {
-                            chanceCard.rotation = 0;
-                            chanceCardPrevTime = TimeSpan.Zero;
-                            drawChanceCards = false;
-                            chanceCard = null;
-                        }
-                    }
-                }
-                else if (drawCommunityCards)
+                if (drawCommunityCards)
                 {
 
                     if (communityCards.rotation < 8 * 3.14f)
@@ -1045,7 +1081,7 @@ namespace Capitalism
                 #endregion
 
                 #region Buying
-                if (Properties.ContainsKey(CurrentPlayer.Position))
+                if (Properties.ContainsKey(CurrentPlayer.Position) && !drawChanceCards)
                 {
                     if (noButton.IsClicked)
                     {
@@ -1260,7 +1296,7 @@ namespace Capitalism
 
                 #endregion
 
-                else
+                else if (!drawChanceCards)
                 {
                     RedEatsNoTerrarian = true;
                     if (currentPlayerIndex + 1 < playerCount)
@@ -1328,7 +1364,7 @@ namespace Capitalism
             lms = ms;
         }
         ////////////UPDATE\\\\\\\\\\\\
-        
+
         public void DarkenScreen(SpriteBatch spritebatch)
         {
             spritebatch.Draw(pixel, new Rectangle(0, 0, 130000, 478150), new Color(Color.Black, 0.5f));
