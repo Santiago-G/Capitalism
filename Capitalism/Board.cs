@@ -32,10 +32,12 @@ namespace Capitalism
         bool RedEatsNoTerrarian = true;
         bool drawedACard = false;
         bool drawChanceCards = false;
+        bool cardThing = false;
         bool drawCommunityCards = false;
         bool agagagagaga = true;
         bool glowingHouse = false;
         bool buyingHouses = false;
+        bool cardDouble = false;
         //bool firstLap = true;
         #endregion
 
@@ -254,10 +256,11 @@ namespace Capitalism
                 {
                     return positions[11];
                 }
-                else if (filename.Contains("goToGo"))
-                {
-                    return positions[1];
-                }
+            }
+
+            if (cardTypes == CardTypes.GoToGo)
+            {
+                return positions[0];
             }
 
             return Vector2.Zero;
@@ -562,7 +565,11 @@ namespace Capitalism
                 ;
             }
 
-            chanceCards = ShuffleQueue(chanceCards);
+            for (int i = 0; i < 7; i++)
+            {
+                chanceCards.Dequeue();
+            }
+            //chanceCards = ShuffleQueue(chanceCards);
             ;
             #endregion
 
@@ -661,6 +668,7 @@ namespace Capitalism
                 }
             }
 
+            #region Updates 
             CurrentPlayer.Update();
             noButton.Update(ms, true);
             yesButton.Update(ms, true);
@@ -675,6 +683,7 @@ namespace Capitalism
             BlueProp.Update(ms, true);
 
             house.Update(ms, glowingHouse);
+            #endregion
 
             if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
             {
@@ -743,7 +752,8 @@ namespace Capitalism
                             if (dice1.DiceRollValue != dice2.DiceRollValue)
                             {
                                 rollValue = 0;
-                                target = rollValue + (CurrentPlayer.currentTileIndex);
+                                //target = rollValue + (CurrentPlayer.currentTileIndex);
+                                target = 8;
 
                                 if (agagagagaga)
                                 {
@@ -803,47 +813,28 @@ namespace Capitalism
                 {
                     if (dice1.DiceRollValue == dice2.DiceRollValue)
                     {
-                        diceFlashing = true;
-                        characterMoving = false;
-                        rollDice = true;
-                        showingDice = false;
-
-                        tokenMovingTime = TimeSpan.Zero;
-                        shouldMove = false;
-                        dice1.Restart();
-                        dice2.Restart();
-
-                        dice1.dest.Width = 128;
-                        dice1.dest.Height = 128;
-                        dice1.dest.X = 800;
-                        dice1.dest.Y = 430;
-
-                        dice2.dest.X = 600;
-                        dice2.dest.Y = 430;
-                        dice2.dest.Width = dice1.dest.Width;
-                        dice2.dest.Height = dice1.dest.Height;
+                        cardDouble = true;
                     }
-                    else
-                    {
-                        characterMoving = false;
-                        itsMoneyTime = true;
-                        showingDice = false;
 
-                        tokenMovingTime = TimeSpan.Zero;
-                        shouldMove = false;
-                        dice1.Restart();
-                        dice2.Restart();
+                    characterMoving = false;
+                    itsMoneyTime = true;
+                    showingDice = false;
 
-                        dice1.dest.Width = 128;
-                        dice1.dest.Height = 128;
-                        dice1.dest.X = 800;
-                        dice1.dest.Y = 430;
+                    tokenMovingTime = TimeSpan.Zero;
+                    shouldMove = false;
+                    dice1.Restart();
+                    dice2.Restart();
 
-                        dice2.dest.X = 600;
-                        dice2.dest.Y = 430;
-                        dice2.dest.Width = dice1.dest.Width;
-                        dice2.dest.Height = dice1.dest.Height;
-                    }
+                    dice1.dest.Width = 128;
+                    dice1.dest.Height = 128;
+                    dice1.dest.X = 800;
+                    dice1.dest.Y = 430;
+
+                    dice2.dest.X = 600;
+                    dice2.dest.Y = 430;
+                    dice2.dest.Width = dice1.dest.Width;
+                    dice2.dest.Height = dice1.dest.Height;
+
                 }
 
                 if (CurrentPlayer.currentTileIndex == target)
@@ -857,20 +848,6 @@ namespace Capitalism
 
             if (itsMoneyTime)
             {
-                //taxes
-                if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
-                {
-                    CurrentPlayer.Money -= 200;
-                    moneyStolenOnce = true;
-                }
-
-                else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
-                {
-                    CurrentPlayer.Money -= 100;
-                    moneyStolenOnce = true;
-                }
-                //taxes
-
                 glowingHouse = true;
                 if (house.IsClicked)
                 {
@@ -913,7 +890,7 @@ namespace Capitalism
                         {
                             //Nearest Railroad.
 
-                            int county = currentPlayerIndex;
+                            int county = CurrentPlayer.currentTileIndex;
 
                             while (true)
                             {
@@ -927,7 +904,7 @@ namespace Capitalism
                             }
                         }
 
-                        else if (chanceCard.destination == new Vector2(2,2))
+                        else if (chanceCard.destination == new Vector2(2, 2))
                         {
                             //Nearest Utility
 
@@ -944,8 +921,10 @@ namespace Capitalism
                                 thingy++;
                             }
                         }
-                        
+
                         CurrentPlayer.Position = chanceCard.destination;
+
+                        cardThing = true;
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
                     {
@@ -1023,7 +1002,8 @@ namespace Capitalism
                     }
                     else if (communityCards.cardTypes == CommunityCardTypes.GetOutOfJail)
                     {
-                        //out of jail
+                        //jail
+                        int BREAK = 1;
                     }
                     else if (communityCards.cardTypes == CommunityCardTypes.GetFromOthers)
                     {
@@ -1042,6 +1022,7 @@ namespace Capitalism
                     else if (communityCards.cardTypes == CommunityCardTypes.HouseRepair)
                     {
                         //houses
+                        int BREAK = 1;
                     }
 
                     communityCards.Hitbox.X = 1100;
@@ -1079,6 +1060,20 @@ namespace Capitalism
                 }
 
                 #endregion
+
+                //taxes
+                if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
+                {
+                    CurrentPlayer.Money -= 200;
+                    moneyStolenOnce = true;
+                }
+
+                else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
+                {
+                    CurrentPlayer.Money -= 100;
+                    moneyStolenOnce = true;
+                }
+                //taxes
 
                 #region Buying
                 if (Properties.ContainsKey(CurrentPlayer.Position) && !drawChanceCards)
@@ -1298,17 +1293,20 @@ namespace Capitalism
 
                 else if (!drawChanceCards)
                 {
-                    RedEatsNoTerrarian = true;
-                    if (currentPlayerIndex + 1 < playerCount)
+                    if (!cardDouble)
                     {
-                        currentPlayerIndex++;
-                    }
-                    else
-                    {
-                        currentPlayerIndex = 0;
-                    }
+                        RedEatsNoTerrarian = true;
+                        if (currentPlayerIndex + 1 < playerCount)
+                        {
+                            currentPlayerIndex++;
+                        }
+                        else
+                        {
+                            currentPlayerIndex = 0;
+                        }
 
-                    CurrentPlayer = Players[currentPlayerIndex];
+                        CurrentPlayer = Players[currentPlayerIndex];
+                    }
 
                     rollDice = true;
                     itsMoneyTime = false;
@@ -1316,6 +1314,7 @@ namespace Capitalism
                     moneyStolenOnce = false;
                     drawedACard = false;
                     glowingHouse = false;
+                    cardDouble = false;
                 }
 
 
