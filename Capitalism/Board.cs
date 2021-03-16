@@ -32,7 +32,6 @@ namespace Capitalism
         bool RedEatsNoTerrarian = true;
         bool drawedACard = false;
         bool drawChanceCards = false;
-        bool cardThing = false;
         bool drawCommunityCards = false;
         bool agagagagaga = true;
         bool glowingHouse = false;
@@ -312,7 +311,7 @@ namespace Capitalism
             return 0;
         }
 
-        static private int ChestMoney(CardTypes cardTypes, string filename)
+        static private int ChanceMoney(CardTypes cardTypes, string filename)
         {
             if (cardTypes == CardTypes.BankMoney)
             {
@@ -561,15 +560,11 @@ namespace Capitalism
 
                 Property property = null;
 
-                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, Destination(cardType, filename, charPostitions), ChestMoney(cardType, filename)  /*ask about order after*/));
+                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, Destination(cardType, filename, charPostitions), ChanceMoney(cardType, filename)  /*ask about order after*/));
                 ;
             }
 
-            for (int i = 0; i < 7; i++)
-            {
-                chanceCards.Dequeue();
-            }
-            //chanceCards = ShuffleQueue(chanceCards);
+            chanceCards = ShuffleQueue(chanceCards);
             ;
             #endregion
 
@@ -742,8 +737,8 @@ namespace Capitalism
 
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
-                    //target = rollValue + currentPlayerIndex + 1;
-                    target = 8;
+                    target = rollValue + CurrentPlayer.currentTileIndex;
+                    //target = 8;
 
                     if (dice1.stopped)
                     {
@@ -752,8 +747,7 @@ namespace Capitalism
                             if (dice1.DiceRollValue != dice2.DiceRollValue)
                             {
                                 rollValue = 0;
-                                //target = rollValue + (CurrentPlayer.currentTileIndex);
-                                target = 8;
+                                target = rollValue + (CurrentPlayer.currentTileIndex);
 
                                 if (agagagagaga)
                                 {
@@ -802,8 +796,6 @@ namespace Capitalism
 
                     if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
                     {
-                        //CurrentPlayer.Position = Vector2.Lerp(CurrentPlayer.Position, val, .1f);
-
                         CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
                         CurrentPlayer.currentTileIndex++;
                         tokenMovingTime = gameTime.TotalGameTime;
@@ -814,6 +806,10 @@ namespace Capitalism
                     if (dice1.DiceRollValue == dice2.DiceRollValue)
                     {
                         cardDouble = true;
+                    }
+                    else
+                    {
+                        cardDouble = false;
                     }
 
                     characterMoving = false;
@@ -874,7 +870,7 @@ namespace Capitalism
 
                 #region Chance Card
 
-                if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 36) && !drawedACard)
+                if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 37) && !drawedACard)
                 {
                     chanceCard = chanceCards.Dequeue();
 
@@ -923,8 +919,6 @@ namespace Capitalism
                         }
 
                         CurrentPlayer.Position = chanceCard.destination;
-
-                        cardThing = true;
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
                     {
@@ -990,20 +984,19 @@ namespace Capitalism
 
                 #region CommunityChest Cards
 
-                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 33) && !drawedACard)
+                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 17 || CurrentPlayer.currentTileIndex == 34) && !drawedACard)
                 {
                     communityCards = chestCards.Dequeue();
 
                     drawCommunityCards = true;
 
-                    if (communityCards.money != 0)
+                    if (communityCards.money > 0)
                     {
                         CurrentPlayer.Money += communityCards.money;
                     }
                     else if (communityCards.cardTypes == CommunityCardTypes.GetOutOfJail)
                     {
-                        //jail
-                        int BREAK = 1;
+                        //get out of jail
                     }
                     else if (communityCards.cardTypes == CommunityCardTypes.GetFromOthers)
                     {
@@ -1015,6 +1008,10 @@ namespace Capitalism
                             }
                         }
                     }
+                    else if (communityCards.cardTypes == CommunityCardTypes.GoToGo)
+                    {
+                        CurrentPlayer.Position = charPostitions[1];
+                    }
                     else if (communityCards.cardTypes == CommunityCardTypes.GoInJail)
                     {
                         CurrentPlayer.inJail = true;
@@ -1022,39 +1019,37 @@ namespace Capitalism
                     else if (communityCards.cardTypes == CommunityCardTypes.HouseRepair)
                     {
                         //houses
-                        int BREAK = 1;
                     }
 
-                    communityCards.Hitbox.X = 1100;
-                    communityCards.Hitbox.Y = 680;
+                    chanceCard.Hitbox.X = 1100;
+                    chanceCard.Hitbox.Y = 680;
 
-                    chestCards.Enqueue(communityCards);
+                    chanceCards.Enqueue(chanceCard);
                     drawedACard = true;
                 }
-                if (drawCommunityCards)
+
+                if (drawChanceCards)
                 {
-
-                    if (communityCards.rotation < 8 * 3.14f)
+                    if (chanceCard.rotation < 8 * 3.14f)
                     {
-                        communityCards.rotation += .2f;
-                        communityCards.Hitbox.X = (int)Lerp(communityCards.Hitbox.X, Bounds.Width / 2, .03f);
-                        communityCards.Hitbox.Y = (int)Lerp(communityCards.Hitbox.Y, Bounds.Height / 2, .03f);
+                        chanceCard.rotation += .2f;
+                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
+                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
 
-                        communityCards.Hitbox.Width = (int)Lerp(communityCards.Hitbox.Width, 190, .05f);
-                        communityCards.Hitbox.Height = (int)Lerp(communityCards.Hitbox.Height, 150, .05f);
+                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
+                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
 
-                        Console.WriteLine($"{communityCards.Hitbox}");
+                        Console.WriteLine($"{chanceCard.Hitbox}");
                     }
                     else
                     {
-                        communityChestPrevTime += gameTime.ElapsedGameTime;
-
-                        if (communityChestPrevTime >= TimeSpan.FromSeconds(3))
+                        chanceCardPrevTime += gameTime.ElapsedGameTime;
+                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
                         {
-                            communityCards.rotation = 0;
-                            communityChestPrevTime = TimeSpan.Zero;
-                            drawCommunityCards = false;
-                            communityCards = null;
+                            chanceCard.rotation = 0;
+                            chanceCardPrevTime = TimeSpan.Zero;
+                            drawChanceCards = false;
+                            chanceCard = null;
                         }
                     }
                 }
@@ -1080,17 +1075,21 @@ namespace Capitalism
                 {
                     if (noButton.IsClicked)
                     {
-                        if (currentPlayerIndex + 1 < playerCount)
+                        if (!cardDouble)
                         {
-                            currentPlayerIndex++;
-                        }
-                        else
-                        {
-                            currentPlayerIndex = 0;
-                        }
 
-                        CurrentPlayer = Players[currentPlayerIndex];
+                            if (currentPlayerIndex + 1 < playerCount)
+                            {
+                                currentPlayerIndex++;
+                            }
+                            else
+                            {
+                                currentPlayerIndex = 0;
+                            }
 
+                            CurrentPlayer = Players[currentPlayerIndex];
+
+                        }
                         rollDice = true;
                         itsMoneyTime = false;
                         diceFlashing = true;
@@ -1187,24 +1186,29 @@ namespace Capitalism
 
                         #endregion
 
-                        if (currentPlayerIndex + 1 < playerCount)
+                        if (!cardDouble)
                         {
-                            currentPlayerIndex++;
+
+                            if (currentPlayerIndex + 1 < playerCount)
+                            {
+                                currentPlayerIndex++;
+                            }
+                            else
+                            {
+                                currentPlayerIndex = 0;
+                            }
+
+                            CurrentPlayer = Players[currentPlayerIndex];
+
                         }
-                        else
-                        {
-                            currentPlayerIndex = 0;
-                        }
 
-                        CurrentPlayer = Players[currentPlayerIndex];
+                            rollDice = true;
+                            itsMoneyTime = false;
+                            diceFlashing = true;
+                            moneyStolenOnce = false;
+                            drawedACard = false;
 
-                        rollDice = true;
-                        itsMoneyTime = false;
-                        diceFlashing = true;
-                        moneyStolenOnce = false;
-                        drawedACard = false;
-
-
+                        
                     }
 
                 }
@@ -1492,5 +1496,15 @@ namespace Capitalism
                 communityCards.Draw(batch);
             }
         }
+
+
+
+        /*   THINGS THAT ARE BROKEN
+         * 
+         * Property drawing breaks at 5
+         * Community Chest in general
+         * Utillities not working
+         * 
+         */ 
     }
 }
