@@ -32,10 +32,11 @@ namespace Capitalism
         public CardTypes cardTypes;
 
         public Vector2 destination;
+        public int tileNumber;
         public int money;
         public float rotation = 0f;
 
-        public ChanceCards(Texture2D image, Rectangle hitbox, Color tint, CardTypes CardTypes, Vector2 destination, int money=0)
+        public ChanceCards(Texture2D image, Rectangle hitbox, Color tint, CardTypes CardTypes, Vector2 destination, int TileNumber, int money=0)
         {
             Image = image;
             Hitbox = hitbox;
@@ -43,6 +44,7 @@ namespace Capitalism
             Position = hitbox.Location.ToVector2();
             cardTypes = CardTypes;
             this.destination = destination;
+            tileNumber = TileNumber;
             this.money = money;
         }
 
