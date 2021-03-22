@@ -54,7 +54,7 @@ namespace Capitalism
 
         public PropertyColor PropColor;
 
-        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, bool Railroad, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel, PropertyColor propColor)
+        public Property(Texture2D image, Rectangle hitbox, Color tint,int cost, int rent, bool Railroad, bool Utillity, int rentWHouse1, int rentWHouse2, int rentWHouse3, int rentWHouse4, int rentWHotel, int houseCost, int hotel, PropertyColor propColor)
         {
             Image = image;
             Tint = tint;
@@ -71,8 +71,10 @@ namespace Capitalism
             HouseCost = houseCost;
             HotelCost = hotel;
             PropColor = propColor;
-
-
+            isRailroad = Railroad;
+            isUtility = Utillity;
+            //fix utillities 
+            e
         }
 
 

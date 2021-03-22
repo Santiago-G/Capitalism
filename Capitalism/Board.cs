@@ -29,7 +29,7 @@ namespace Capitalism
         bool bean = true;
         bool diceFlashing = true;
         bool moneyStolenOnce = false;
-        bool RedEatsNoTerrarian = true;
+        bool Rent = true;
         bool drawedACard = false;
         bool drawChanceCards = false;
         bool drawCommunityCards = false;
@@ -412,15 +412,15 @@ namespace Capitalism
         TimeSpan chanceCardPrevTime = TimeSpan.Zero;
         TimeSpan communityChestPrevTime = TimeSpan.Zero;
 
-        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content, PropertyColor propColor)
+        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, bool isUtillity, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content, PropertyColor propColor)
         {
             if (fliped)
             {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
             }
             else
             {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
             }
         }
         Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
@@ -482,43 +482,43 @@ namespace Capitalism
 
             #region Properties
 
-            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.brown));
+            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.brown));
             Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.brown));
 
-            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
-            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
-            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.lightblue));
+            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
+            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
+            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.lightblue));
 
-            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.pink));
-            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.pink));
-            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.pink));
+            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.pink));
+            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.pink));
+            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.pink));
 
-            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
-            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
-            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
+            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
+            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
 
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
-            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
-            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
 
-            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
-            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
-            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
 
-            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
-            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
-            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
+            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
+            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
+            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
 
-            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.darkblue));
-            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.darkblue));
+            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.darkblue));
+            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.darkblue));
 
-            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
 
-            //Properties.Add(PropertiesEnum.ElectricComp, Content.Load<Texture2D>("ElectricCompany"));
-            //Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+            Properties.Add(charPostitions[12], LoadContent("ElectricCompany", 12, 12, false, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully ));
+            Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
             #endregion
 
@@ -664,6 +664,8 @@ namespace Capitalism
                 }
             }
 
+            Console.WriteLine(CurrentPlayer.currentTileIndex);
+
             #region Updates 
             CurrentPlayer.Update();
             noButton.Update(ms, true);
@@ -739,7 +741,7 @@ namespace Capitalism
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
-                    target = 8;
+                    target = 13;
 
                     if (dice1.stopped)
                     {
@@ -815,6 +817,7 @@ namespace Capitalism
 
                     characterMoving = false;
                     itsMoneyTime = true;
+                    Rent = true;
                     showingDice = false;
 
                     tokenMovingTime = TimeSpan.Zero;
@@ -919,6 +922,12 @@ namespace Capitalism
                             }
                         }
 
+                        if (CurrentPlayer.currentTileIndex > chanceCard.tileNumber && !moneyStolenOnce)
+                        {
+                            CurrentPlayer.Money += 200;
+                            moneyStolenOnce = true;
+                        }
+
                         CurrentPlayer.Position = chanceCard.destination;
                         CurrentPlayer.currentTileIndex = chanceCard.tileNumber;
                     }
@@ -939,6 +948,11 @@ namespace Capitalism
                     else if (chanceCard.cardTypes == CardTypes.GoBack3)
                     {
                         CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
+
+                        if (CurrentPlayer.currentTileIndex == 5)
+                        {
+                            CurrentPlayer.Money -= 200;
+                        }
                     }
                     else if (chanceCard.cardTypes == CardTypes.GoInJail)
                     {
@@ -1238,7 +1252,7 @@ namespace Capitalism
                     {
                         if (temp == CurrentPlayer.properties[i])
                         {
-                            RedEatsNoTerrarian = true;
+                            Rent = true;
                             if (currentPlayerIndex + 1 < playerCount)
                             {
                                 currentPlayerIndex++;
@@ -1262,11 +1276,11 @@ namespace Capitalism
                     {
                         for (int i = 0; i < Players.Length; i++)
                         {
-                            if (Players[i] != CurrentPlayer && RedEatsNoTerrarian)
+                            if (Players[i] != CurrentPlayer && Rent)
                             {
                                 for (int j = 0; j < Players[i].properties.Count; j++)
                                 {
-                                    if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && RedEatsNoTerrarian)
+                                    if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && Rent)
                                     {
                                         if (BoughtProperties[CurrentPlayer.Position].isUtility)
                                         {
@@ -1279,7 +1293,7 @@ namespace Capitalism
                                             Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
                                         }
 
-                                        RedEatsNoTerrarian = false;
+                                        Rent = false;
 
                                         if (currentPlayerIndex + 1 < playerCount)
                                         {
@@ -1311,7 +1325,7 @@ namespace Capitalism
                 {
                     if (!cardDouble)
                     {
-                        RedEatsNoTerrarian = true;
+                        Rent = true;
                         if (currentPlayerIndex + 1 < playerCount)
                         {
                             currentPlayerIndex++;
@@ -1517,6 +1531,8 @@ namespace Capitalism
          * Utillities not working
          * Community Chest doesn't work with doubles.
          * After you pull a moving card, when you move again it pulls another card
+         * When a player gets moved via Chance Cards
+         * doubles not working when char is paying rent
          */
     }
 }
