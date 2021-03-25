@@ -483,7 +483,7 @@ namespace Capitalism
             #region Properties
 
             Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.brown));
-            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.brown));
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.brown));
 
             Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
             Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
@@ -518,7 +518,7 @@ namespace Capitalism
             Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
 
             Properties.Add(charPostitions[12], LoadContent("ElectricCompany", 12, 12, false, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully ));
-            Properties.Add(PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+            Properties.Add(charPostitions[28], LoadContent("WaterWorks", 12, 12, true, 150, 0 , false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));//PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
             #endregion
 
@@ -741,7 +741,7 @@ namespace Capitalism
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
-                    target = 13;
+                    target = 3 + CurrentPlayer.currentTileIndex;
 
                     if (dice1.stopped)
                     {
@@ -1129,6 +1129,7 @@ namespace Capitalism
                         CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
 
                         int i = CurrentPlayer.properties.Count - 1;
+                        int propCount = CurrentPlayer.properties.Count;
                         BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
                         Properties.Remove(CurrentPlayer.Position);
 
@@ -1179,34 +1180,36 @@ namespace Capitalism
                         #endregion
 
                         #region Property Placement
-                        if (CurrentPlayer.properties.Count == 1)
+                        if (propCount == 1)
                         {
                             CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);
                         }
                         else
                         {
-                            int temp = 1500;
-                            int temp2 = 690;
+                            int x = 1500;
+                            int y = 690;
 
-                            if (CurrentPlayer.properties.Count % 6 == 0)
+                            if (propCount % 6 == 0)
                             {
-                                temp2 = CurrentPlayer.properties[i - 1].Hitbox.Y + 100;
-                                temp = 1500;
+                                propCount = 1;
+                                fix this
+                                //CurrentPlayer.properties[i].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);
                                 CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
                             }
 
-
-                            temp += ((CurrentPlayer.properties.Count % 5 - 1) * 65);
-                            if (CurrentPlayer.properties.Count % 5 < 4)
+                            
+                            x += ((propCount % 6 - 1) * 65);
+                            if (propCount % 5 < 4)
                             {
-                                temp2 -= (CurrentPlayer.properties.Count % 5 - 1) * 10;
+                                y -= (propCount % 5 - 1) * 10;
                             }
-                            else
+                            else if (propCount == 5)
                             {
-                                temp2 += (CurrentPlayer.properties.Count % 5 - 4) * 10;
+                                y += 10;
                             }
 
-                            CurrentPlayer.properties[i].Hitbox = new Rectangle(temp, temp2, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
+
+                            CurrentPlayer.properties[i].Hitbox = new Rectangle(x, y, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
                             CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                         }
 
@@ -1347,7 +1350,7 @@ namespace Capitalism
                     cardDouble = false;
                 }
 
-
+                #region Growing Effect on Properties 
                 for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                 {
                     if (CurrentPlayer.properties[i].Hitbox.Contains(ms.Position))
@@ -1385,7 +1388,7 @@ namespace Capitalism
                     }
 
                 }
-
+                #endregion
 
             }
             #endregion
@@ -1528,7 +1531,6 @@ namespace Capitalism
         /*   THINGS THAT ARE BROKEN
          * 
          * Property drawing breaks at 5
-         * Utillities not working
          * Community Chest doesn't work with doubles.
          * After you pull a moving card, when you move again it pulls another card
          * When a player gets moved via Chance Cards

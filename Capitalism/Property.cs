@@ -74,7 +74,7 @@ namespace Capitalism
             isRailroad = Railroad;
             isUtility = Utillity;
             //fix utillities 
-            e
+            
         }
 
 
