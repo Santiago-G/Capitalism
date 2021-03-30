@@ -83,8 +83,8 @@ namespace Capitalism
         {
             originalWidth = Hitbox.Width;
             originalHeight = Hitbox.Height;
-            Hitbox.Width = (int)((double)(Hitbox.Width) * 1.25);
-            Hitbox.Height = (int)((double)(Hitbox.Width) * 1.25);
+            Hitbox.Width = (int)((double)(Hitbox.Width) * 1.75);
+            Hitbox.Height = (int)((double)(Hitbox.Height) * 1.75);
 
             expanded = true;
         }

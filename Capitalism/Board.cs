@@ -46,6 +46,8 @@ namespace Capitalism
         Queue<ChanceCards> chanceCards = new Queue<ChanceCards>();
         Queue<CommunityChests> chestCards = new Queue<CommunityChests>();
 
+        int propRowCounter = 0;
+
         int rollValue = 0;
         int currentPlayerIndex = 0;
         public int playerCount => SelectingPlayers.playerCount;
@@ -741,7 +743,15 @@ namespace Capitalism
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
-                    target = 3 + CurrentPlayer.currentTileIndex;
+                    if (CurrentPlayer.Token != "Boat")
+                    {
+                        target = 3 + CurrentPlayer.currentTileIndex;
+                    }
+                    else
+                    {
+                        target = 1;
+                    }
+
 
                     if (dice1.stopped)
                     {
@@ -1182,35 +1192,58 @@ namespace Capitalism
                         #region Property Placement
                         if (propCount == 1)
                         {
-                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);
+                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1475, 700, CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
                         }
                         else
                         {
-                            int x = 1500;
-                            int y = 690;
+                            int x = 1475;
+                            int y = 0;
+                            if (propRowCounter == 0)
+                            {
+                                y = 690;
+                            }
+                            else if(propRowCounter == 1)
+                            {
+                                x = 1550;
+                                propCount = propCount - 5;
+                            }
+                            else if (propRowCounter == 2)
+                            {
+                                //do this
+                                propCount = propCount - 10;
+                            }
 
                             if (propCount % 6 == 0)
                             {
-                                propCount = 1;
-                                fix this
-                                //CurrentPlayer.properties[i].Hitbox = new Rectangle(1500, 720, CurrentPlayer.properties[0].Image.Width / 2, CurrentPlayer.properties[0].Image.Height / 2);
+                                propRowCounter++;
+                                CurrentPlayer.properties[i].Hitbox = new Rectangle(1690, 700, CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
                                 CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
+                            }
+                            else
+                            {
+                                x += ((propCount % 6 - 1) * 33);
+                                if (propCount % 5 < 4)
+                                {
+                                    y -= ((propCount % 5 - 1) * 10);
+                                }
+
+                                if (propCount == 4)
+                                {
+                                    y -= 20;
+                                }
+                                
+                                if (propCount == 5)
+                                {
+                                    y -= 20;
+                                }
+
+
+                                CurrentPlayer.properties[i].Hitbox = new Rectangle(x, y, (CurrentPlayer.properties[i].Image.Width / 3), CurrentPlayer.properties[i].Image.Height / 3);
+                                CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                             }
 
                             
-                            x += ((propCount % 6 - 1) * 65);
-                            if (propCount % 5 < 4)
-                            {
-                                y -= (propCount % 5 - 1) * 10;
-                            }
-                            else if (propCount == 5)
-                            {
-                                y += 10;
-                            }
 
-
-                            CurrentPlayer.properties[i].Hitbox = new Rectangle(x, y, (CurrentPlayer.properties[i].Image.Width / 2), CurrentPlayer.properties[i].Image.Height / 2);
-                            CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                         }
 
                         #endregion
