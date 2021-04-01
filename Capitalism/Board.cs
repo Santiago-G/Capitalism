@@ -1196,28 +1196,44 @@ namespace Capitalism
                         }
                         else
                         {
-                            int x = 1475;
+                            int x = 0;
                             int y = 0;
-                            if (propRowCounter == 0)
+                            switch (propRowCounter)
                             {
-                                y = 690;
+                                case 0:
+                                    x = 1475;
+                                    y = 690;
+                                    break;
+                                case 1:
+                                    x = 1680;
+                                    y = 690;
+                                    propCount = propCount - 5;
+                                    break;
+                                case 2:
+                                    x = 1475;
+                                    y = 790;
+                                    propCount = propCount - 10;
+                                    break;
+                                case 3:
+                                    x = 1680;
+                                    y = 790;
+                                    break;
+
+                                default:
+                                    throw new Exception("Counter is off");
                             }
-                            else if(propRowCounter == 1)
-                            {
-                                x = 1550;
-                                propCount = propCount - 5;
-                            }
-                            else if (propRowCounter == 2)
-                            {
-                                //do this
-                                propCount = propCount - 10;
-                            }
+
+                            int[] xCoordinates = new int[] { 1475, 1680 };
+                            int[] yCoordinates = new int[] { 690, 690, 790, 790 };
 
                             if (propCount % 6 == 0)
                             {
                                 propRowCounter++;
-                                CurrentPlayer.properties[i].Hitbox = new Rectangle(1690, 700, CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
+
                                 CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
+
+                                CurrentPlayer.properties[i].Hitbox = new Rectangle(xCoordinates[propRowCounter % 2], yCoordinates[propRowCounter], CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
+                                EA SPORTS //test the line above
                             }
                             else
                             {
@@ -1563,7 +1579,7 @@ namespace Capitalism
 
         /*   THINGS THAT ARE BROKEN
          * 
-         * Property drawing breaks at 5
+         * I can click the buy button while the community card is spinning. It goes to the next person's turn, and I don't know if it happens to chance cards
          * Community Chest doesn't work with doubles.
          * After you pull a moving card, when you move again it pulls another card
          * When a player gets moved via Chance Cards
