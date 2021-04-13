@@ -519,8 +519,8 @@ namespace Capitalism
             Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
             Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
 
-            Properties.Add(charPostitions[12], LoadContent("ElectricCompany", 12, 12, false, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully ));
-            Properties.Add(charPostitions[28], LoadContent("WaterWorks", 12, 12, true, 150, 0 , false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));//PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+            Properties.Add(charPostitions[12], LoadContent("ElectricCompany", 12, 12, false, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPostitions[28], LoadContent("WaterWorks", 12, 12, true, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));//PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
 
             #endregion
 
@@ -563,11 +563,15 @@ namespace Capitalism
                 Property property = null;
                 var result = Destination(cardType, filename, charPostitions);
 
-                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
+                if (i > 8)
+                {
+                    chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
+                }
+                
                 ;
             }
 
-            chanceCards = ShuffleQueue(chanceCards);
+            //chanceCards = ShuffleQueue(chanceCards);
             ;
             #endregion
 
@@ -743,6 +747,21 @@ namespace Capitalism
                     rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
+
+                    if (CurrentPlayer.currentTileIndex != 8)
+                    {
+                        target = 8;
+                    }
+                    else
+                    {
+                        target = 2;
+                        CurrentPlayer.Position = charPostitions[1];
+                        CurrentPlayer.currentTileIndex = 2;
+                    }
+
+                    /*
+                    FOR TESTING BUYING PROPS 
+                     
                     if (CurrentPlayer.Token != "Boat")
                     {
                         target = 3 + CurrentPlayer.currentTileIndex;
@@ -751,7 +770,7 @@ namespace Capitalism
                     {
                         target = 1;
                     }
-
+                    */
 
                     if (dice1.stopped)
                     {
@@ -890,7 +909,7 @@ namespace Capitalism
 
                     drawChanceCards = true;
 
-                    if (chanceCard.money > 0)
+                    if (chanceCard.money != 0)
                     {
                         CurrentPlayer.Money += chanceCard.money;
                     }
@@ -904,7 +923,7 @@ namespace Capitalism
 
                             while (true)
                             {
-                                if (Properties[charPostitions[county]].isRailroad)
+                                if (Properties.ContainsKey(charPostitions[county]) && Properties[charPostitions[county]].isRailroad)
                                 {
                                     chanceCard.destination = charPostitions[county];
                                     break;
@@ -1211,12 +1230,13 @@ namespace Capitalism
                                     break;
                                 case 2:
                                     x = 1475;
-                                    y = 790;
+                                    y = 860;
                                     propCount = propCount - 10;
                                     break;
                                 case 3:
                                     x = 1680;
-                                    y = 790;
+                                    y = 860;
+                                    propCount = propCount - 15;
                                     break;
 
                                 default:
@@ -1224,7 +1244,7 @@ namespace Capitalism
                             }
 
                             int[] xCoordinates = new int[] { 1475, 1680 };
-                            int[] yCoordinates = new int[] { 690, 690, 790, 790 };
+                            int[] yCoordinates = new int[] { 690, 700, 870, 870 };
 
                             if (propCount % 6 == 0)
                             {
@@ -1233,11 +1253,11 @@ namespace Capitalism
                                 CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
 
                                 CurrentPlayer.properties[i].Hitbox = new Rectangle(xCoordinates[propRowCounter % 2], yCoordinates[propRowCounter], CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
-                                EA SPORTS //test the line above
                             }
                             else
                             {
                                 x += ((propCount % 6 - 1) * 33);
+
                                 if (propCount % 5 < 4)
                                 {
                                     y -= ((propCount % 5 - 1) * 10);
@@ -1247,7 +1267,7 @@ namespace Capitalism
                                 {
                                     y -= 20;
                                 }
-                                
+
                                 if (propCount == 5)
                                 {
                                     y -= 20;
@@ -1258,7 +1278,7 @@ namespace Capitalism
                                 CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
                             }
 
-                            
+
 
                         }
 
@@ -1575,7 +1595,7 @@ namespace Capitalism
             }
         }
 
-
+        //do these first - chance/community cards, jail, houses
 
         /*   THINGS THAT ARE BROKEN
          * 

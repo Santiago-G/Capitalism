@@ -76,7 +76,7 @@ namespace Capitalism
                 goMoney = false;
             }
 
-            if (currentTileIndex == 1 && goMoney == false)
+            if (currentTileIndex == 0 && goMoney == false)
             {
                 Money += 200;
                 goMoney = true;
