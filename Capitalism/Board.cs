@@ -563,7 +563,7 @@ namespace Capitalism
                 Property property = null;
                 var result = Destination(cardType, filename, charPostitions);
 
-                if (i > 8)
+                if (i > 11)
                 {
                     chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
                 }
@@ -748,15 +748,13 @@ namespace Capitalism
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
 
-                    if (CurrentPlayer.currentTileIndex != 8)
+                    if (CurrentPlayer.currentTileIndex == 1)
                     {
                         target = 8;
                     }
                     else
                     {
-                        target = 2;
-                        CurrentPlayer.Position = charPostitions[1];
-                        CurrentPlayer.currentTileIndex = 2;
+                        target = rollValue + CurrentPlayer.currentTileIndex;
                     }
 
                     /*
@@ -923,11 +921,17 @@ namespace Capitalism
 
                             while (true)
                             {
-                                if (Properties.ContainsKey(charPostitions[county]) && Properties[charPostitions[county]].isRailroad)
+                                if ((Properties.ContainsKey(charPostitions[county]) && Properties[charPostitions[county]].isRailroad) || (BoughtProperties.ContainsKey(charPostitions[county]) && BoughtProperties[charPostitions[county]].isRailroad))
                                 {
                                     chanceCard.destination = charPostitions[county];
+                                    chanceCard.tileNumber = county + 1;
                                     break;
                                 }
+                                else if (county == 39)
+                                {
+                                    county = 0;
+                                }
+                                    
 
                                 county++;
                             }
@@ -1594,7 +1598,7 @@ namespace Capitalism
                 communityCards.Draw(batch);
             }
         }
-
+        //screaming issue - THE CARDS FREEZE WHEN THE PLAYER HAS TO PAY RENT
         //do these first - chance/community cards, jail, houses
 
         /*   THINGS THAT ARE BROKEN
