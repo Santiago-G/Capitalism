@@ -22,7 +22,7 @@ namespace Capitalism.Screens
 
         #region Token Setup
         Texture2D VroomVroom;
-        Texture2D AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN;
+        Texture2D titanic;
         Texture2D good_day_sir;
         Texture2D ew;
         Texture2D yes;
@@ -72,14 +72,14 @@ namespace Capitalism.Screens
             pixel = Content.Load<Texture2D>("pixel");
 
             yesTexture = Content.Load<Texture2D>("YesTwo");
-            Yes = new HighlightButton(yesTexture, new Vector2(280,350), Color.White);
+            Yes = new HighlightButton(yesTexture, new Vector2(280,350), Color.White, Vector2.One);
             noTexture = Content.Load<Texture2D>("NoTwo");
-            No = new HighlightButton(noTexture, new Vector2(370, 350), Color.White);
+            No = new HighlightButton(noTexture, new Vector2(370, 350), Color.White, Vector2.One);
 
             #region tokens 
 
             VroomVroom = Content.Load<Texture2D>("car");
-            AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN = Content.Load<Texture2D>("boat");
+            titanic = Content.Load<Texture2D>("boat");
             good_day_sir = Content.Load<Texture2D>("hat");
             ew = Content.Load<Texture2D>("cat");
             yes = Content.Load<Texture2D>("dog");
@@ -89,16 +89,16 @@ namespace Capitalism.Screens
             weakling = Content.Load<Texture2D>("duck");
 
 
-            Car = new HighlightButton(VroomVroom, new Vector2(50, 120), Color.White);
-            Boat = new HighlightButton(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(260, 100), Color.White);
-            Hat = new HighlightButton(good_day_sir, new Vector2(480, 130), Color.White);
-            Cat = new HighlightButton(ew, new Vector2(50, 260), Color.White);
-            Dog = new HighlightButton(yes, new Vector2(260, 260), Color.White);
-            Wheelbarrow = new HighlightButton(discount_cart, new Vector2(480, 320), Color.White);
-            Boot = new HighlightButton(the_shape_of_italy, new Vector2(50, 470), Color.White);
+            Car = new HighlightButton(VroomVroom, new Vector2(50, 120), Color.White, Vector2.One);
+            Boat = new HighlightButton(titanic, new Vector2(260, 100), Color.White, Vector2.One);
+            Hat = new HighlightButton(good_day_sir, new Vector2(480, 130), Color.White, Vector2.One);
+            Cat = new HighlightButton(ew, new Vector2(50, 260), Color.White, Vector2.One);
+            Dog = new HighlightButton(yes, new Vector2(260, 260), Color.White, Vector2.One);
+            Wheelbarrow = new HighlightButton(discount_cart, new Vector2(480, 320), Color.White, Vector2.One);
+            Boot = new HighlightButton(the_shape_of_italy, new Vector2(50, 470), Color.White, Vector2.One);
             //Plane
 
-            Duck = new HighlightButton(weakling, new Vector2(480, 470), Color.White);
+            Duck = new HighlightButton(weakling, new Vector2(480, 470), Color.White, Vector2.One);
             #endregion
         }
 
@@ -139,7 +139,7 @@ namespace Capitalism.Screens
 
                 if (Boat.IsClicked && !alreadySelected[1])
                 {
-                    players.Add($"Player {currentPlayer}", (new Player(AAAANNNNNNNNNDDDDDDDDD_THE_TITANIC_HAS_SUNK_LADIES_AND_GENTLEMEN, new Vector2(1000), Color.White, "Boat", 1, 1500), Boat));
+                    players.Add($"Player {currentPlayer}", (new Player(titanic, new Vector2(1000), Color.White, "Boat", 1, 1500), Boat));
                     alreadySelected[1] = true;
 
                     why = true;

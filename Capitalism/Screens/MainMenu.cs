@@ -30,9 +30,9 @@ namespace Capitalism.Screens
 
             startingScreenFont = Content.Load<SpriteFont>("startingScreenFont");
 
-            SquareStart = new HighlightButton(Square1Image, new Vector2(30, 200), Color.Red);
-            SquareRules = new HighlightButton(Square1Image, new Vector2(30, 350), Color.Red);
-            SquareOptions = new HighlightButton(Square1Image, new Vector2(30, 500), Color.Red);
+            SquareStart = new HighlightButton(Square1Image, new Vector2(30, 200), Color.Red, Vector2.One);
+            SquareRules = new HighlightButton(Square1Image, new Vector2(30, 350), Color.Red, Vector2.One);
+            SquareOptions = new HighlightButton(Square1Image, new Vector2(30, 500), Color.Red, Vector2.One);
         }
 
         public override void Update(GameTime gameTime)

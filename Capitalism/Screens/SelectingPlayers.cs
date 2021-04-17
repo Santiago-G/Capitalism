@@ -34,8 +34,8 @@ namespace Capitalism.Screens
             playerCountFont = Content.Load<SpriteFont>("PlayerCountFont");
             mediumSizeFont = Content.Load<SpriteFont>("MediumSize");
 
-            SquarePlayerCount = new HighlightButton(Square1Image, new Vector2(150, 250), Color.Red);
-            SquarePlayersConfirmed = new HighlightButton(Square1Image, new Vector2(300, 500), Color.Green);
+            SquarePlayerCount = new HighlightButton(Square1Image, new Vector2(150, 250), Color.Red, Vector2.One);
+            SquarePlayersConfirmed = new HighlightButton(Square1Image, new Vector2(300, 500), Color.Green, Vector2.One);
         }
 
         public override void Update(GameTime gameTime)

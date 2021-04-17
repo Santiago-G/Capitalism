@@ -37,6 +37,7 @@ namespace Capitalism
         bool glowingHouse = false;
         bool buyingHouses = false;
         bool cardDouble = false;
+        bool getOutOfJailGlow = false;
         //bool firstLap = true;
         #endregion
 
@@ -247,7 +248,7 @@ namespace Capitalism
                 }
                 else if (filename.Contains("NearestUtillity"))
                 {
-                    return (positions[2], 1001);
+                    return (new Vector2(2,2), 1001);
                 }
                 else if (filename.Contains("ReadingRailroad"))
                 {
@@ -394,7 +395,7 @@ namespace Capitalism
         HighlightButton GreenProp;
         HighlightButton BlueProp;
 
-
+        HighlightButton getOutOfJailFree;
 
         Animation dice1;
         Animation dice2;
@@ -461,7 +462,7 @@ namespace Capitalism
             hatFrame = Content.Load<Texture2D>("hatFrame");
 
             houseIcon = Content.Load<Texture2D>("housey2");
-            house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White);
+            house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White, Vector2.One);
             houseBuyingUI = Content.Load<Texture2D>("template");
 
             PurplePropSprite = Content.Load<Texture2D>("PurpleProp");
@@ -473,14 +474,16 @@ namespace Capitalism
             GreenPropSprite = Content.Load<Texture2D>("GreenProp");
             BluePropSprite = Content.Load<Texture2D>("BlueProp");
 
-            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 150), Color.White);
-            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(660, 150), Color.White);
-            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(920, 150), Color.White);
-            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(1220, 150), Color.White);
-            RedProp = new HighlightButton(RedPropSprite, new Vector2(440, 180), Color.White);
-            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(700, 180), Color.White);
-            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(900, 180), Color.White);
-            BlueProp = new HighlightButton(BluePropSprite, new Vector2(50, 500), Color.White);
+            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 150), Color.White, Vector2.One);
+            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(660, 150), Color.White, Vector2.One);
+            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(920, 150), Color.White, Vector2.One);
+            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(1220, 150), Color.White, Vector2.One);
+            RedProp = new HighlightButton(RedPropSprite, new Vector2(440, 180), Color.White, Vector2.One);
+            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(700, 180), Color.White, Vector2.One);
+            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(900, 180), Color.White, Vector2.One);
+            BlueProp = new HighlightButton(BluePropSprite, new Vector2(50, 500), Color.White, Vector2.One);
+
+            getOutOfJailFree = new HighlightButton(Content.Load<Texture2D>("getOutOfJailFree"), new Vector2(50, 760), Color.White, new Vector2(.5f,.5f));
 
             #region Properties
 
@@ -563,7 +566,7 @@ namespace Capitalism
                 Property property = null;
                 var result = Destination(cardType, filename, charPostitions);
 
-                if (i > 11)
+                if (i > 3)
                 {
                     chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
                 }
@@ -625,8 +628,8 @@ namespace Capitalism
             No = Content.Load<Texture2D>("No");
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
 
-            noButton = new HighlightButton(No, new Vector2(326, 662), Color.White);
-            yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White);
+            noButton = new HighlightButton(No, new Vector2(326, 662), Color.White, Vector2.One);
+            yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
             Bounds = bounds;
         }
 
@@ -670,6 +673,15 @@ namespace Capitalism
                 }
             }
 
+            if (CurrentPlayer.inJail)
+            {
+                getOutOfJailGlow = true;
+            }
+            else
+            {
+                getOutOfJailGlow = false;
+            }
+
             Console.WriteLine(CurrentPlayer.currentTileIndex);
 
             #region Updates 
@@ -687,6 +699,7 @@ namespace Capitalism
             BlueProp.Update(ms, true);
 
             house.Update(ms, glowingHouse);
+            getOutOfJailFree.Update(ms, getOutOfJailGlow);
             #endregion
 
             if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
@@ -937,7 +950,7 @@ namespace Capitalism
                             }
                         }
 
-                        else if (chanceCard.destination == new Vector2(2, 2))
+                        else if (chanceCard.destination == new Vector2(2,2))
                         {
                             //Nearest Utility
 
@@ -945,10 +958,15 @@ namespace Capitalism
 
                             while (true)
                             {
-                                if (Properties[charPostitions[thingy]].isUtility)
+                                if ((Properties.ContainsKey(charPostitions[thingy]) && Properties[charPostitions[thingy]].isUtility) || (BoughtProperties.ContainsKey(charPostitions[thingy]) && BoughtProperties[charPostitions[thingy]].isUtility))
                                 {
                                     chanceCard.destination = charPostitions[thingy];
+                                    chanceCard.tileNumber = thingy + 1;
                                     break;
+                                }
+                                else if (thingy == 39)
+                                {
+                                    thingy = 0;
                                 }
 
                                 thingy++;
@@ -966,7 +984,7 @@ namespace Capitalism
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
                     {
-                        //get out of jail
+                        CurrentPlayer.GetOutOfJailFree = true;
                     }
                     else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
                     {
@@ -1548,6 +1566,10 @@ namespace Capitalism
 
                 batch.DrawString(font, $"M : {CurrentPlayer.Money}", new Vector2(1610, 610), Color.White);
 
+                if (CurrentPlayer.GetOutOfJailFree)
+                {
+                    getOutOfJailFree.Draw(batch);
+                }
             }
 
             CurrentPlayer?.Draw(batch);
@@ -1562,6 +1584,8 @@ namespace Capitalism
 
             house.Draw(batch);
 
+
+            ///////////////////
 
             if (darkenScreen)
             {

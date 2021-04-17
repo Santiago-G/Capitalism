@@ -16,7 +16,6 @@ namespace Capitalism
         {
             get
             {
-
                 double scaleValue =0.1;
                 int newSize = (int)(this.Hitbox.Width * scaleValue);
 
@@ -28,15 +27,27 @@ namespace Capitalism
             }
         }
 
+
+        public override Rectangle Hitbox 
+        { 
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * scale.X), (int)(Image.Height * scale.Y));
+            }
+        }
+
         public Rectangle CurrentHitbox;
         public Color CurrentTint;
 
         MouseState mouseState;
 
+        Vector2 scale { get; set; } = new Vector2(1,1);
+
         public bool IsClicked { get; private set; }
 
-        public HighlightButton(Texture2D image, Vector2 position, Color tint) : base(image, position, tint)
+        public HighlightButton(Texture2D image, Vector2 position, Color tint, Vector2 Scale) : base(image, position, tint)
         {
+            scale = Scale;
         }
 
         public void Update(MouseState ms, bool toHighlight)
