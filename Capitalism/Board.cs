@@ -51,6 +51,7 @@ namespace Capitalism
 
         int rollValue = 0;
         int currentPlayerIndex = 0;
+        int doubleCounter = 0;
         public int playerCount => SelectingPlayers.playerCount;
 
         public Rectangle Bounds { get; set; }
@@ -248,7 +249,7 @@ namespace Capitalism
                 }
                 else if (filename.Contains("NearestUtillity"))
                 {
-                    return (new Vector2(2,2), 1001);
+                    return (new Vector2(2, 2), 1001);
                 }
                 else if (filename.Contains("ReadingRailroad"))
                 {
@@ -262,7 +263,7 @@ namespace Capitalism
 
             if (cardTypes == CardTypes.GoToGo)
             {
-                return (positions[0], 1);
+                return (positions[0], 0);
             }
 
             return (Vector2.Zero, -1);
@@ -381,6 +382,7 @@ namespace Capitalism
         SpriteFont font;
         #endregion
 
+        #region HighlightButtons
         HighlightButton yesButton;
         HighlightButton noButton;
         NormalButton diceOnBoard1;
@@ -396,6 +398,8 @@ namespace Capitalism
         HighlightButton BlueProp;
 
         HighlightButton getOutOfJailFree;
+        HighlightButton getOutOfJailFree2;
+        #endregion
 
         Animation dice1;
         Animation dice2;
@@ -483,7 +487,9 @@ namespace Capitalism
             GreenProp = new HighlightButton(GreenPropSprite, new Vector2(900, 180), Color.White, Vector2.One);
             BlueProp = new HighlightButton(BluePropSprite, new Vector2(50, 500), Color.White, Vector2.One);
 
-            getOutOfJailFree = new HighlightButton(Content.Load<Texture2D>("getOutOfJailFree"), new Vector2(50, 760), Color.White, new Vector2(.5f,.5f));
+            getOutOfJailFree = new HighlightButton(Content.Load<Texture2D>("getOutOfJailFree"), new Vector2(50, 760), Color.White, new Vector2(.5f, .5f));
+            getOutOfJailFree2 = new HighlightButton(Content.Load<Texture2D>("GetOutOfJail2"), new Vector2(50, 760), Color.White, new Vector2(.5f, .5f));
+            line above wont draw
 
             #region Properties
 
@@ -566,15 +572,10 @@ namespace Capitalism
                 Property property = null;
                 var result = Destination(cardType, filename, charPostitions);
 
-                if (i > 3)
-                {
-                    chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
-                }
-                
-                ;
+                chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
             }
 
-            //chanceCards = ShuffleQueue(chanceCards);
+            chanceCards = ShuffleQueue(chanceCards);
             ;
             #endregion
 
@@ -614,13 +615,16 @@ namespace Capitalism
 
                 CommunityCardTypes cardType = GetCardType2(filename2);
 
+                if (i > 2)
+                {
+                    chestCards.Enqueue(new CommunityChests(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, CommunityMoney(cardType, filename2)));
+                }
 
-                chestCards.Enqueue(new CommunityChests(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, CommunityMoney(cardType, filename2)));
 
                 ;
             }
 
-            chestCards = ShuffleQueue(chestCards);
+            //chestCards = ShuffleQueue(chestCards);
             #endregion
 
             Frame = Content.Load<Texture2D>("Frame");
@@ -653,6 +657,7 @@ namespace Capitalism
 
                 Players[0].Tint = Color.Purple;
                 ;
+
                 bean = false;
             }
 
@@ -673,7 +678,7 @@ namespace Capitalism
                 }
             }
 
-            if (CurrentPlayer.inJail)
+            if (CurrentPlayer.inJail && !diceRolling)
             {
                 getOutOfJailGlow = true;
             }
@@ -700,6 +705,7 @@ namespace Capitalism
 
             house.Update(ms, glowingHouse);
             getOutOfJailFree.Update(ms, getOutOfJailGlow);
+            getOutOfJailFree2.Update(ms, getOutOfJailGlow);
             #endregion
 
             if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
@@ -711,7 +717,6 @@ namespace Capitalism
             #region DiceRolling
             if (rollDice)
             {
-
                 if (diceMoving)
                 {
                     ;
@@ -763,11 +768,11 @@ namespace Capitalism
 
                     if (CurrentPlayer.currentTileIndex == 1)
                     {
-                        target = 8;
+                        target = 3;
                     }
                     else
                     {
-                        target = rollValue + CurrentPlayer.currentTileIndex;
+                        target = 18;
                     }
 
                     /*
@@ -812,6 +817,14 @@ namespace Capitalism
                         }
                     }
                 }
+                else
+                {
+                    if (CurrentPlayer.inJail && (getOutOfJailFree.IsClicked || getOutOfJailFree2.IsClicked))
+                    {
+                        CurrentPlayer.inJail = false;
+                        CurrentPlayer.Position = charPostitions[10];
+                    }
+                }
 
 
             }
@@ -849,10 +862,17 @@ namespace Capitalism
                     if (dice1.DiceRollValue == dice2.DiceRollValue)
                     {
                         cardDouble = true;
+                        doubleCounter++;
+
+                        if (doubleCounter == 3)
+                        {
+                            CurrentPlayer.inJail = true;
+                        }
                     }
                     else
                     {
                         cardDouble = false;
+                        doubleCounter = 0;
                     }
 
                     characterMoving = false;
@@ -900,6 +920,7 @@ namespace Capitalism
                 {
                     CurrentPlayer.inJail = true;
                     CurrentPlayer.jailTimer++;
+                    CurrentPlayer.Position = new Vector2(523, 885);
                 }
                 //jail
 
@@ -917,7 +938,7 @@ namespace Capitalism
                 if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 37) && !drawedACard)
                 {
                     chanceCard = chanceCards.Dequeue();
-
+                    bool dontPutBack = false;
                     drawChanceCards = true;
 
                     if (chanceCard.money != 0)
@@ -944,13 +965,13 @@ namespace Capitalism
                                 {
                                     county = 0;
                                 }
-                                    
+
 
                                 county++;
                             }
                         }
 
-                        else if (chanceCard.destination == new Vector2(2,2))
+                        else if (chanceCard.destination == new Vector2(2, 2))
                         {
                             //Nearest Utility
 
@@ -984,7 +1005,9 @@ namespace Capitalism
                     }
                     else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
                     {
+                        dontPutBack = true;
                         CurrentPlayer.GetOutOfJailFree = true;
+
                     }
                     else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
                     {
@@ -1008,6 +1031,7 @@ namespace Capitalism
                     else if (chanceCard.cardTypes == CardTypes.GoInJail)
                     {
                         CurrentPlayer.inJail = true;
+                        CurrentPlayer.Position = new Vector2(523, 885);
                     }
                     else if (chanceCard.cardTypes == CardTypes.HouseRepair)
                     {
@@ -1017,7 +1041,11 @@ namespace Capitalism
                     chanceCard.Hitbox.X = 1100;
                     chanceCard.Hitbox.Y = 680;
 
-                    chanceCards.Enqueue(chanceCard);
+                    if (!dontPutBack)
+                    {
+                        chanceCards.Enqueue(chanceCard);
+                    }
+
                     drawedACard = true;
                 }
 
@@ -1051,12 +1079,12 @@ namespace Capitalism
 
                 #region CommunityChest Cards
 
-                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 17 || CurrentPlayer.currentTileIndex == 34) && !drawedACard)
+                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 34) && !drawedACard)
                 {
                     communityCards = chestCards.Dequeue();
 
                     drawCommunityCards = true;
-
+                    bool dontPutBack = false;
                     if (communityCards.money > 0)
                     {
                         CurrentPlayer.Money += communityCards.money;
@@ -1079,7 +1107,8 @@ namespace Capitalism
                             break;
 
                         case CommunityCardTypes.GetOutOfJail:
-                            //get out of jail
+                            CurrentPlayer.GetOutOfJailFree2 = true;
+                            dontPutBack = true;
                             break;
 
                         case CommunityCardTypes.GoInJail:
@@ -1087,11 +1116,12 @@ namespace Capitalism
                             break;
 
                         case CommunityCardTypes.HouseRepair:
-                            //houses
+                            //house
                             break;
 
                         case CommunityCardTypes.GoToGo:
-                            CurrentPlayer.Position = charPostitions[1];
+                            CurrentPlayer.Position = charPostitions[0];
+                            CurrentPlayer.currentTileIndex = 0;
                             break;
 
                         case CommunityCardTypes.Invalid:
@@ -1103,7 +1133,11 @@ namespace Capitalism
                     communityCards.Hitbox.X = 1100;
                     communityCards.Hitbox.Y = 680;
 
-                    chestCards.Enqueue(communityCards);
+                    if (!dontPutBack)
+                    {
+                        chestCards.Enqueue(communityCards);
+                    }
+
                     drawedACard = true;
                 }
 
@@ -1566,9 +1600,25 @@ namespace Capitalism
 
                 batch.DrawString(font, $"M : {CurrentPlayer.Money}", new Vector2(1610, 610), Color.White);
 
+                if (CurrentPlayer.inJail)
+                {
+                    batch.DrawString(font, "Break Out? Costs 50M", new Vector2(100, 700), Color.White);
+                    getOutOfJailFree.Tint = Color.White;
+                    getOutOfJailFree2.Tint = Color.White;
+                }
+                else
+                {
+                    getOutOfJailFree.Tint = Color.DarkGray;
+                    getOutOfJailFree2.Tint = Color.DarkGray;
+                }
+
                 if (CurrentPlayer.GetOutOfJailFree)
                 {
                     getOutOfJailFree.Draw(batch);
+                }
+                if (CurrentPlayer.GetOutOfJailFree2)
+                {
+                    getOutOfJailFree2.Draw(batch);
                 }
             }
 

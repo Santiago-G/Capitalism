@@ -24,6 +24,7 @@ namespace Capitalism
         public bool inJail = false;
 
         public bool GetOutOfJailFree = false;
+        public bool GetOutOfJailFree2 = false;
 
         bool goMoney = true;
 
@@ -86,10 +87,11 @@ namespace Capitalism
             {
                 Position = new Vector2(523, 885);
                 currentTileIndex = 11;
-                if (jailTimer == 4)
+                if (jailTimer == 3)
                 {
                     inJail = false;
                     jailTimer = 0;
+                    Money -= 50;
                 }
             }
         }
