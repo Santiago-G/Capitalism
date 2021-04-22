@@ -215,9 +215,13 @@ namespace Capitalism
             {
                 return CommunityCardTypes.GetFromOthers;
             }
-            else if (filename.Contains("getOutOfJail"))
+            else if (filename.Contains("GetOutOfJail"))
             {
                 return CommunityCardTypes.GetOutOfJail;
+            }
+            else if (filename.Contains("GrandOperaOpening"))
+            {
+                return CommunityCardTypes.GetFromOthers;
             }
             else
             {
@@ -385,6 +389,7 @@ namespace Capitalism
         #region HighlightButtons
         HighlightButton yesButton;
         HighlightButton noButton;
+        HighlightButton breakOutOfJailButton;
         NormalButton diceOnBoard1;
         HighlightButton house;
 
@@ -478,18 +483,20 @@ namespace Capitalism
             GreenPropSprite = Content.Load<Texture2D>("GreenProp");
             BluePropSprite = Content.Load<Texture2D>("BlueProp");
 
-            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 150), Color.White, Vector2.One);
-            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(660, 150), Color.White, Vector2.One);
-            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(920, 150), Color.White, Vector2.One);
-            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(1220, 150), Color.White, Vector2.One);
-            RedProp = new HighlightButton(RedPropSprite, new Vector2(440, 180), Color.White, Vector2.One);
-            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(700, 180), Color.White, Vector2.One);
-            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(900, 180), Color.White, Vector2.One);
-            BlueProp = new HighlightButton(BluePropSprite, new Vector2(50, 500), Color.White, Vector2.One);
+            PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 170), Color.White, Vector2.One);
+            LightBlueProp = new HighlightButton(LightBluePropSprite, new Vector2(660, 170), Color.White, Vector2.One);
+            PinkProp = new HighlightButton(PinkPropSprite, new Vector2(940, 170), Color.White, Vector2.One);
+            OrangeProp = new HighlightButton(OrangePropSprite, new Vector2(1220, 170), Color.White, Vector2.One);
+
+            RedProp = new HighlightButton(RedPropSprite, new Vector2(380, 600), Color.White, Vector2.One);
+            YellowProp = new HighlightButton(YellowPropSprite, new Vector2(660, 600), Color.White, Vector2.One);
+            GreenProp = new HighlightButton(GreenPropSprite, new Vector2(940, 600), Color.White, Vector2.One);
+            BlueProp = new HighlightButton(BluePropSprite, new Vector2(1220, 600), Color.White, Vector2.One);
+
+            house time;
 
             getOutOfJailFree = new HighlightButton(Content.Load<Texture2D>("getOutOfJailFree"), new Vector2(50, 760), Color.White, new Vector2(.5f, .5f));
-            getOutOfJailFree2 = new HighlightButton(Content.Load<Texture2D>("GetOutOfJail2"), new Vector2(50, 760), Color.White, new Vector2(.5f, .5f));
-            line above wont draw
+            getOutOfJailFree2 = new HighlightButton(Content.Load<Texture2D>("GetOutOfJail2"), new Vector2(50, 760), Color.White, new Vector2(1f, 1f));
 
             #region Properties
 
@@ -615,16 +622,10 @@ namespace Capitalism
 
                 CommunityCardTypes cardType = GetCardType2(filename2);
 
-                if (i > 2)
-                {
-                    chestCards.Enqueue(new CommunityChests(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, CommunityMoney(cardType, filename2)));
-                }
-
-
-                ;
+                chestCards.Enqueue(new CommunityChests(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, CommunityMoney(cardType, filename2)));
             }
 
-            //chestCards = ShuffleQueue(chestCards);
+            chestCards = ShuffleQueue(chestCards);
             #endregion
 
             Frame = Content.Load<Texture2D>("Frame");
@@ -634,6 +635,7 @@ namespace Capitalism
 
             noButton = new HighlightButton(No, new Vector2(326, 662), Color.White, Vector2.One);
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
+            breakOutOfJailButton = new HighlightButton(No, new Vector2(365, 755), Color.White, new Vector2(1.2f));
             Bounds = bounds;
         }
 
@@ -678,14 +680,27 @@ namespace Capitalism
                 }
             }
 
-            if (CurrentPlayer.inJail && !diceRolling)
+            #region Jail
+            if (CurrentPlayer.inJail)
             {
-                getOutOfJailGlow = true;
+                if (!diceRolling)
+                {
+                    getOutOfJailGlow = true;
+                }
+                else
+                {
+                    getOutOfJailGlow = false;
+                }
+
+                if (breakOutOfJailButton.IsClicked)
+                {
+                    CurrentPlayer.inJail = false;
+                    CurrentPlayer.Money -= 50;
+                    CurrentPlayer.Position = charPostitions[10];
+                }
             }
-            else
-            {
-                getOutOfJailGlow = false;
-            }
+
+            #endregion
 
             Console.WriteLine(CurrentPlayer.currentTileIndex);
 
@@ -693,6 +708,7 @@ namespace Capitalism
             CurrentPlayer.Update();
             noButton.Update(ms, true);
             yesButton.Update(ms, true);
+            breakOutOfJailButton.Update(ms, getOutOfJailGlow);
 
             PurpleProp.Update(ms, true);
             LightBlueProp.Update(ms, true);
@@ -743,7 +759,6 @@ namespace Capitalism
                         diceFlashing = false;
                         rollDice = false;
                         agagagagaga = true;
-
                     }
                 }
 
@@ -768,11 +783,11 @@ namespace Capitalism
 
                     if (CurrentPlayer.currentTileIndex == 1)
                     {
-                        target = 3;
+                        target = 2;
                     }
                     else
                     {
-                        target = 18;
+                        target = 4;
                     }
 
                     /*
@@ -1085,7 +1100,7 @@ namespace Capitalism
 
                     drawCommunityCards = true;
                     bool dontPutBack = false;
-                    if (communityCards.money > 0)
+                    if (communityCards.money != 0)
                     {
                         CurrentPlayer.Money += communityCards.money;
                     }
@@ -1602,7 +1617,10 @@ namespace Capitalism
 
                 if (CurrentPlayer.inJail)
                 {
-                    batch.DrawString(font, "Break Out? Costs 50M", new Vector2(100, 700), Color.White);
+                    batch.DrawString(font, "Break Out?", new Vector2(220, 710), Color.White);
+                    batch.DrawString(font, "Costs 50M", new Vector2(220, 750), Color.White);
+                    breakOutOfJailButton.Draw(batch);
+
                     getOutOfJailFree.Tint = Color.White;
                     getOutOfJailFree2.Tint = Color.White;
                 }
@@ -1650,10 +1668,10 @@ namespace Capitalism
                 LightBlueProp.Draw(batch);
                 PinkProp.Draw(batch);
                 OrangeProp.Draw(batch);
-                //RedProp.Draw(batch);
-                //YellowProp.Draw(batch);
-                //GreenProp.Draw(batch);
-                //BlueProp.Draw(batch);
+                RedProp.Draw(batch);
+                YellowProp.Draw(batch);
+                GreenProp.Draw(batch);
+                BlueProp.Draw(batch);
             }
 
             if (showingDice)
@@ -1673,14 +1691,12 @@ namespace Capitalism
             }
         }
         //screaming issue - THE CARDS FREEZE WHEN THE PLAYER HAS TO PAY RENT
-        //do these first - chance/community cards, jail, houses
+        //do these first - houses
 
         /*   THINGS THAT ARE BROKEN
          * 
-         * I can click the buy button while the community card is spinning. It goes to the next person's turn, and I don't know if it happens to chance cards
          * Community Chest doesn't work with doubles.
          * After you pull a moving card, when you move again it pulls another card
-         * When a player gets moved via Chance Cards
          * doubles not working when char is paying rent
          */
     }
