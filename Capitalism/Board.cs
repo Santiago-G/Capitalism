@@ -51,7 +51,7 @@ namespace Capitalism
         bool pinkPropMenu = false;
         bool purplePropMenu = false;
 
-
+        bool hasAllOfOneColor = false;
         //bool firstLap = true;
         #endregion
 
@@ -504,8 +504,7 @@ namespace Capitalism
             GreenPropSprite = Content.Load<Texture2D>("GreenProp");
             BluePropSprite = Content.Load<Texture2D>("BlueProp");
 
-            agagfeafaSF
-            hotelIcon = new HighlightButton(Content.Load<Texture2D>("monopolyHotel"), new Vector2(950, 700), Color.White, new Vector2(0.15f));
+            hotelIcon = new HighlightButton(Content.Load<Texture2D>("monopolyHotel"), new Vector2(950, 680), Color.White, new Vector2(0.15f));
             houseIcony = new HighlightButton(Content.Load<Texture2D>("housey2"), new Vector2(700, 700), Color.White, Vector2.One);
 
             PurpleProp = new HighlightButton(PurplePropSprite, new Vector2(380, 270), Color.White, Vector2.One);
@@ -524,8 +523,8 @@ namespace Capitalism
 
             #region Properties
 
-            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.brown));
-            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.brown));
+            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.purple));
+            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.purple));
 
             Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
             Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
@@ -551,8 +550,8 @@ namespace Capitalism
             Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
             Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
 
-            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.darkblue));
-            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.darkblue));
+            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.blue));
+            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.blue));
 
             Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
             Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
@@ -564,35 +563,35 @@ namespace Capitalism
 
             //////
 
-            propertySprites.Add("purple1", new HighlightButton(Content.Load<Texture2D>("MediterraneanAve"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("purple2", new HighlightButton(Content.Load<Texture2D>("BalticAve"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("purple1", new HighlightButton(Content.Load<Texture2D>("MediterraneanAve"), new Vector2(100, 300), Color.White, Vector2.One));
+            propertySprites.Add("purple2", new HighlightButton(Content.Load<Texture2D>("BalticAve"), new Vector2(100, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("lightBlue1", new HighlightButton(Content.Load<Texture2D>("OrientalAve"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("lightBlue2", new HighlightButton(Content.Load<Texture2D>("VermontAve"), new Vector2(810, 100), Color.White, Vector2.One));
-            propertySprites.Add("lightBlue3", new HighlightButton(Content.Load<Texture2D>("ConnecticutAve"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("lightBlue1", new HighlightButton(Content.Load<Texture2D>("OrientalAve"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("lightBlue2", new HighlightButton(Content.Load<Texture2D>("VermontAve"), new Vector2(810, 300), Color.White, Vector2.One));
+            propertySprites.Add("lightBlue3", new HighlightButton(Content.Load<Texture2D>("ConnecticutAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("pink1", new HighlightButton(Content.Load<Texture2D>("StCharlesPlace"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("pink2", new HighlightButton(Content.Load<Texture2D>("StatesAve"), new Vector2(810, 100), Color.White, Vector2.One));
-            propertySprites.Add("pink3", new HighlightButton(Content.Load<Texture2D>("VirginiaAve"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("pink1", new HighlightButton(Content.Load<Texture2D>("StCharlesPlace"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("pink2", new HighlightButton(Content.Load<Texture2D>("StatesAve"), new Vector2(810, 300), Color.White, Vector2.One));
+            propertySprites.Add("pink3", new HighlightButton(Content.Load<Texture2D>("VirginiaAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("orange1", new HighlightButton(Content.Load<Texture2D>("StJamesPlace"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("orange2", new HighlightButton(Content.Load<Texture2D>("TennesseeAve"), new Vector2(810, 100), Color.White, Vector2.One));
-            propertySprites.Add("orange3", new HighlightButton(Content.Load<Texture2D>("NewYorkAve"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("orange1", new HighlightButton(Content.Load<Texture2D>("StJamesPlace"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("orange2", new HighlightButton(Content.Load<Texture2D>("TennesseeAve"), new Vector2(810, 300), Color.White, Vector2.One));
+            propertySprites.Add("orange3", new HighlightButton(Content.Load<Texture2D>("NewYorkAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
             propertySprites.Add("red1", new HighlightButton(Content.Load<Texture2D>("KentuckyAve"), new Vector2(535, 300), Color.White, Vector2.One));
             propertySprites.Add("red2", new HighlightButton(Content.Load<Texture2D>("IndianaAve"), new Vector2(810, 300), Color.White, Vector2.One));
             propertySprites.Add("red3", new HighlightButton(Content.Load<Texture2D>("IllinoisAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("yellow1", new HighlightButton(Content.Load<Texture2D>("AtlanticAve"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("yellow2", new HighlightButton(Content.Load<Texture2D>("VentnorAve"), new Vector2(810, 100), Color.White, Vector2.One));
-            propertySprites.Add("yellow3", new HighlightButton(Content.Load<Texture2D>("MarvinGardens"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("yellow1", new HighlightButton(Content.Load<Texture2D>("AtlanticAve"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("yellow2", new HighlightButton(Content.Load<Texture2D>("VentnorAve"), new Vector2(810, 300), Color.White, Vector2.One));
+            propertySprites.Add("yellow3", new HighlightButton(Content.Load<Texture2D>("MarvinGardens"), new Vector2(1085, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("green1", new HighlightButton(Content.Load<Texture2D>("PacificAve"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("green2", new HighlightButton(Content.Load<Texture2D>("NoCarolinaAve"), new Vector2(810, 100), Color.White, Vector2.One));
-            propertySprites.Add("green3", new HighlightButton(Content.Load<Texture2D>("PennsylvaniaAve"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("green1", new HighlightButton(Content.Load<Texture2D>("PacificAve"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("green2", new HighlightButton(Content.Load<Texture2D>("NoCarolinaAve"), new Vector2(810, 300), Color.White, Vector2.One));
+            propertySprites.Add("green3", new HighlightButton(Content.Load<Texture2D>("PennsylvaniaAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("blue1", new HighlightButton(Content.Load<Texture2D>("ParkPlace"), new Vector2(100, 100), Color.White, Vector2.One));
-            propertySprites.Add("blue2", new HighlightButton(Content.Load<Texture2D>("Boardwalk"), new Vector2(100, 100), Color.White, Vector2.One));
+            propertySprites.Add("blue1", new HighlightButton(Content.Load<Texture2D>("ParkPlace"), new Vector2(100, 300), Color.White, Vector2.One));
+            propertySprites.Add("blue2", new HighlightButton(Content.Load<Texture2D>("Boardwalk"), new Vector2(100, 300), Color.White, Vector2.One));
 
             #endregion
 
@@ -767,42 +766,42 @@ namespace Capitalism
                 houseMenuUp = true;
 
                 #region if the props are clicked
-                if (RedProp.IsClicked)
+                if (RedProp.IsClicked && CurrentPlayer.allOfOneColor("red"))
                 {
                     redPropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (OrangeProp.IsClicked)
+                else if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange"))
                 {
                     orangePropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (YellowProp.IsClicked)
+                else if (YellowProp.IsClicked && CurrentPlayer.allOfOneColor("yellow"))
                 {
                     yellowPropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (GreenProp.IsClicked)
+                else if (GreenProp.IsClicked && CurrentPlayer.allOfOneColor("green"))
                 {
                     greenPropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (LightBlueProp.IsClicked)
+                else if (LightBlueProp.IsClicked && CurrentPlayer.allOfOneColor("lightBlue"))
                 {
                     lightBluePropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (BlueProp.IsClicked)
+                else if (BlueProp.IsClicked && CurrentPlayer.allOfOneColor("blue"))
                 {
                     bluePropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (PurpleProp.IsClicked)
+                else if (PurpleProp.IsClicked && CurrentPlayer.allOfOneColor("purple"))
                 {
                     purplePropMenu = true;
                     houseMenuStage2 = true;
                 }
-                else if (PinkProp.IsClicked)
+                else if (PinkProp.IsClicked && CurrentPlayer.allOfOneColor("pink"))
                 {
                     pinkPropMenu = true;
                     houseMenuStage2 = true;
@@ -818,7 +817,15 @@ namespace Capitalism
                     houseMenuUp = false;
 
                     houseMenuStage2 = false;
+
                     redPropMenu = false;
+                    orangePropMenu = false;
+                    yellowPropMenu = false;
+                    greenPropMenu = false;
+                    lightBluePropMenu = false;
+                    bluePropMenu = false;
+                    pinkPropMenu = false;
+                    purplePropMenu = false;
                 }
             }
 
@@ -830,14 +837,14 @@ namespace Capitalism
             breakOutOfJailButton.Update(ms, getOutOfJailGlow);
             exitHouseMenu.Update(ms, true);
 
-            PurpleProp.Update(ms, true);
-            LightBlueProp.Update(ms, true);
-            PinkProp.Update(ms, true);
-            OrangeProp.Update(ms, true);
-            RedProp.Update(ms, true);
-            YellowProp.Update(ms, true);
-            GreenProp.Update(ms, true);
-            BlueProp.Update(ms, true);
+            PurpleProp.Update(ms, CurrentPlayer.allOfOneColor("purple"));
+            LightBlueProp.Update(ms, CurrentPlayer.allOfOneColor("lightBlue"));
+            PinkProp.Update(ms, CurrentPlayer.allOfOneColor("pink"));
+            OrangeProp.Update(ms, CurrentPlayer.allOfOneColor("orange"));
+            RedProp.Update(ms, CurrentPlayer.allOfOneColor("red"));
+            YellowProp.Update(ms, CurrentPlayer.allOfOneColor("yellow"));
+            GreenProp.Update(ms, CurrentPlayer.allOfOneColor("green"));
+            BlueProp.Update(ms, CurrentPlayer.allOfOneColor("blue"));
 
             house.Update(ms, glowingHouse);
             getOutOfJailFree.Update(ms, getOutOfJailGlow);
@@ -928,13 +935,16 @@ namespace Capitalism
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
 
-                    if (CurrentPlayer.currentTileIndex == 1)
+                    if(CurrentPlayer.Token != "Boat")
                     {
-                        target = 2;
-                    }
-                    else
-                    {
-                        target = 4;
+                        if (CurrentPlayer.currentTileIndex == 1)
+                        {
+                            target = 2;
+                        }
+                        else
+                        {
+                            target = 4;
+                        }
                     }
 
                     /*
@@ -1569,6 +1579,14 @@ namespace Capitalism
                                         }
                                         else
                                         {
+
+                                            efaerfa MIGHT NOT WORK, TEST AMOUNT OF MONEY
+                                            if (Players[i].allOfOneColor(BoughtProperties[CurrentPlayer.Position].Color((BoughtProperties[CurrentPlayer.Position].PropColor))))
+                                            {
+                                                CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * 2;
+                                                Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * 2;
+                                            }
+
                                             CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
                                             Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
                                         }
@@ -1811,18 +1829,132 @@ namespace Capitalism
                 {
                     //draw house, hotel, and color prop
 
-                    if (redPropMenu)
+                    if (purplePropMenu)
+                    {
+                        propertySprites[$"purple1"].Draw(batch);
+                        propertySprites[$"purple2"].Draw(batch);
+                    }
+                    else if (lightBluePropMenu)
+                    {
+                        propertySprites[$"lightBlue1"].Draw(batch);
+                        propertySprites[$"lightBlue2"].Draw(batch);
+                        propertySprites[$"lightBlue3"].Draw(batch);
+                    }
+                    else if (pinkPropMenu)
+                    {
+                        propertySprites[$"pink1"].Draw(batch);
+                        propertySprites[$"pink2"].Draw(batch);
+                        propertySprites[$"pink3"].Draw(batch);
+                    }
+                    else if (orangePropMenu)
+                    {
+                        propertySprites[$"orange1"].Draw(batch);
+                        propertySprites[$"orange2"].Draw(batch);
+                        propertySprites[$"orange3"].Draw(batch);
+                    }
+                    else if (redPropMenu)
                     {
                         propertySprites[$"red1"].Draw(batch);
                         propertySprites[$"red2"].Draw(batch);
                         propertySprites[$"red3"].Draw(batch);
-
-                        hotelIcon.Draw(batch);
-                        houseIcony.Draw(batch);
                     }
+                    else if (yellowPropMenu)
+                    {
+                        propertySprites[$"yellow1"].Draw(batch);
+                        propertySprites[$"yellow2"].Draw(batch);
+                        propertySprites[$"yellow3"].Draw(batch);
+                    }
+                    else if (greenPropMenu)
+                    {
+                        propertySprites[$"green1"].Draw(batch);
+                        propertySprites[$"green2"].Draw(batch);
+                        propertySprites[$"green3"].Draw(batch);
+                    }
+                    else if (bluePropMenu)
+                    {
+                        propertySprites[$"blue1"].Draw(batch);
+                        propertySprites[$"blue2"].Draw(batch);
+                    }
+
+                    hotelIcon.Draw(batch);
+                    houseIcony.Draw(batch);
+
                 }
                 else
                 {
+                    if (!CurrentPlayer.allOfOneColor("purple"))
+                    {
+                        PurpleProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        PurpleProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("lightBlue"))
+                    {
+                        LightBlueProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        LightBlueProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("pink"))
+                    {
+                        PinkProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        PinkProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("orange"))
+                    {
+                        OrangeProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        OrangeProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("red"))
+                    {
+                        RedProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        RedProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("yellow"))
+                    {
+                        YellowProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        YellowProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("green"))
+                    {
+                        GreenProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        GreenProp.Tint = Color.White;
+                    }
+
+                    if (!CurrentPlayer.allOfOneColor("blue"))
+                    {
+                        BlueProp.Tint = Color.Gray;
+                    }
+                    else
+                    {
+                        BlueProp.Tint = Color.White;
+                    }
+
+
                     PurpleProp.Draw(batch);
                     LightBlueProp.Draw(batch);
                     PinkProp.Draw(batch);

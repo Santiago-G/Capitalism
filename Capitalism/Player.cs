@@ -55,7 +55,7 @@ namespace Capitalism
                 {
                     count++;
 
-                    if (((colorName == "brown" || colorName == "darkblue") && count == 2) || count == 3)
+                    if (((colorName == "purple" || colorName == "blue") && count == 2) || count == 3)
                     {
                         return true;
                     }

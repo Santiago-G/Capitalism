@@ -10,14 +10,14 @@ namespace Capitalism
 {
     public enum PropertyColor
     { 
-        brown,
+        purple,
         lightblue,
         pink,
         orange,
         red,
         yellow,
         green,
-        darkblue,
+        blue,
         nully,
     }
 
@@ -48,6 +48,43 @@ namespace Capitalism
         public bool isRailroad = false;
         public bool isUtility = false;
         //Add Mortgage
+
+        public  string Color(PropertyColor color)
+        {
+            string currString = "";
+
+            switch (color)
+            {
+                case PropertyColor.purple:
+                    currString = "purple";
+                    break;
+                case PropertyColor.lightblue:
+                    currString = "lightblue";
+                    break;
+                case PropertyColor.pink:
+                    currString = "pink";
+                    break;
+                case PropertyColor.orange:
+                    currString = "orange";
+                    break;
+                case PropertyColor.red:
+                    currString = "red";
+                    break;
+                case PropertyColor.yellow:
+                    currString = "yellow";
+                    break;
+                case PropertyColor.green:
+                    currString = "green";
+                    break;
+                case PropertyColor.blue:
+                    currString = "blue";
+                    break;
+
+                default:
+                    break;
+            }
+            return currString;
+        }
 
         int originalWidth;
         int originalHeight;
