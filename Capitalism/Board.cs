@@ -52,6 +52,7 @@ namespace Capitalism
         bool purplePropMenu = false;
 
         bool hasAllOfOneColor = false;
+        bool tempi = false;
         //bool firstLap = true;
         #endregion
 
@@ -66,6 +67,8 @@ namespace Capitalism
         int rollValue = 0;
         int currentPlayerIndex = 0;
         int doubleCounter = 0;
+
+        int counterForHouseUi = 0;
         public int playerCount => SelectingPlayers.playerCount;
 
         public Rectangle Bounds { get; set; }
@@ -766,12 +769,14 @@ namespace Capitalism
                 houseMenuUp = true;
 
                 #region if the props are clicked
-                if (RedProp.IsClicked && CurrentPlayer.allOfOneColor("red"))
+                if (RedProp.IsClicked && CurrentPlayer.allOfOneColor("red") && tempi)
                 {
                     redPropMenu = true;
                     houseMenuStage2 = true;
+                    counterForHouseUi = 1;
+
                 }
-                else if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange"))
+                if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange"))
                 {
                     orangePropMenu = true;
                     houseMenuStage2 = true;
@@ -807,6 +812,10 @@ namespace Capitalism
                     houseMenuStage2 = true;
                 }
                 #endregion
+
+                if (houseMenuStage2)
+                {
+                }
 
                 //then use propSprite dict to draw the props
 
@@ -935,16 +944,102 @@ namespace Capitalism
 
                     //target = rollValue + CurrentPlayer.currentTileIndex;
 
-                    if(CurrentPlayer.Token != "Boat")
+                    if (CurrentPlayer.Token != "Boat")
                     {
                         if (CurrentPlayer.currentTileIndex == 1)
                         {
                             target = 2;
                         }
-                        else
+                        else if (CurrentPlayer.currentTileIndex == 2)
                         {
                             target = 4;
                         }
+                        else if (CurrentPlayer.currentTileIndex == 4)
+                        {
+                            target = 7;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 7)
+                        {
+                            target = 9;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 9)
+                        {
+                            target = 10;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 10)
+                        {
+                            target = 12;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 12)
+                        {
+                            target = 14;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 14)
+                        {
+                            target = 15;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 15)
+                        {
+                            target = 17;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 17)
+                        {
+                            target = 19;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 19)
+                        {
+                            target = 20;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 20)
+                        {
+                            target = 22;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 22)
+                        {
+                            target = 24;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 24)
+                        {
+                            target = 25;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 25)
+                        {
+                            target = 27;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 27)
+                        {
+                            target = 28;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 28)
+                        {
+                            target = 30;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 30)
+                        {
+                            target = 32;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 32)
+                        {
+                            target = 33;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 33)
+                        {
+                            target = 35;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 35)
+                        {
+                            target = 38;
+                        }
+                        else if (CurrentPlayer.currentTileIndex == 38)
+                        {
+                            target = 40;
+                        }
+
+
+                    }
+                    else
+                    {
+                        target = 1;
                     }
 
                     /*
@@ -1579,16 +1674,16 @@ namespace Capitalism
                                         }
                                         else
                                         {
-
-                                            efaerfa MIGHT NOT WORK, TEST AMOUNT OF MONEY
                                             if (Players[i].allOfOneColor(BoughtProperties[CurrentPlayer.Position].Color((BoughtProperties[CurrentPlayer.Position].PropColor))))
                                             {
                                                 CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * 2;
                                                 Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * 2;
                                             }
-
-                                            CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
-                                            Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                            else 
+                                            {
+                                                CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
+                                                Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                            }
                                         }
 
                                         Rent = false;
@@ -1696,8 +1791,6 @@ namespace Capitalism
         {
             spritebatch.Draw(pixel, new Rectangle(0, 0, 130000, 478150), new Color(Color.Black, 0.5f));
         }
-
-
 
         public void Draw(SpriteBatch batch)
         {
@@ -1833,51 +1926,269 @@ namespace Capitalism
                     {
                         propertySprites[$"purple1"].Draw(batch);
                         propertySprites[$"purple2"].Draw(batch);
+
+                        if (propertySprites[$"purple1"].IsClicked)
+                        {
+                            propertySprites[$"purple1"].stayHighlighted = true;
+
+                            propertySprites[$"purple2"].stayHighlighted = false;
+                            propertySprites[$"purple2"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"purple2"].IsClicked)
+                        {
+                            propertySprites[$"purple2"].stayHighlighted = true;
+
+                            propertySprites[$"purple1"].stayHighlighted = false;
+                            propertySprites[$"purple1"].stopBeingHighlighted = true;
+
+                        }
                     }
                     else if (lightBluePropMenu)
                     {
                         propertySprites[$"lightBlue1"].Draw(batch);
                         propertySprites[$"lightBlue2"].Draw(batch);
                         propertySprites[$"lightBlue3"].Draw(batch);
+
+                        if (propertySprites[$"lightBlue1"].IsClicked)
+                        {
+                            propertySprites[$"lightBlue1"].stayHighlighted = true;
+
+                            propertySprites[$"lightBlue2"].stayHighlighted = false;
+                            propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"lightBlue3"].stayHighlighted = false;
+                            propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"lightBlue2"].IsClicked)
+                        {
+                            propertySprites[$"lightBlue2"].stayHighlighted = true;
+
+                            propertySprites[$"lightBlue1"].stayHighlighted = false;
+                            propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"lightBlue3"].stayHighlighted = false;
+                            propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"lightBlue3"].IsClicked)
+                        {
+                            propertySprites[$"lightBlue3"].stayHighlighted = true;
+
+                            propertySprites[$"lightBlue1"].stayHighlighted = false;
+                            propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"lightBlue2"].stayHighlighted = false;
+                            propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
+                        }
                     }
                     else if (pinkPropMenu)
                     {
                         propertySprites[$"pink1"].Draw(batch);
                         propertySprites[$"pink2"].Draw(batch);
                         propertySprites[$"pink3"].Draw(batch);
+
+                        if (propertySprites[$"pink1"].IsClicked)
+                        {
+                            propertySprites[$"pink1"].stayHighlighted = true;
+
+                            propertySprites[$"pink2"].stayHighlighted = false;
+                            propertySprites[$"pink2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"pink3"].stayHighlighted = false;
+                            propertySprites[$"pink3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"pink2"].IsClicked)
+                        {
+                            propertySprites[$"pink2"].stayHighlighted = true;
+
+                            propertySprites[$"pink1"].stayHighlighted = false;
+                            propertySprites[$"pink1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"pink3"].stayHighlighted = false;
+                            propertySprites[$"pink3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"pink3"].IsClicked)
+                        {
+                            propertySprites[$"pink3"].stayHighlighted = true;
+
+                            propertySprites[$"pink1"].stayHighlighted = false;
+                            propertySprites[$"pink1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"pink2"].stayHighlighted = false;
+                            propertySprites[$"pink2"].stopBeingHighlighted = true;
+                        }
                     }
                     else if (orangePropMenu)
                     {
                         propertySprites[$"orange1"].Draw(batch);
                         propertySprites[$"orange2"].Draw(batch);
                         propertySprites[$"orange3"].Draw(batch);
+
+                        if (propertySprites[$"orange1"].IsClicked)
+                        {
+                            propertySprites[$"orange1"].stayHighlighted = true;
+
+                            propertySprites[$"orange2"].stayHighlighted = false;
+                            propertySprites[$"orange2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"orange3"].stayHighlighted = false;
+                            propertySprites[$"orange3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"orange2"].IsClicked)
+                        {
+                            propertySprites[$"orange2"].stayHighlighted = true;
+
+                            propertySprites[$"orange1"].stayHighlighted = false;
+                            propertySprites[$"orange1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"orange3"].stayHighlighted = false;
+                            propertySprites[$"orange3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"orange3"].IsClicked)
+                        {
+                            propertySprites[$"orange3"].stayHighlighted = true;
+
+                            propertySprites[$"orange1"].stayHighlighted = false;
+                            propertySprites[$"orange1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"orange2"].stayHighlighted = false;
+                            propertySprites[$"orange2"].stopBeingHighlighted = true;
+                        }
                     }
                     else if (redPropMenu)
                     {
                         propertySprites[$"red1"].Draw(batch);
                         propertySprites[$"red2"].Draw(batch);
                         propertySprites[$"red3"].Draw(batch);
+
+                        if (propertySprites[$"red1"].IsClicked)
+                        {
+                            propertySprites[$"red1"].stayHighlighted = true;
+
+                            propertySprites[$"red2"].stayHighlighted = false;
+                            propertySprites[$"red2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"red3"].stayHighlighted = false;
+                            propertySprites[$"red3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"red2"].IsClicked)
+                        {
+                            propertySprites[$"red2"].stayHighlighted = true;
+
+                            propertySprites[$"red1"].stayHighlighted = false;
+                            propertySprites[$"red1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"red3"].stayHighlighted = false;
+                            propertySprites[$"red3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"red3"].IsClicked)
+                        {
+                            propertySprites[$"red3"].stayHighlighted = true;
+
+                            propertySprites[$"red1"].stayHighlighted = false;
+                            propertySprites[$"red1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"red2"].stayHighlighted = false;
+                            propertySprites[$"red2"].stopBeingHighlighted = true;
+                        }
                     }
                     else if (yellowPropMenu)
                     {
                         propertySprites[$"yellow1"].Draw(batch);
                         propertySprites[$"yellow2"].Draw(batch);
                         propertySprites[$"yellow3"].Draw(batch);
+
+                        if (propertySprites[$"yellow1"].IsClicked)
+                        {
+                            propertySprites[$"yellow1"].stayHighlighted = true;
+
+                            propertySprites[$"yellow2"].stayHighlighted = false;
+                            propertySprites[$"yellow2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"yellow3"].stayHighlighted = false;
+                            propertySprites[$"yellow3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"yellow2"].IsClicked)
+                        {
+                            propertySprites[$"yellow2"].stayHighlighted = true;
+
+                            propertySprites[$"yellow1"].stayHighlighted = false;
+                            propertySprites[$"yellow1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"yellow3"].stayHighlighted = false;
+                            propertySprites[$"yellow3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"yellow3"].IsClicked)
+                        {
+                            propertySprites[$"yellow3"].stayHighlighted = true;
+
+                            propertySprites[$"yellow1"].stayHighlighted = false;
+                            propertySprites[$"yellow1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"yellow2"].stayHighlighted = false;
+                            propertySprites[$"yellow2"].stopBeingHighlighted = true;
+                        }
                     }
                     else if (greenPropMenu)
                     {
                         propertySprites[$"green1"].Draw(batch);
                         propertySprites[$"green2"].Draw(batch);
                         propertySprites[$"green3"].Draw(batch);
+
+                        if (propertySprites[$"green1"].IsClicked)
+                        {
+                            propertySprites[$"green1"].stayHighlighted = true;
+
+                            propertySprites[$"green2"].stayHighlighted = false;
+                            propertySprites[$"green2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"green3"].stayHighlighted = false;
+                            propertySprites[$"green3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"green2"].IsClicked)
+                        {
+                            propertySprites[$"green2"].stayHighlighted = true;
+
+                            propertySprites[$"green1"].stayHighlighted = false;
+                            propertySprites[$"green1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"green3"].stayHighlighted = false;
+                            propertySprites[$"green3"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"green3"].IsClicked)
+                        {
+                            propertySprites[$"green3"].stayHighlighted = true;
+
+                            propertySprites[$"green1"].stayHighlighted = false;
+                            propertySprites[$"green1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"green2"].stayHighlighted = false;
+                            propertySprites[$"green2"].stopBeingHighlighted = true;
+                        }
                     }
                     else if (bluePropMenu)
                     {
                         propertySprites[$"blue1"].Draw(batch);
                         propertySprites[$"blue2"].Draw(batch);
+
+                        if (propertySprites[$"blue1"].IsClicked)
+                        {
+                            propertySprites[$"blue1"].stayHighlighted = true;
+
+                            propertySprites[$"blue2"].stayHighlighted = false;
+                            propertySprites[$"blue2"].stopBeingHighlighted = true;
+                        }
+                        if (propertySprites[$"blue2"].IsClicked)
+                        {
+                            propertySprites[$"blue2"].stayHighlighted = true;
+
+                            propertySprites[$"blue1"].stayHighlighted = false;
+                            propertySprites[$"blue1"].stopBeingHighlighted = true;
+                        }
                     }
 
                     hotelIcon.Draw(batch);
                     houseIcony.Draw(batch);
+
 
                 }
                 else

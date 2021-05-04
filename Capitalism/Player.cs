@@ -46,7 +46,7 @@ namespace Capitalism
 
         public bool allOfOneColor(string colorName)
         {
-            colorName.ToLower();
+            colorName = colorName.ToLower();
             int count = 0;
 
             for (int i = 0; i < properties.Count; i++)

@@ -16,20 +16,20 @@ namespace Capitalism
         {
             get
             {
-                double scaleValue =0.1;
+                double scaleValue = 0.1;
                 int newSize = (int)(this.Hitbox.Width * scaleValue);
 
                 //int 
                 //// NOTE: MOVE THE BOX BACK BY THE NEW SIZE AMOUNT SO ITS BASED OFF THE CENTER
 
                 return new Rectangle(this.Hitbox.X - (int)(this.Hitbox.Height * 0.05), this.Hitbox.Y - (int)(this.Hitbox.Width * 0.05), (int)(this.Hitbox.Width * 1.1), (int)(this.Hitbox.Height * 1.1));
-                
+
             }
         }
 
 
-        public override Rectangle Hitbox 
-        { 
+        public override Rectangle Hitbox
+        {
             get
             {
                 return new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * scale.X), (int)(Image.Height * scale.Y));
@@ -41,9 +41,11 @@ namespace Capitalism
 
         MouseState mouseState;
 
-        Vector2 scale { get; set; } = new Vector2(1,1);
+        Vector2 scale { get; set; } = new Vector2(1, 1);
 
         public bool IsClicked { get; private set; }
+        public bool stayHighlighted = false;
+        public bool stopBeingHighlighted = false;
 
         public HighlightButton(Texture2D image, Vector2 position, Color tint, Vector2 Scale) : base(image, position, tint)
         {
@@ -56,7 +58,7 @@ namespace Capitalism
 
             if (toHighlight)
             {
-                if (Hitbox.Contains(ms.Position)) 
+                if (Hitbox.Contains(ms.Position))
                 {
                     CurrentHitbox = HighlightedHitbox;
                     CurrentTint = Color.Gold;
@@ -73,13 +75,30 @@ namespace Capitalism
                 CurrentTint = Tint;
             }
 
+            if (stayHighlighted)
+            {
+                CurrentHitbox = HighlightedHitbox;
+                CurrentTint = Color.Gold;
+            }
+            else if(stopBeingHighlighted)
+            {
+                CurrentHitbox = Hitbox;
+                CurrentTint = Tint;
+            }
+
             if (CurrentHitbox.Contains(ms.Position))
             {
                 if ((ms != mouseState && ms.LeftButton == ButtonState.Pressed)) // click logic goes in here
                 {
                     IsClicked = true;
+
+                    if (stayHighlighted)
+                    {
+                        CurrentHitbox = HighlightedHitbox;
+                        CurrentTint = Color.Gold;
+                    }
                 }
-                else 
+                else
                 {
                     IsClicked = false;
                 }
