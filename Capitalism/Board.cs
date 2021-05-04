@@ -51,8 +51,8 @@ namespace Capitalism
         bool pinkPropMenu = false;
         bool purplePropMenu = false;
 
-        bool hasAllOfOneColor = false;
-        bool tempi = false;
+        bool tempi = true;
+        bool readyForHotel = false;
         //bool firstLap = true;
         #endregion
 
@@ -67,9 +67,9 @@ namespace Capitalism
         int rollValue = 0;
         int currentPlayerIndex = 0;
         int doubleCounter = 0;
-
-        int counterForHouseUi = 0;
         public int playerCount => SelectingPlayers.playerCount;
+
+        Property selectedPropToBuildOn;
 
         public Rectangle Bounds { get; set; }
 
@@ -466,6 +466,26 @@ namespace Capitalism
 
         int target;
 
+        public Property findProp(string imageName)
+        {
+            for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+            {
+                if (CurrentPlayer.properties[i].Image.Name == imageName)
+                {
+                    return CurrentPlayer.properties[i];
+                }
+            }
+
+            return null;
+        }
+
+        public bool hasAll4Houses(string imageName)
+        {
+            return (findProp(imageName).hotelCounter == 4);
+        }
+
+
+
         public Board(ContentManager Content, Rectangle bounds)
         {
             //Testing Testing Testing
@@ -693,7 +713,7 @@ namespace Capitalism
 
             noButton = new HighlightButton(No, new Vector2(326, 662), Color.White, Vector2.One);
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
-            breakOutOfJailButton = new HighlightButton(No, new Vector2(365, 755), Color.White, new Vector2(1.2f));
+            breakOutOfJailButton = new HighlightButton(Yes, new Vector2(365, 755), Color.White, new Vector2(1.2f));
             exitHouseMenu = new HighlightButton(No, new Vector2(1496, 55), Color.White, new Vector2(1.5f));
             Bounds = bounds;
         }
@@ -771,50 +791,57 @@ namespace Capitalism
                 #region if the props are clicked
                 if (RedProp.IsClicked && CurrentPlayer.allOfOneColor("red") && tempi)
                 {
+                    tempi = false;
                     redPropMenu = true;
                     houseMenuStage2 = true;
-                    counterForHouseUi = 1;
-
                 }
-                if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange"))
+                else if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange") && tempi)
                 {
                     orangePropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
-                else if (YellowProp.IsClicked && CurrentPlayer.allOfOneColor("yellow"))
+                else if (YellowProp.IsClicked && CurrentPlayer.allOfOneColor("yellow") && tempi)
                 {
                     yellowPropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
-                else if (GreenProp.IsClicked && CurrentPlayer.allOfOneColor("green"))
+                else if (GreenProp.IsClicked && CurrentPlayer.allOfOneColor("green") && tempi)
                 {
                     greenPropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
-                else if (LightBlueProp.IsClicked && CurrentPlayer.allOfOneColor("lightBlue"))
+                else if (LightBlueProp.IsClicked && CurrentPlayer.allOfOneColor("lightBlue") && tempi)
                 {
                     lightBluePropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
-                else if (BlueProp.IsClicked && CurrentPlayer.allOfOneColor("blue"))
+                else if (BlueProp.IsClicked && CurrentPlayer.allOfOneColor("blue") && tempi)
                 {
                     bluePropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
-                else if (PurpleProp.IsClicked && CurrentPlayer.allOfOneColor("purple"))
+                else if (PurpleProp.IsClicked && CurrentPlayer.allOfOneColor("purple") && tempi)
                 {
                     purplePropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
-                else if (PinkProp.IsClicked && CurrentPlayer.allOfOneColor("pink"))
+                else if (PinkProp.IsClicked && CurrentPlayer.allOfOneColor("pink") && tempi)
                 {
                     pinkPropMenu = true;
                     houseMenuStage2 = true;
+                    tempi = false;
                 }
                 #endregion
 
                 if (houseMenuStage2)
                 {
+
                 }
 
                 //then use propSprite dict to draw the props
@@ -835,9 +862,10 @@ namespace Capitalism
                     bluePropMenu = false;
                     pinkPropMenu = false;
                     purplePropMenu = false;
+                    tempi = true;
+
                 }
             }
-
 
             #region Updates 
             CurrentPlayer.Update();
@@ -882,7 +910,7 @@ namespace Capitalism
             propertySprites[$"blue1"].Update(ms, true);
             propertySprites[$"blue2"].Update(ms, true);
 
-            hotelIcon.Update(ms, true);
+            hotelIcon.Update(ms, readyForHotel);
             houseIcony.Update(ms, true);
 
             #endregion
@@ -1931,6 +1959,8 @@ namespace Capitalism
                         {
                             propertySprites[$"purple1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("MediterraneanAve");
+
                             propertySprites[$"purple2"].stayHighlighted = false;
                             propertySprites[$"purple2"].stopBeingHighlighted = true;
                         }
@@ -1938,9 +1968,10 @@ namespace Capitalism
                         {
                             propertySprites[$"purple2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("BalticAve");
+
                             propertySprites[$"purple1"].stayHighlighted = false;
                             propertySprites[$"purple1"].stopBeingHighlighted = true;
-
                         }
                     }
                     else if (lightBluePropMenu)
@@ -1953,6 +1984,8 @@ namespace Capitalism
                         {
                             propertySprites[$"lightBlue1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("OrientalAve");
+
                             propertySprites[$"lightBlue2"].stayHighlighted = false;
                             propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
 
@@ -1963,6 +1996,8 @@ namespace Capitalism
                         {
                             propertySprites[$"lightBlue2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("VermontAve");
+
                             propertySprites[$"lightBlue1"].stayHighlighted = false;
                             propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
 
@@ -1972,6 +2007,8 @@ namespace Capitalism
                         if (propertySprites[$"lightBlue3"].IsClicked)
                         {
                             propertySprites[$"lightBlue3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("ConnecticutAve");
 
                             propertySprites[$"lightBlue1"].stayHighlighted = false;
                             propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
@@ -1990,6 +2027,8 @@ namespace Capitalism
                         {
                             propertySprites[$"pink1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("StCharlesPlace");
+
                             propertySprites[$"pink2"].stayHighlighted = false;
                             propertySprites[$"pink2"].stopBeingHighlighted = true;
 
@@ -2000,6 +2039,8 @@ namespace Capitalism
                         {
                             propertySprites[$"pink2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("StatesAve");
+
                             propertySprites[$"pink1"].stayHighlighted = false;
                             propertySprites[$"pink1"].stopBeingHighlighted = true;
 
@@ -2009,6 +2050,8 @@ namespace Capitalism
                         if (propertySprites[$"pink3"].IsClicked)
                         {
                             propertySprites[$"pink3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("VirginiaAve");
 
                             propertySprites[$"pink1"].stayHighlighted = false;
                             propertySprites[$"pink1"].stopBeingHighlighted = true;
@@ -2027,6 +2070,8 @@ namespace Capitalism
                         {
                             propertySprites[$"orange1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("StJamesPlace");
+
                             propertySprites[$"orange2"].stayHighlighted = false;
                             propertySprites[$"orange2"].stopBeingHighlighted = true;
 
@@ -2037,6 +2082,8 @@ namespace Capitalism
                         {
                             propertySprites[$"orange2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("TennesseeAve");
+
                             propertySprites[$"orange1"].stayHighlighted = false;
                             propertySprites[$"orange1"].stopBeingHighlighted = true;
 
@@ -2046,6 +2093,8 @@ namespace Capitalism
                         if (propertySprites[$"orange3"].IsClicked)
                         {
                             propertySprites[$"orange3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("NewYorkAve");
 
                             propertySprites[$"orange1"].stayHighlighted = false;
                             propertySprites[$"orange1"].stopBeingHighlighted = true;
@@ -2064,6 +2113,8 @@ namespace Capitalism
                         {
                             propertySprites[$"red1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("KentuckyAve");
+
                             propertySprites[$"red2"].stayHighlighted = false;
                             propertySprites[$"red2"].stopBeingHighlighted = true;
 
@@ -2074,6 +2125,8 @@ namespace Capitalism
                         {
                             propertySprites[$"red2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("IndianaAve");
+
                             propertySprites[$"red1"].stayHighlighted = false;
                             propertySprites[$"red1"].stopBeingHighlighted = true;
 
@@ -2083,6 +2136,8 @@ namespace Capitalism
                         if (propertySprites[$"red3"].IsClicked)
                         {
                             propertySprites[$"red3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("IllinoisAve");
 
                             propertySprites[$"red1"].stayHighlighted = false;
                             propertySprites[$"red1"].stopBeingHighlighted = true;
@@ -2101,6 +2156,8 @@ namespace Capitalism
                         {
                             propertySprites[$"yellow1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("AtlanticAve");
+
                             propertySprites[$"yellow2"].stayHighlighted = false;
                             propertySprites[$"yellow2"].stopBeingHighlighted = true;
 
@@ -2111,6 +2168,8 @@ namespace Capitalism
                         {
                             propertySprites[$"yellow2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("VentnorAve");
+
                             propertySprites[$"yellow1"].stayHighlighted = false;
                             propertySprites[$"yellow1"].stopBeingHighlighted = true;
 
@@ -2120,6 +2179,8 @@ namespace Capitalism
                         if (propertySprites[$"yellow3"].IsClicked)
                         {
                             propertySprites[$"yellow3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("MarvinGardens");
 
                             propertySprites[$"yellow1"].stayHighlighted = false;
                             propertySprites[$"yellow1"].stopBeingHighlighted = true;
@@ -2138,6 +2199,8 @@ namespace Capitalism
                         {
                             propertySprites[$"green1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("PacificAve");
+
                             propertySprites[$"green2"].stayHighlighted = false;
                             propertySprites[$"green2"].stopBeingHighlighted = true;
 
@@ -2148,6 +2211,8 @@ namespace Capitalism
                         {
                             propertySprites[$"green2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("NoCarolinaAve");
+
                             propertySprites[$"green1"].stayHighlighted = false;
                             propertySprites[$"green1"].stopBeingHighlighted = true;
 
@@ -2157,6 +2222,8 @@ namespace Capitalism
                         if (propertySprites[$"green3"].IsClicked)
                         {
                             propertySprites[$"green3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("PennsylvaniaAve");
 
                             propertySprites[$"green1"].stayHighlighted = false;
                             propertySprites[$"green1"].stopBeingHighlighted = true;
@@ -2174,6 +2241,8 @@ namespace Capitalism
                         {
                             propertySprites[$"blue1"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("ParkPlace");
+
                             propertySprites[$"blue2"].stayHighlighted = false;
                             propertySprites[$"blue2"].stopBeingHighlighted = true;
                         }
@@ -2181,14 +2250,42 @@ namespace Capitalism
                         {
                             propertySprites[$"blue2"].stayHighlighted = true;
 
+                            selectedPropToBuildOn = findProp("Boardwalk");
+
                             propertySprites[$"blue1"].stayHighlighted = false;
                             propertySprites[$"blue1"].stopBeingHighlighted = true;
                         }
                     }
 
+                    if (houseIcony.IsClicked)
+                    {
+                        houseIcony.stayHighlighted = true;
+
+                        hotelIcon.stayHighlighted = false;
+                        hotelIcon.stopBeingHighlighted = true;
+                    }
+
+                    checked IF LINE BELOW WORKS
+                    if (hasAll4Houses(selectedPropToBuildOn.Image.Name));
+                    {
+                        hotelIcon.Tint = Color.White;
+
+                        if (hotelIcon.IsClicked)
+                        {
+                            hotelIcon.stayHighlighted = true;
+
+                            houseIcony.stayHighlighted = false;
+                            houseIcony.stopBeingHighlighted = true;
+                        }
+                    }
+                    else 
+                    {
+                        hotelIcon.Tint = Color.Gray;
+                    }
+         
+
                     hotelIcon.Draw(batch);
                     houseIcony.Draw(batch);
-
 
                 }
                 else
