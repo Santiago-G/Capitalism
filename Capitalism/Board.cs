@@ -483,8 +483,63 @@ namespace Capitalism
         {
             return (findProp(imageName).hotelCounter == 4);
         }
+        public List<Property> getAllPropColor(string propColor)
+        {
+            List<Property> list = new List<Property>();
+
+            for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+            {
+                if (CurrentPlayer.properties[i].Color(CurrentPlayer.properties[i].PropColor) == propColor)
+                {
+                    list.Add(CurrentPlayer.properties[i]);
+                }
+            }
 
 
+            if (list.Count == 3 || (list.Count == 2 && (propColor == "purple" || propColor == "blue")))
+            {
+                return list;
+            }
+
+            return null;
+        }
+
+        public bool isReadyForHouse(Property pendingProp)
+        {
+            if (pendingProp == null || pendingProp.houseCounter == 4)
+            {
+                return false;
+            }
+
+            List<Property> tempProps = getAllPropColor(pendingProp.Color(pendingProp.PropColor));
+            int highestHouseCount = 0;
+            int lowestHouseCount = 100;
+
+            for (int i = 0; i < tempProps.Count; i++)
+            {
+                if (tempProps[i] == pendingProp)
+                {
+                    tempProps[i].houseCounter++;
+                }
+
+                if (tempProps[i].houseCounter > highestHouseCount)
+                {
+                    tempProps[i].houseCounter = highestHouseCount;
+                }
+
+                if (tempProps[i].houseCounter < lowestHouseCount)
+                {
+                    tempProps[i].houseCounter = lowestHouseCount;
+                }
+            }
+
+            if (highestHouseCount - lowestHouseCount > 1)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         public Board(ContentManager Content, Rectangle bounds)
         {
@@ -911,7 +966,7 @@ namespace Capitalism
             propertySprites[$"blue2"].Update(ms, true);
 
             hotelIcon.Update(ms, readyForHotel);
-            houseIcony.Update(ms, true);
+            houseIcony.Update(ms, isReadyForHouse(selectedPropToBuildOn));
 
             #endregion
 
@@ -974,15 +1029,15 @@ namespace Capitalism
 
                     if (CurrentPlayer.Token != "Boat")
                     {
+                        //if (CurrentPlayer.currentTileIndex == 1)
+                        //{
+                        //    target = 2;
+                        //}
+                        //else if (CurrentPlayer.currentTileIndex == 2)
+                        //{
+                        //    target = 4;
+                        //}
                         if (CurrentPlayer.currentTileIndex == 1)
-                        {
-                            target = 2;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 2)
-                        {
-                            target = 4;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 4)
                         {
                             target = 7;
                         }
@@ -1707,7 +1762,7 @@ namespace Capitalism
                                                 CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * 2;
                                                 Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * 2;
                                             }
-                                            else 
+                                            else
                                             {
                                                 CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
                                                 Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
@@ -2265,28 +2320,46 @@ namespace Capitalism
                         hotelIcon.stopBeingHighlighted = true;
                     }
 
-                    checked IF LINE BELOW WORKS
-                    if (hasAll4Houses(selectedPropToBuildOn.Image.Name));
-                    {
-                        hotelIcon.Tint = Color.White;
-
-                        if (hotelIcon.IsClicked)
-                        {
-                            hotelIcon.stayHighlighted = true;
-
-                            houseIcony.stayHighlighted = false;
-                            houseIcony.stopBeingHighlighted = true;
-                        }
-                    }
-                    else 
-                    {
-                        hotelIcon.Tint = Color.Gray;
-                    }
-         
-
                     hotelIcon.Draw(batch);
                     houseIcony.Draw(batch);
 
+                    if (selectedPropToBuildOn != null)
+                    {
+                        //house rules. You can never have more than a one-house difference 
+
+                        CurrentPlayer.properties[0].houseCounter = 1;
+                        CurrentPlayer.properties[1].houseCounter = 3;
+
+                        test line below
+                        if (isReadyForHouse(selectedPropToBuildOn))
+                        {
+                            houseIcony.Tint = Color.White;
+                        }
+
+                        #region Hotel Icon Logic
+                        if (hasAll4Houses(selectedPropToBuildOn.Image.Name))
+                        {
+                            hotelIcon.Tint = Color.White;
+
+                            if (hotelIcon.IsClicked)
+                            {
+                                hotelIcon.stayHighlighted = true;
+
+                                houseIcony.stayHighlighted = false;
+                                houseIcony.stopBeingHighlighted = true;
+                            }
+                        }
+                        else
+                        {
+                            hotelIcon.Tint = Color.Gray;
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        hotelIcon.Tint = Color.Gray;
+                        houseIcony.Tint = Color.Gray;
+                    }
                 }
                 else
                 {
