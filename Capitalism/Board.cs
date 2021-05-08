@@ -53,6 +53,7 @@ namespace Capitalism
 
         bool tempi = true;
         bool readyForHotel = false;
+        bool readyToBuy = false;
         //bool firstLap = true;
         #endregion
 
@@ -427,6 +428,7 @@ namespace Capitalism
         HighlightButton getOutOfJailFree;
         HighlightButton getOutOfJailFree2;
 
+        HighlightButton buyHouses;
         #endregion
 
         Animation dice1;
@@ -462,7 +464,6 @@ namespace Capitalism
         {
             return new PropertySprite(image, Position, Tint);
         }
-
 
         int target;
 
@@ -506,7 +507,7 @@ namespace Capitalism
 
         public bool isReadyForHouse(Property pendingProp)
         {
-            if (pendingProp == null || pendingProp.houseCounter == 4)
+            if (pendingProp == null || pendingProp.houseCounter == 4 || (CurrentPlayer.Money - pendingProp.HouseCost) < 0)
             {
                 return false;
             }
@@ -524,18 +525,38 @@ namespace Capitalism
 
                 if (tempProps[i].houseCounter > highestHouseCount)
                 {
-                    tempProps[i].houseCounter = highestHouseCount;
+                    highestHouseCount = tempProps[i].houseCounter;
                 }
 
                 if (tempProps[i].houseCounter < lowestHouseCount)
                 {
-                    tempProps[i].houseCounter = lowestHouseCount;
+                    lowestHouseCount = tempProps[i].houseCounter;
                 }
             }
 
             if (highestHouseCount - lowestHouseCount > 1)
             {
                 return false;
+            }
+
+            return true;
+        }
+
+        public bool isReadyForHotel(Property pendingProp)
+        {
+            if (pendingProp == null || pendingProp.houseCounter < 4 || pendingProp.hotelCounter == 1 || (CurrentPlayer.Money - pendingProp.HotelCost) < 0)
+            {
+                return false;
+            }
+
+            List<Property> tempProps = getAllPropColor(pendingProp.Color(pendingProp.PropColor));
+
+            for (int i = 0; i < tempProps.Count; i++)
+            {
+                if (tempProps[i].houseCounter < 4)
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -601,6 +622,8 @@ namespace Capitalism
 
             #region Properties
 
+            finish adding house rent and prop
+
             Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.purple));
             Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.purple));
 
@@ -614,22 +637,22 @@ namespace Capitalism
 
             Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
             Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
-            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.orange));
+            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, false, 80, 220, 600, 800, 1000, 100, 100, Content, PropertyColor.orange));
 
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
-            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
-            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.red));
+            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, false, 90, 250, 700, 875, 1050, 150, 150, Content, PropertyColor.red));
+            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, false, 90, 250, 700, 875, 1050, 150, 150, Content, PropertyColor.red));
+            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, false, 100, 300, 750, 925, 1100, 150, 150, Content, PropertyColor.red));
 
-            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 10, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
-            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
-            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.yellow));
+            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 22, false, false, 110, 330, 800, 975, 1150, 150, 150, Content, PropertyColor.yellow));
+            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, false, 110, 330, 800, 975, 1150, 150, 150, Content, PropertyColor.yellow));
+            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, false, 120, 360, 850, 1025, 1200, 150, 150, Content, PropertyColor.yellow));
 
             Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
             Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
             Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.green));
 
             Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.blue));
-            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.blue));
+            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 200, 600, 1400, 1700, 2000, 200, 200, Content, PropertyColor.blue));
 
             Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
             Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
@@ -770,6 +793,8 @@ namespace Capitalism
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
             breakOutOfJailButton = new HighlightButton(Yes, new Vector2(365, 755), Color.White, new Vector2(1.2f));
             exitHouseMenu = new HighlightButton(No, new Vector2(1496, 55), Color.White, new Vector2(1.5f));
+            buyHouses = new HighlightButton(Yes, new Vector2(300, 300), Color.White, new Vector2(1.5f));
+
             Bounds = bounds;
         }
 
@@ -836,6 +861,7 @@ namespace Capitalism
 
             #endregion
 
+            #region House/Hotels
             glowingHouse = true;
             if ((house.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) || houseMenuUp)
             {
@@ -922,11 +948,15 @@ namespace Capitalism
                 }
             }
 
+            #endregion
+
             #region Updates 
             CurrentPlayer.Update();
             noButton.Update(ms, true);
             yesButton.Update(ms, true);
             breakOutOfJailButton.Update(ms, getOutOfJailGlow);
+            buyHouses.Update(ms, readyToBuy);
+
             exitHouseMenu.Update(ms, true);
 
             PurpleProp.Update(ms, CurrentPlayer.allOfOneColor("purple"));
@@ -2003,7 +2033,7 @@ namespace Capitalism
 
                 if (houseMenuStage2)
                 {
-                    //draw house, hotel, and color prop
+                    buyHouses.Draw(batch);
 
                     if (purplePropMenu)
                     {
@@ -2312,14 +2342,6 @@ namespace Capitalism
                         }
                     }
 
-                    if (houseIcony.IsClicked)
-                    {
-                        houseIcony.stayHighlighted = true;
-
-                        hotelIcon.stayHighlighted = false;
-                        hotelIcon.stopBeingHighlighted = true;
-                    }
-
                     hotelIcon.Draw(batch);
                     houseIcony.Draw(batch);
 
@@ -2327,18 +2349,40 @@ namespace Capitalism
                     {
                         //house rules. You can never have more than a one-house difference 
 
-                        CurrentPlayer.properties[0].houseCounter = 1;
-                        CurrentPlayer.properties[1].houseCounter = 3;
+                        //CurrentPlayer.properties[0].houseCounter = 1;
+                        //CurrentPlayer.properties[1].houseCounter = 1;
+                        //CurrentPlayer.properties[2].houseCounter = 2;
 
-                        test line below
+                        #region House Icon Logic
                         if (isReadyForHouse(selectedPropToBuildOn))
                         {
+                            readyToBuy = true;
+
                             houseIcony.Tint = Color.White;
+
+                            if (houseIcony.IsClicked)
+                            {
+                                houseIcony.stayHighlighted = true;
+
+                                hotelIcon.stayHighlighted = false;
+                                hotelIcon.stopBeingHighlighted = true;
+                            }
                         }
+                        else 
+                        {
+                            readyToBuy = false;
+
+                            houseIcony.Tint = Color.Gray;
+                            houseIcony.stayHighlighted = false;
+                            houseIcony.stopBeingHighlighted = false;
+                        }
+                        #endregion
 
                         #region Hotel Icon Logic
-                        if (hasAll4Houses(selectedPropToBuildOn.Image.Name))
+                        if (isReadyForHotel(selectedPropToBuildOn))
                         {
+                            readyToBuy = true;
+
                             hotelIcon.Tint = Color.White;
 
                             if (hotelIcon.IsClicked)
@@ -2351,9 +2395,21 @@ namespace Capitalism
                         }
                         else
                         {
+                            readyToBuy = false;
+
                             hotelIcon.Tint = Color.Gray;
                         }
                         #endregion
+
+                        if (readyToBuy && buyHouses.IsClicked)
+                        {
+                            if (hotelIcon.stayHighlighted)
+                            {
+                                selectedPropToBuildOn.hotelCounter++;
+                                CurrentPlayer.Money -= selectedPropToBuildOn.HotelCost;
+                                selectedPropToBuildOn.Rent = selectedPropToBuildOn.WithHotel;
+                            }
+                        }
                     }
                     else
                     {
