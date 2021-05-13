@@ -364,110 +364,6 @@ namespace Capitalism
             return 0;
         }
 
-        static float Lerp(float start_value, float end_value, float pct)
-        {
-            return (start_value + (end_value - start_value) * pct);
-        }
-        //FUNCTIONS\\
-
-        #endregion
-
-        #region Textures
-        Texture2D Frame;
-        Texture2D Yes;
-        Texture2D No;
-        Texture2D Purchase;
-        Texture2D RedDice;
-        Texture2D pixel;
-        Texture2D pixel2;
-        Texture2D itsBeanTime;
-        Texture2D PlayerTitle;
-
-        Texture2D boatFrame;
-        Texture2D bootFrame;
-        Texture2D carFrame;
-        Texture2D catFrame;
-        Texture2D dogFrame;
-        Texture2D duckFrame;
-        Texture2D hatFrame;
-        Texture2D houseIcon;
-        Texture2D houseBuyingUI;
-
-        Texture2D PurplePropSprite;
-        Texture2D LightBluePropSprite;
-        Texture2D PinkPropSprite;
-        Texture2D OrangePropSprite;
-        Texture2D RedPropSprite;
-        Texture2D YellowPropSprite;
-        Texture2D GreenPropSprite;
-        Texture2D BluePropSprite;
-
-        SpriteFont font;
-        SpriteFont mediumSizeFont;
-        #endregion
-
-        #region HighlightButtons
-        HighlightButton yesButton;
-        HighlightButton noButton;
-        HighlightButton breakOutOfJailButton;
-        HighlightButton exitHouseMenu;
-        NormalButton diceOnBoard1;
-        HighlightButton house;
-
-        HighlightButton PurpleProp;
-        HighlightButton LightBlueProp;
-        HighlightButton PinkProp;
-        HighlightButton OrangeProp;
-        HighlightButton RedProp;
-        HighlightButton YellowProp;
-        HighlightButton GreenProp;
-        HighlightButton BlueProp;
-
-        HighlightButton hotelIcon;
-        HighlightButton houseIcony;
-
-        HighlightButton getOutOfJailFree;
-        HighlightButton getOutOfJailFree2;
-
-        HighlightButton buyHouses;
-        #endregion
-
-        Animation dice1;
-        Animation dice2;
-
-        Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
-        Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
-        Dictionary<string, HighlightButton> propertySprites = new Dictionary<string, HighlightButton>();
-
-        MouseState lms;
-
-        Vector2[] listOfPositions = new Vector2[40];
-
-        TimeSpan previousTime = TimeSpan.Zero;
-        TimeSpan tokenMovingTime = TimeSpan.Zero;
-        TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
-        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
-        TimeSpan chanceCardPrevTime = TimeSpan.Zero;
-        TimeSpan communityChestPrevTime = TimeSpan.Zero;
-
-        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, bool isUtillity, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content, PropertyColor propColor)
-        {
-            if (fliped)
-            {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
-            }
-            else
-            {
-                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
-            }
-        }
-        Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
-        {
-            return new PropertySprite(image, Position, Tint);
-        }
-
-        int target;
-
         public Property findProp(string imageName)
         {
             for (int i = 0; i < CurrentPlayer.properties.Count; i++)
@@ -568,6 +464,226 @@ namespace Capitalism
 
             return true;
         }
+
+        public Vector2 housePositions(string color, int houseNumber, Property prop)
+        {
+            Vector2 position = new Vector2(0);
+            color = color.ToLower();
+            switch (color)
+            {
+                case "purple":
+                    if (houseNumber == 1)
+                    {
+                        //1200, 869
+
+                        return position;
+                    }
+                    
+                    //1048
+                    break;
+                case "lightblue":
+
+                    if (houseNumber == 1)
+                    {
+                        //819, 869
+                    }
+                    else if (houseNumber == 2)
+                    { 
+                        //668
+                    }
+                    
+                    //593
+                    break;
+                case "pink":
+
+                    if (houseNumber == 1)
+                    {
+                        //587, 793
+                    }
+                    else if (houseNumber == 2)
+                    {
+                        //0, 642
+                    }
+
+                    //0, 566
+                    break;
+                case "orange":
+
+                    if (houseNumber == 1)
+                    {
+                        //587, 413
+                    }
+                    else if (houseNumber == 2)
+                    {
+                        //0, 262
+                    }
+
+                    //0, 186
+                    break;
+                case "red":
+
+                    if (houseNumber == 1)
+                    {
+                        //663, 180
+                    }
+                    else if (houseNumber == 2)
+                    {
+                        //814, 0
+                    }
+
+                    //889, 0
+                    break;
+                case "yellow":
+
+                    if (houseNumber == 1)
+                    {
+                        //1042, 180
+                    }
+                    else if (houseNumber == 2)
+                    {
+                        //1118, 0
+                    }
+
+                    //1270, 0
+                    break;
+                case "green":
+
+                    if (houseNumber == 1)
+                    {
+                        //1274, 255
+                    }
+                    else if (houseNumber == 2)
+                    {
+                        //0, 332
+                    }
+
+                    //0, 484
+
+                    break;
+                case "blue":
+
+                    if (houseNumber == 1)
+                    {
+                        //1274, 711
+                    }
+
+                        //0, 862
+                    break; 
+
+            }
+
+            return new Vector2(-1);
+        }
+
+        static float Lerp(float start_value, float end_value, float pct)
+        {
+            return (start_value + (end_value - start_value) * pct);
+        }
+        //FUNCTIONS\\
+
+        #endregion
+
+        #region Textures
+        Texture2D Frame;
+        Texture2D Yes;
+        Texture2D No;
+        Texture2D Purchase;
+        Texture2D RedDice;
+        Texture2D pixel;
+        Texture2D pixel2;
+        Texture2D itsBeanTime;
+        Texture2D PlayerTitle;
+
+        Texture2D boatFrame;
+        Texture2D bootFrame;
+        Texture2D carFrame;
+        Texture2D catFrame;
+        Texture2D dogFrame;
+        Texture2D duckFrame;
+        Texture2D hatFrame;
+        Texture2D houseIcon;
+        Texture2D houseBuyingUI;
+
+        Texture2D PurplePropSprite;
+        Texture2D LightBluePropSprite;
+        Texture2D PinkPropSprite;
+        Texture2D OrangePropSprite;
+        Texture2D RedPropSprite;
+        Texture2D YellowPropSprite;
+        Texture2D GreenPropSprite;
+        Texture2D BluePropSprite;
+
+        Texture2D inGameHouseIcon;
+        Texture2D inGameHotelIcon;
+
+        SpriteFont font;
+        SpriteFont mediumSizeFont;
+        #endregion
+
+        #region HighlightButtons
+        HighlightButton yesButton;
+        HighlightButton noButton;
+        HighlightButton breakOutOfJailButton;
+        HighlightButton exitHouseMenu;
+        NormalButton diceOnBoard1;
+        HighlightButton house;
+
+        HighlightButton PurpleProp;
+        HighlightButton LightBlueProp;
+        HighlightButton PinkProp;
+        HighlightButton OrangeProp;
+        HighlightButton RedProp;
+        HighlightButton YellowProp;
+        HighlightButton GreenProp;
+        HighlightButton BlueProp;
+
+        HighlightButton hotelIcon;
+        HighlightButton houseIcony;
+
+        HighlightButton getOutOfJailFree;
+        HighlightButton getOutOfJailFree2;
+
+        HighlightButton buyHouses;
+
+        List<HighlightButton> houses = new List<HighlightButton>();
+        List<HighlightButton> hotels = new List<HighlightButton>();
+        #endregion
+
+        Animation dice1;
+        Animation dice2;
+
+        Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
+        Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
+        Dictionary<string, HighlightButton> propertySprites = new Dictionary<string, HighlightButton>();
+
+        MouseState lms;
+
+        Vector2[] listOfPositions = new Vector2[40];
+
+        TimeSpan previousTime = TimeSpan.Zero;
+        TimeSpan tokenMovingTime = TimeSpan.Zero;
+        TimeSpan diceGlowInterval = TimeSpan.FromSeconds(1);
+        TimeSpan tokenInterval = TimeSpan.FromMilliseconds(700);
+        TimeSpan chanceCardPrevTime = TimeSpan.Zero;
+        TimeSpan communityChestPrevTime = TimeSpan.Zero;
+
+        Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, bool isUtillity, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content, PropertyColor propColor)
+        {
+            if (fliped)
+            {
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
+            }
+            else
+            {
+                return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 100, 70), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
+            }
+        }
+        Sprite LoadImage(Texture2D image, Vector2 Position, Color Tint)
+        {
+            return new PropertySprite(image, Position, Tint);
+        }
+
+        int target;
 
         public Board(ContentManager Content, Rectangle bounds)
         {
@@ -796,6 +912,9 @@ namespace Capitalism
             No = Content.Load<Texture2D>("No");
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
 
+            inGameHouseIcon = Content.Load<Texture2D>("inGameHouse");
+            inGameHotelIcon = Content.Load<Texture2D>("inGameHotel");
+
             noButton = new HighlightButton(No, new Vector2(326, 662), Color.White, Vector2.One);
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
             breakOutOfJailButton = new HighlightButton(Yes, new Vector2(365, 755), Color.White, new Vector2(1.2f));
@@ -827,13 +946,14 @@ namespace Capitalism
                 ;
 
                 bean = false;
+                Console.WriteLine("doyouseebananamanhopingoveronthewhitehotsandherehecomeswithsomeformefreshlytakenfrombananatreebananamanmewantatongivemedoubleandabonuseonegivememoreforallmefriendsthisbananaflowwillneverend");
             }
 
             #region Property/Testing
 
             if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
             {
-                Debug.WriteLine($"X: {ms.X}, Y: {ms.Y}");
+                Console.WriteLine($"X: {ms.X}, Y: {ms.Y}");
             }
 
             #endregion
@@ -1005,6 +1125,15 @@ namespace Capitalism
             hotelIcon.Update(ms, readyForHotel);
             houseIcony.Update(ms, isReadyForHouse(selectedPropToBuildOn));
 
+            for (int i = 0; i < houses.Count; i++)
+            {
+                houses[i].Update(ms, false);
+            }
+
+            for (int i = 0; i < hotels.Count; i++)
+            {
+                hotels[i].Update(ms, false);
+            }
             #endregion
 
             if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
@@ -2420,6 +2549,8 @@ namespace Capitalism
                                 selectedPropToBuildOn.hotelCounter++;
                                 CurrentPlayer.Money -= selectedPropToBuildOn.HotelCost;
                                 selectedPropToBuildOn.Rent = selectedPropToBuildOn.WithHotel;
+
+                               // hotels.Add(new HighlightButton(inGameHotelIcon, ));
                             }
                             else 
                             {
@@ -2442,6 +2573,7 @@ namespace Capitalism
                                         break;
                                 }
 
+                               // houses.Add(new HighlightButton(inGameHouseIcon));
                             }
                             houseMenuStage2 = false;
                             imDone = true;
