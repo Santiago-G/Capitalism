@@ -70,6 +70,7 @@ namespace Capitalism
         int currentPlayerIndex = 0;
         int doubleCounter = 0;
         int propColorCounter = 0;
+        int propCounter = 0;
         public int playerCount => SelectingPlayers.playerCount;
 
         Property selectedPropToBuildOn;
@@ -615,6 +616,145 @@ namespace Capitalism
             return new Vector2(-1);
         }
 
+        public Vector2 hotelPositions(string color, Property prop, int propNumb)
+        {
+            bool sideways = false;
+            Vector2 position = new Vector2(0);
+            color = color.ToLower();
+            switch (color)
+            {
+                case "purple":
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(1200, 869);
+                    }
+                    else
+                    {
+                        position = new Vector2(1048, 869);
+                    }
+
+                    break;
+                case "lightblue":
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(819, 869);
+                    }
+                    else if (propNumb == 2)
+                    {
+                        position = new Vector2(668, 869);
+                    }
+                    else
+                    {
+                        position = new Vector2(593, 869);
+                    }
+
+                    break;
+                case "pink":
+                    sideways = true;
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(587, 793);
+                    }
+                    else if (propNumb == 2)
+                    {
+                        position = new Vector2(587, 642);
+                    }
+                    else
+                    {
+                        position = new Vector2(587, 566);
+                    }
+
+                    break;
+                case "orange":
+                    sideways = true;
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(587, 413);
+                    }
+                    else if (propNumb == 2)
+                    {
+                        position = new Vector2(587, 262);
+                    }
+                    else
+                    {
+                        position = new Vector2(587, 186);
+                    }
+
+                    break;
+                case "red":
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(663, 180);
+                    }
+                    else if (propNumb == 2)
+                    {
+                        position = new Vector2(814, 180);
+                    }
+                    else
+                    {
+                        position = new Vector2(889, 180);
+                    }
+
+                    break;
+                case "yellow":
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(1042, 180);
+                    }
+                    else if (propNumb == 2)
+                    {
+                        position = new Vector2(1118, 180);
+                    }
+                    else
+                    {
+                        position = new Vector2(1270, 180);
+                    }
+
+                    break;
+                case "green":
+                    sideways = true;
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(1274, 255);
+                    }
+                    else if (propNumb == 2)
+                    {
+                        position = new Vector2(1274, 332);
+                    }
+                    else
+                    {
+                        position = new Vector2(1274, 484);
+                    }
+
+                    break;
+                case "blue":
+                    sideways = true;
+
+                    if (propNumb == 1)
+                    {
+                        position = new Vector2(1274, 711);
+                    }
+                    else
+                    {
+                        position = new Vector2(1274, 862);
+                    }
+
+                    break;
+            }
+
+            if (position != Vector2.Zero)
+            { 
+                return position;
+            }
+
+            return new Vector2(-1);
+        }
         static float Lerp(float start_value, float end_value, float pct)
         {
             return (start_value + (end_value - start_value) * pct);
@@ -685,7 +825,7 @@ namespace Capitalism
 
         HighlightButton buyHouses;
 
-        List<HighlightButton> houses = new List<HighlightButton>();
+        List<(HighlightButton, int)> houses = new List<(HighlightButton, int)>();
         List<HighlightButton> hotels = new List<HighlightButton>();
         #endregion
 
@@ -1112,6 +1252,13 @@ namespace Capitalism
                     purplePropMenu = false;
                     tempi = true;
                     imDone = false;
+
+
+                    hotelIcon.Tint = Color.Gray;
+                    houseIcony.Tint = Color.Gray;
+
+                    hotelIcon.stopBeingHighlighted = true;
+                    houseIcony.stopBeingHighlighted = true;
                 }
             }
 
@@ -1167,7 +1314,7 @@ namespace Capitalism
 
             for (int i = 0; i < houses.Count; i++)
             {
-                houses[i].Update(ms, false);
+                houses[i].Item1.Update(ms, false);
             }
 
             for (int i = 0; i < hotels.Count; i++)
@@ -2196,9 +2343,13 @@ namespace Capitalism
 
             for (int i = 0; i < houses.Count; i++)
             {
-                houses[i].Draw(batch);
+                houses[i].Item1.Draw(batch);
             }
 
+            for (int i = 0; i < hotels.Count; i++)
+            {
+                hotels[i].Draw(batch);
+            }
             ///////////////////
 
             if (darkenScreen)
@@ -2230,6 +2381,7 @@ namespace Capitalism
                             propertySprites[$"purple2"].stayHighlighted = false;
                             propertySprites[$"purple2"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 1;
                         }
                         if (propertySprites[$"purple2"].IsClicked)
                         {
@@ -2240,6 +2392,7 @@ namespace Capitalism
                             propertySprites[$"purple1"].stayHighlighted = false;
                             propertySprites[$"purple1"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 2;
                         }
                     }
                     else if (lightBluePropMenu)
@@ -2260,6 +2413,7 @@ namespace Capitalism
                             propertySprites[$"lightBlue3"].stayHighlighted = false;
                             propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 3;
                         }
                         if (propertySprites[$"lightBlue2"].IsClicked)
                         {
@@ -2273,6 +2427,7 @@ namespace Capitalism
                             propertySprites[$"lightBlue3"].stayHighlighted = false;
                             propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 4;
                         }
                         if (propertySprites[$"lightBlue3"].IsClicked)
                         {
@@ -2286,6 +2441,7 @@ namespace Capitalism
                             propertySprites[$"lightBlue2"].stayHighlighted = false;
                             propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
+                            propCounter = 5;
                         }
                     }
                     else if (pinkPropMenu)
@@ -2306,6 +2462,7 @@ namespace Capitalism
                             propertySprites[$"pink3"].stayHighlighted = false;
                             propertySprites[$"pink3"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 6;
                         }
                         if (propertySprites[$"pink2"].IsClicked)
                         {
@@ -2319,6 +2476,7 @@ namespace Capitalism
                             propertySprites[$"pink3"].stayHighlighted = false;
                             propertySprites[$"pink3"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 7;
                         }
                         if (propertySprites[$"pink3"].IsClicked)
                         {
@@ -2332,6 +2490,7 @@ namespace Capitalism
                             propertySprites[$"pink2"].stayHighlighted = false;
                             propertySprites[$"pink2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
+                            propCounter = 8;
                         }
                     }
                     else if (orangePropMenu)
@@ -2352,6 +2511,7 @@ namespace Capitalism
                             propertySprites[$"orange3"].stayHighlighted = false;
                             propertySprites[$"orange3"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 9;
                         }
                         if (propertySprites[$"orange2"].IsClicked)
                         {
@@ -2365,6 +2525,7 @@ namespace Capitalism
                             propertySprites[$"orange3"].stayHighlighted = false;
                             propertySprites[$"orange3"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 10;
                         }
                         if (propertySprites[$"orange3"].IsClicked)
                         {
@@ -2378,6 +2539,7 @@ namespace Capitalism
                             propertySprites[$"orange2"].stayHighlighted = false;
                             propertySprites[$"orange2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
+                            propCounter = 11;
                         }
                     }
                     else if (redPropMenu)
@@ -2398,6 +2560,7 @@ namespace Capitalism
                             propertySprites[$"red3"].stayHighlighted = false;
                             propertySprites[$"red3"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 12;
                         }
                         if (propertySprites[$"red2"].IsClicked)
                         {
@@ -2411,6 +2574,7 @@ namespace Capitalism
                             propertySprites[$"red3"].stayHighlighted = false;
                             propertySprites[$"red3"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 13;
                         }
                         if (propertySprites[$"red3"].IsClicked)
                         {
@@ -2424,6 +2588,7 @@ namespace Capitalism
                             propertySprites[$"red2"].stayHighlighted = false;
                             propertySprites[$"red2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
+                            propCounter = 14;
                         }
                     }
                     else if (yellowPropMenu)
@@ -2444,6 +2609,7 @@ namespace Capitalism
                             propertySprites[$"yellow3"].stayHighlighted = false;
                             propertySprites[$"yellow3"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 15;
                         }
                         if (propertySprites[$"yellow2"].IsClicked)
                         {
@@ -2457,6 +2623,7 @@ namespace Capitalism
                             propertySprites[$"yellow3"].stayHighlighted = false;
                             propertySprites[$"yellow3"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 16;
                         }
                         if (propertySprites[$"yellow3"].IsClicked)
                         {
@@ -2470,6 +2637,7 @@ namespace Capitalism
                             propertySprites[$"yellow2"].stayHighlighted = false;
                             propertySprites[$"yellow2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
+                            propCounter = 17;
                         }
                     }
                     else if (greenPropMenu)
@@ -2490,6 +2658,7 @@ namespace Capitalism
                             propertySprites[$"green3"].stayHighlighted = false;
                             propertySprites[$"green3"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 18;
                         }
                         if (propertySprites[$"green2"].IsClicked)
                         {
@@ -2503,6 +2672,7 @@ namespace Capitalism
                             propertySprites[$"green3"].stayHighlighted = false;
                             propertySprites[$"green3"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 19;
                         }
                         if (propertySprites[$"green3"].IsClicked)
                         {
@@ -2516,6 +2686,7 @@ namespace Capitalism
                             propertySprites[$"green2"].stayHighlighted = false;
                             propertySprites[$"green2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
+                            propCounter = 20;
                         }
                     }
                     else if (bluePropMenu)
@@ -2532,6 +2703,7 @@ namespace Capitalism
                             propertySprites[$"blue2"].stayHighlighted = false;
                             propertySprites[$"blue2"].stopBeingHighlighted = true;
                             propColorCounter = 1;
+                            propCounter = 21;
                         }
                         if (propertySprites[$"blue2"].IsClicked)
                         {
@@ -2542,6 +2714,7 @@ namespace Capitalism
                             propertySprites[$"blue1"].stayHighlighted = false;
                             propertySprites[$"blue1"].stopBeingHighlighted = true;
                             propColorCounter = 2;
+                            propCounter = 22;
                         }
                     }
 
@@ -2617,7 +2790,17 @@ namespace Capitalism
                                 CurrentPlayer.Money -= selectedPropToBuildOn.HotelCost;
                                 selectedPropToBuildOn.Rent = selectedPropToBuildOn.WithHotel;
 
-                               // hotels.Add(new HighlightButton(inGameHotelIcon, ));
+                                feafeadfea
+                                // this line is broken, it wont remove a certain amount of houses depending on how many rounds its been since you bought the houses
+                                for (int i = 0; i < houses.Count; i++)
+                                {
+                                    if (houses[i].Item2 == propCounter)
+                                    {
+                                        houses.Remove(houses[i]);
+                                    }
+                                }
+                                hotels.Add(new HighlightButton(inGameHotelIcon, hotelPositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.1f)));
+                                
                             }
                             else 
                             {
@@ -2640,12 +2823,20 @@ namespace Capitalism
                                         break;
                                 }
 
-                               houses.Add(new HighlightButton(inGameHouseIcon, housePositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn.houseCounter, selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.13f)));
+                               houses.Add((new HighlightButton(inGameHouseIcon, housePositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn.houseCounter, selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.13f)), propCounter));
                             }
                             houseMenuStage2 = false;
                             imDone = true;
                             selectedPropToBuildOn = null;
                             readyToBuy = false;
+
+                            hotelIcon.Tint = Color.Gray;
+                            houseIcony.Tint = Color.Gray;
+
+                            hotelIcon.stopBeingHighlighted = true;
+                            houseIcony.stopBeingHighlighted = true;
+                            houseIcony.stayHighlighted = false;
+                            hotelIcon.stopBeingHighlighted = false;
                         }
                     }
                     else

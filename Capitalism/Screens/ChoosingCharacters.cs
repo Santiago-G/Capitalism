@@ -19,7 +19,6 @@ namespace Capitalism.Screens
         HighlightButton Yes;
         HighlightButton No;
 
-
         #region Token Setup
         Texture2D VroomVroom;
         Texture2D titanic;
