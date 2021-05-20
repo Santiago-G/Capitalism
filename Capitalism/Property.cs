@@ -47,6 +47,10 @@ namespace Capitalism
         public bool expanded = false;
         public bool isRailroad = false;
         public bool isUtility = false;
+
+        public List<HighlightButton> houses = new List<HighlightButton>();
+
+        public List<HighlightButton> hotels = new List<HighlightButton>();
         //Add Mortgage
 
         public  string Color(PropertyColor color)

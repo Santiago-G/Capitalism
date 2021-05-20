@@ -479,7 +479,7 @@ namespace Capitalism
                     {
                         position = new Vector2(1200, 869);
                     }
-                    else 
+                    else
                     {
                         position = new Vector2(1048, 869);
                     }
@@ -596,19 +596,24 @@ namespace Capitalism
                         position = new Vector2(1274, 862);
                     }
 
-                    break; 
+                    break;
             }
 
             if (position != Vector2.Zero)
             {
                 if (sideways)
                 {
-                    position.Y += (20 * houseNumber);
+                    //position.Y += (20 * houseNumber);\
+
+                    position.X -= 20 * houseNumber;
 
                     return position;
                 }
+                else
+                {
+                    position.X += (20 * (houseNumber - 1));
+                }
 
-                position.X += (20 * (houseNumber - 1));
 
                 return position;
             }
@@ -623,14 +628,15 @@ namespace Capitalism
             color = color.ToLower();
             switch (color)
             {
+                //add 22,-5
                 case "purple":
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1200, 869);
+                        position = new Vector2(1222, 864);
                     }
                     else
                     {
-                        position = new Vector2(1048, 869);
+                        position = new Vector2(1070, 864);
                     }
 
                     break;
@@ -638,15 +644,15 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(819, 869);
+                        position = new Vector2(841, 864);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(668, 869);
+                        position = new Vector2(690, 864);
                     }
                     else
                     {
-                        position = new Vector2(593, 869);
+                        position = new Vector2(615, 864);
                     }
 
                     break;
@@ -749,7 +755,7 @@ namespace Capitalism
             }
 
             if (position != Vector2.Zero)
-            { 
+            {
                 return position;
             }
 
@@ -825,8 +831,6 @@ namespace Capitalism
 
         HighlightButton buyHouses;
 
-        List<(HighlightButton, int)> houses = new List<(HighlightButton, int)>();
-        List<HighlightButton> hotels = new List<HighlightButton>();
         #endregion
 
         Animation dice1;
@@ -879,8 +883,9 @@ namespace Capitalism
             pixel2 = Content.Load<Texture2D>("pixel");
             diceOnBoard1 = new NormalButton(pixel, Vector2.Zero, Color.Yellow * 0.2f, new Rectangle(682, 618, 48, 44));
             RedDice = Content.Load<Texture2D>("RedDice");
-            dice1 = new Animation(RedDice, new Vector2(800, 430), 100, new Random(gen.Next()));
-            dice2 = new Animation(RedDice, new Vector2(600, 430), 100, new Random(gen.Next()));
+            uint delay = 10;
+            dice1 = new Animation(RedDice, new Vector2(800, 430), delay, new Random(gen.Next()));
+            dice2 = new Animation(RedDice, new Vector2(600, 430), delay, new Random(gen.Next()));
             itsBeanTime = Content.Load<Texture2D>("bean");
             font = Content.Load<SpriteFont>("smallSize");
             mediumSizeFont = Content.Load<SpriteFont>("MediumSize");
@@ -1093,7 +1098,7 @@ namespace Capitalism
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
 
             inGameHouseIcon = Content.Load<Texture2D>("inGameHouse");
-            inGameHotelIcon = Content.Load<Texture2D>("inGameHotel");
+            inGameHotelIcon = Content.Load<Texture2D>("inGameHotel3");
 
             noButton = new HighlightButton(No, new Vector2(326, 662), Color.White, Vector2.One);
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
@@ -1107,971 +1112,1063 @@ namespace Capitalism
         ////////////UPDATE\\\\\\\\\\\\
         public void Update(MouseState ms, GameTime gameTime)
         {
-            if (bean)
+            int iterations = 1;
+            for (int dskaijdisajd = 0; dskaijdisajd < iterations; dskaijdisajd++)
             {
-                if (playerCount != Players.Length)
+
+                if (bean)
                 {
-                    Players = new Player[playerCount];
-                }
-                for (int i = 0; i < playerCount; i++)
-                {
-                    Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
-                    Players[i].PositionArea = charPostitions;
-                    Players[i].currentTileIndex = 1;
+                    if (playerCount != Players.Length)
+                    {
+                        Players = new Player[playerCount];
+                    }
+                    for (int i = 0; i < playerCount; i++)
+                    {
+                        Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
+                        Players[i].PositionArea = charPostitions;
+                        Players[i].currentTileIndex = 1;
+                    }
+
+                    CurrentPlayer = Players[0];
+
+                    Players[0].Tint = Color.Purple;
+                    ;
+
+                    bean = false;
+                    Console.WriteLine("doyouseebananamanhopingoveronthewhitehotsandherehecomeswithsomeformefreshlytakenfrombananatreebananamanmewantatongivemedoubleandabonuseonegivememoreforallmefriendsthisbananaflowwillneverend");
                 }
 
-                CurrentPlayer = Players[0];
+                #region Property/Testing
 
-                Players[0].Tint = Color.Purple;
-                ;
-
-                bean = false;
-                Console.WriteLine("doyouseebananamanhopingoveronthewhitehotsandherehecomeswithsomeformefreshlytakenfrombananatreebananamanmewantatongivemedoubleandabonuseonegivememoreforallmefriendsthisbananaflowwillneverend");
-            }
-
-            #region Property/Testing
-
-            if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
-            {
-                Console.WriteLine($"X: {ms.X}, Y: {ms.Y}");
-            }
-
-            #endregion
-
-            for (int i = 0; i < Players.Length; i++)
-            {
-                if (Players[i].Money == 0)
+                if (ms.LeftButton == ButtonState.Released && lms.LeftButton == ButtonState.Pressed)
                 {
-                    //game over
-                }
-            }
-
-            #region Jail
-            if (CurrentPlayer.inJail)
-            {
-                if (!diceRolling)
-                {
-                    getOutOfJailGlow = true;
-                }
-                else
-                {
-                    getOutOfJailGlow = false;
+                    Console.WriteLine($"X: {ms.X}, Y: {ms.Y}");
                 }
 
-                if (breakOutOfJailButton.IsClicked)
-                {
-                    CurrentPlayer.inJail = false;
-                    CurrentPlayer.Money -= 50;
-                    CurrentPlayer.Position = charPostitions[10];
-                }
-            }
-
-            #endregion
-
-            #region House/Hotels
-            glowingHouse = true;
-            if ((house.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) || houseMenuUp)
-            {
-                buyingHouses = true;
-                darkenScreen = true;
-                houseMenuUp = true;
-
-                #region if the props are clicked
-                if (RedProp.IsClicked && CurrentPlayer.allOfOneColor("red") && tempi)
-                {
-                    tempi = false;
-                    redPropMenu = true;
-                    houseMenuStage2 = true;
-                }
-                else if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange") && tempi)
-                {
-                    orangePropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
-                else if (YellowProp.IsClicked && CurrentPlayer.allOfOneColor("yellow") && tempi)
-                {
-                    yellowPropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
-                else if (GreenProp.IsClicked && CurrentPlayer.allOfOneColor("green") && tempi)
-                {
-                    greenPropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
-                else if (LightBlueProp.IsClicked && CurrentPlayer.allOfOneColor("lightBlue") && tempi)
-                {
-                    lightBluePropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
-                else if (BlueProp.IsClicked && CurrentPlayer.allOfOneColor("blue") && tempi)
-                {
-                    bluePropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
-                else if (PurpleProp.IsClicked && CurrentPlayer.allOfOneColor("purple") && tempi)
-                {
-                    purplePropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
-                else if (PinkProp.IsClicked && CurrentPlayer.allOfOneColor("pink") && tempi)
-                {
-                    pinkPropMenu = true;
-                    houseMenuStage2 = true;
-                    tempi = false;
-                }
                 #endregion
 
-                if (houseMenuStage2)
+                for (int i = 0; i < Players.Length; i++)
                 {
-
-                }
-
-                //then use propSprite dict to draw the props
-
-                if (exitHouseMenu.IsClicked || imDone)
-                {
-                    buyingHouses = false;
-                    darkenScreen = false;
-                    houseMenuUp = false;
-
-                    houseMenuStage2 = false;
-
-                    redPropMenu = false;
-                    orangePropMenu = false;
-                    yellowPropMenu = false;
-                    greenPropMenu = false;
-                    lightBluePropMenu = false;
-                    bluePropMenu = false;
-                    pinkPropMenu = false;
-                    purplePropMenu = false;
-                    tempi = true;
-                    imDone = false;
-
-
-                    hotelIcon.Tint = Color.Gray;
-                    houseIcony.Tint = Color.Gray;
-
-                    hotelIcon.stopBeingHighlighted = true;
-                    houseIcony.stopBeingHighlighted = true;
-                }
-            }
-
-            #endregion
-
-            #region Updates 
-            CurrentPlayer.Update();
-            noButton.Update(ms, true);
-            yesButton.Update(ms, true);
-            breakOutOfJailButton.Update(ms, getOutOfJailGlow);
-            buyHouses.Update(ms, readyToBuy);
-
-            exitHouseMenu.Update(ms, true);
-
-            PurpleProp.Update(ms, CurrentPlayer.allOfOneColor("purple"));
-            LightBlueProp.Update(ms, CurrentPlayer.allOfOneColor("lightBlue"));
-            PinkProp.Update(ms, CurrentPlayer.allOfOneColor("pink"));
-            OrangeProp.Update(ms, CurrentPlayer.allOfOneColor("orange"));
-            RedProp.Update(ms, CurrentPlayer.allOfOneColor("red"));
-            YellowProp.Update(ms, CurrentPlayer.allOfOneColor("yellow"));
-            GreenProp.Update(ms, CurrentPlayer.allOfOneColor("green"));
-            BlueProp.Update(ms, CurrentPlayer.allOfOneColor("blue"));
-
-            house.Update(ms, glowingHouse);
-            getOutOfJailFree.Update(ms, getOutOfJailGlow);
-            getOutOfJailFree2.Update(ms, getOutOfJailGlow);
-
-            propertySprites[$"purple1"].Update(ms, true);
-            propertySprites[$"purple2"].Update(ms, true);
-            propertySprites[$"lightBlue1"].Update(ms, true);
-            propertySprites[$"lightBlue2"].Update(ms, true);
-            propertySprites[$"lightBlue3"].Update(ms, true);
-            propertySprites[$"pink1"].Update(ms, true);
-            propertySprites[$"pink2"].Update(ms, true);
-            propertySprites[$"pink3"].Update(ms, true);
-            propertySprites[$"orange1"].Update(ms, true);
-            propertySprites[$"orange2"].Update(ms, true);
-            propertySprites[$"orange3"].Update(ms, true);
-            propertySprites[$"red1"].Update(ms, true);
-            propertySprites[$"red2"].Update(ms, true);
-            propertySprites[$"red3"].Update(ms, true);
-            propertySprites[$"yellow1"].Update(ms, true);
-            propertySprites[$"yellow2"].Update(ms, true);
-            propertySprites[$"yellow3"].Update(ms, true);
-            propertySprites[$"green1"].Update(ms, true);
-            propertySprites[$"green2"].Update(ms, true);
-            propertySprites[$"green3"].Update(ms, true);
-            propertySprites[$"blue1"].Update(ms, true);
-            propertySprites[$"blue2"].Update(ms, true);
-
-            hotelIcon.Update(ms, readyForHotel);
-            houseIcony.Update(ms, isReadyForHouse(selectedPropToBuildOn));
-
-            for (int i = 0; i < houses.Count; i++)
-            {
-                houses[i].Item1.Update(ms, false);
-            }
-
-            for (int i = 0; i < hotels.Count; i++)
-            {
-                hotels[i].Update(ms, false);
-            }
-            #endregion
-
-            if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
-            {
-                diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
-                previousTime = gameTime.TotalGameTime;
-            }
-
-            #region DiceRolling
-            if (rollDice)
-            {
-                if (diceMoving)
-                {
-                    ;
-                    if (dice2.dest.X != 24 && !CurrentPlayer.inJail)
+                    if (Players[i].Money == 0)
                     {
-                        dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
-                        dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
+                        //game over
+                    }
+                }
 
-                        dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
-                        dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
-
-                        dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
-                        dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
-
-                        dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
-                        dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
+                #region Jail
+                if (CurrentPlayer.inJail)
+                {
+                    if (!diceRolling)
+                    {
+                        getOutOfJailGlow = true;
                     }
                     else
                     {
-                        diceMoving = false;
-                        darkenScreen = false;
-                        diceRolling = false;
-                        characterMoving = true;
-                        diceFlashing = false;
-                        rollDice = false;
-                        agagagagaga = true;
-                    }
-                }
-
-                diceOnBoard1.Update(ms);
-
-                if (diceOnBoard1.IsClicked(ms))
-                {
-                    diceRolling = true;
-                    darkenScreen = true;
-                }
-
-                if (diceRolling)
-                {
-                    diceFlashing = false;
-                    showingDice = true;
-                    dice1.Update(gameTime, true);
-                    dice2.Update(gameTime, true);
-
-                    rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
-
-                    //target = rollValue + CurrentPlayer.currentTileIndex;
-
-                    if (CurrentPlayer.Token != "Boat")
-                    {
-                        if (CurrentPlayer.currentTileIndex == 1)
-                        {
-                            target = 2;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 2)
-                        {
-                            target = 4;
-                        }
-                        if (CurrentPlayer.currentTileIndex == 4)
-                        {
-                            target = 7;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 7)
-                        {
-                            target = 9;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 9)
-                        {
-                            target = 10;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 10)
-                        {
-                            target = 12;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 12)
-                        {
-                            target = 14;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 14)
-                        {
-                            target = 15;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 15)
-                        {
-                            target = 17;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 17)
-                        {
-                            target = 19;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 19)
-                        {
-                            target = 20;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 20)
-                        {
-                            target = 22;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 22)
-                        {
-                            target = 24;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 24)
-                        {
-                            target = 25;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 25)
-                        {
-                            target = 27;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 27)
-                        {
-                            target = 28;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 28)
-                        {
-                            target = 30;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 30)
-                        {
-                            target = 32;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 32)
-                        {
-                            target = 33;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 33)
-                        {
-                            target = 35;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 35)
-                        {
-                            target = 38;
-                        }
-                        else if (CurrentPlayer.currentTileIndex == 38)
-                        {
-                            target = 40;
-                        }
-
-
-                    }
-                    else
-                    {
-                        target = 1;
+                        getOutOfJailGlow = false;
                     }
 
-                    /*
-                    FOR TESTING BUYING PROPS 
-                     
-                    if (CurrentPlayer.Token != "Boat")
-                    {
-                        target = 3 + CurrentPlayer.currentTileIndex;
-                    }
-                    else
-                    {
-                        target = 1;
-                    }
-                    */
-
-                    if (dice1.stopped)
-                    {
-                        if (CurrentPlayer.inJail)
-                        {
-                            if (dice1.DiceRollValue != dice2.DiceRollValue)
-                            {
-                                rollValue = 0;
-                                target = rollValue + (CurrentPlayer.currentTileIndex);
-
-                                if (agagagagaga)
-                                {
-                                    CurrentPlayer.jailTimer++;
-                                    agagagagaga = false;
-                                }
-
-                                diceMoving = true;
-                            }
-                            else
-                            {
-                                CurrentPlayer.inJail = false;
-                                CurrentPlayer.jailTimer = 0;
-                            }
-                        }
-                        else
-                        {
-                            diceMoving = true;
-                        }
-                    }
-                }
-                else
-                {
-                    if (CurrentPlayer.inJail && (getOutOfJailFree.IsClicked || getOutOfJailFree2.IsClicked))
+                    if (breakOutOfJailButton.IsClicked)
                     {
                         CurrentPlayer.inJail = false;
+                        CurrentPlayer.Money -= 50;
                         CurrentPlayer.Position = charPostitions[10];
                     }
                 }
 
+                #endregion
 
-            }
-            #endregion
-
-            #region Movement
-            if (characterMoving)
-            {
-                if (target >= 40)
+                #region House/Hotels
+                glowingHouse = true;
+                if ((house.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) || houseMenuUp)
                 {
-                    target %= 40;
-                    shouldMove = true;
-                }
+                    buyingHouses = true;
+                    darkenScreen = true;
+                    houseMenuUp = true;
 
-                if (CurrentPlayer.currentTileIndex >= 40)
-                {
-                    CurrentPlayer.currentTileIndex %= 40;
-                }
-
-                if (CurrentPlayer.currentTileIndex < target || shouldMove)
-                {
-
-
-                    if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
+                    #region if the props are clicked
+                    if (RedProp.IsClicked && CurrentPlayer.allOfOneColor("red") && tempi)
                     {
-                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
-                        CurrentPlayer.currentTileIndex++;
-                        tokenMovingTime = gameTime.TotalGameTime;
+                        tempi = false;
+                        redPropMenu = true;
+                        houseMenuStage2 = true;
+                    }
+                    else if (OrangeProp.IsClicked && CurrentPlayer.allOfOneColor("orange") && tempi)
+                    {
+                        orangePropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    else if (YellowProp.IsClicked && CurrentPlayer.allOfOneColor("yellow") && tempi)
+                    {
+                        yellowPropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    else if (GreenProp.IsClicked && CurrentPlayer.allOfOneColor("green") && tempi)
+                    {
+                        greenPropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    else if (LightBlueProp.IsClicked && CurrentPlayer.allOfOneColor("lightBlue") && tempi)
+                    {
+                        lightBluePropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    else if (BlueProp.IsClicked && CurrentPlayer.allOfOneColor("blue") && tempi)
+                    {
+                        bluePropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    else if (PurpleProp.IsClicked && CurrentPlayer.allOfOneColor("purple") && tempi)
+                    {
+                        purplePropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    else if (PinkProp.IsClicked && CurrentPlayer.allOfOneColor("pink") && tempi)
+                    {
+                        pinkPropMenu = true;
+                        houseMenuStage2 = true;
+                        tempi = false;
+                    }
+                    #endregion
+
+                    if (houseMenuStage2)
+                    {
+
+                    }
+
+                    //then use propSprite dict to draw the props
+
+                    if (exitHouseMenu.IsClicked || imDone)
+                    {
+                        buyingHouses = false;
+                        darkenScreen = false;
+                        houseMenuUp = false;
+
+                        houseMenuStage2 = false;
+
+                        redPropMenu = false;
+                        orangePropMenu = false;
+                        yellowPropMenu = false;
+                        greenPropMenu = false;
+                        lightBluePropMenu = false;
+                        bluePropMenu = false;
+                        pinkPropMenu = false;
+                        purplePropMenu = false;
+                        tempi = true;
+                        imDone = false;
+
+
+                        hotelIcon.Tint = Color.Gray;
+                        houseIcony.Tint = Color.Gray;
+
+                        hotelIcon.stopBeingHighlighted = true;
+                        houseIcony.stopBeingHighlighted = true;
                     }
                 }
-                else
-                {
-                    if (dice1.DiceRollValue == dice2.DiceRollValue)
-                    {
-                        cardDouble = true;
-                        doubleCounter++;
 
-                        if (doubleCounter == 3)
+                #endregion
+
+                #region Updates 
+                CurrentPlayer.Update();
+                noButton.Update(ms, true);
+                yesButton.Update(ms, true);
+                breakOutOfJailButton.Update(ms, getOutOfJailGlow);
+                buyHouses.Update(ms, readyToBuy);
+
+                exitHouseMenu.Update(ms, true);
+
+                PurpleProp.Update(ms, CurrentPlayer.allOfOneColor("purple"));
+                LightBlueProp.Update(ms, CurrentPlayer.allOfOneColor("lightBlue"));
+                PinkProp.Update(ms, CurrentPlayer.allOfOneColor("pink"));
+                OrangeProp.Update(ms, CurrentPlayer.allOfOneColor("orange"));
+                RedProp.Update(ms, CurrentPlayer.allOfOneColor("red"));
+                YellowProp.Update(ms, CurrentPlayer.allOfOneColor("yellow"));
+                GreenProp.Update(ms, CurrentPlayer.allOfOneColor("green"));
+                BlueProp.Update(ms, CurrentPlayer.allOfOneColor("blue"));
+
+                house.Update(ms, glowingHouse);
+                getOutOfJailFree.Update(ms, getOutOfJailGlow);
+                getOutOfJailFree2.Update(ms, getOutOfJailGlow);
+
+                propertySprites[$"purple1"].Update(ms, true);
+                propertySprites[$"purple2"].Update(ms, true);
+                propertySprites[$"lightBlue1"].Update(ms, true);
+                propertySprites[$"lightBlue2"].Update(ms, true);
+                propertySprites[$"lightBlue3"].Update(ms, true);
+                propertySprites[$"pink1"].Update(ms, true);
+                propertySprites[$"pink2"].Update(ms, true);
+                propertySprites[$"pink3"].Update(ms, true);
+                propertySprites[$"orange1"].Update(ms, true);
+                propertySprites[$"orange2"].Update(ms, true);
+                propertySprites[$"orange3"].Update(ms, true);
+                propertySprites[$"red1"].Update(ms, true);
+                propertySprites[$"red2"].Update(ms, true);
+                propertySprites[$"red3"].Update(ms, true);
+                propertySprites[$"yellow1"].Update(ms, true);
+                propertySprites[$"yellow2"].Update(ms, true);
+                propertySprites[$"yellow3"].Update(ms, true);
+                propertySprites[$"green1"].Update(ms, true);
+                propertySprites[$"green2"].Update(ms, true);
+                propertySprites[$"green3"].Update(ms, true);
+                propertySprites[$"blue1"].Update(ms, true);
+                propertySprites[$"blue2"].Update(ms, true);
+
+                hotelIcon.Update(ms, readyForHotel);
+                houseIcony.Update(ms, isReadyForHouse(selectedPropToBuildOn));
+
+                foreach (var Player in Players)
+                {
+                    foreach (var property in Player.properties)
+                    {
+                        foreach (var house in property.houses)
                         {
-                            CurrentPlayer.inJail = true;
-                        }
-                    }
-                    else
-                    {
-                        cardDouble = false;
-                        doubleCounter = 0;
-                    }
-
-                    characterMoving = false;
-                    itsMoneyTime = true;
-                    Rent = true;
-                    showingDice = false;
-
-                    tokenMovingTime = TimeSpan.Zero;
-                    shouldMove = false;
-                    dice1.Restart();
-                    dice2.Restart();
-
-                    dice1.dest.Width = 128;
-                    dice1.dest.Height = 128;
-                    dice1.dest.X = 800;
-                    dice1.dest.Y = 430;
-
-                    dice2.dest.X = 600;
-                    dice2.dest.Y = 430;
-                    dice2.dest.Width = dice1.dest.Width;
-                    dice2.dest.Height = dice1.dest.Height;
-
-                }
-
-                if (CurrentPlayer.currentTileIndex == target)
-                {
-                    shouldMove = false;
-                }
-            }
-            #endregion
-
-            #region Financial stuff 
-
-            if (itsMoneyTime)
-            {
-
-                //jail
-                if (CurrentPlayer.currentTileIndex == 31)
-                {
-                    CurrentPlayer.inJail = true;
-                    CurrentPlayer.jailTimer++;
-                    CurrentPlayer.Position = new Vector2(523, 885);
-                }
-                //jail
-
-                if (buyingHouses)
-                {
-
-                }
-
-                //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
-                //if they own all of 1 color property, the properties will be highlighted, otherwise they will be darkened
-                //when they click on the property 
-
-                #region Chance Card
-
-                if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 37) && !drawedACard)
-                {
-                    chanceCard = chanceCards.Dequeue();
-                    bool dontPutBack = false;
-                    drawChanceCards = true;
-
-                    if (chanceCard.money != 0)
-                    {
-                        CurrentPlayer.Money += chanceCard.money;
-                    }
-                    else if (chanceCard.destination != Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
-                    {
-                        if (chanceCard.destination == Vector2.One)
-                        {
-                            //Nearest Railroad.
-
-                            int county = CurrentPlayer.currentTileIndex;
-
-                            while (true)
-                            {
-                                if ((Properties.ContainsKey(charPostitions[county]) && Properties[charPostitions[county]].isRailroad) || (BoughtProperties.ContainsKey(charPostitions[county]) && BoughtProperties[charPostitions[county]].isRailroad))
-                                {
-                                    chanceCard.destination = charPostitions[county];
-                                    chanceCard.tileNumber = county + 1;
-                                    break;
-                                }
-                                else if (county == 39)
-                                {
-                                    county = 0;
-                                }
-
-
-                                county++;
-                            }
-                        }
-
-                        else if (chanceCard.destination == new Vector2(2, 2))
-                        {
-                            //Nearest Utility
-
-                            int thingy = CurrentPlayer.currentTileIndex;
-
-                            while (true)
-                            {
-                                if ((Properties.ContainsKey(charPostitions[thingy]) && Properties[charPostitions[thingy]].isUtility) || (BoughtProperties.ContainsKey(charPostitions[thingy]) && BoughtProperties[charPostitions[thingy]].isUtility))
-                                {
-                                    chanceCard.destination = charPostitions[thingy];
-                                    chanceCard.tileNumber = thingy + 1;
-                                    break;
-                                }
-                                else if (thingy == 39)
-                                {
-                                    thingy = 0;
-                                }
-
-                                thingy++;
-                            }
+                            house.Update(ms, false);
                         }
 
-                        if (CurrentPlayer.currentTileIndex > chanceCard.tileNumber && !moneyStolenOnce)
+                        foreach (var hotel in property.hotels)
                         {
-                            CurrentPlayer.Money += 200;
-                            moneyStolenOnce = true;
-                        }
-
-                        CurrentPlayer.Position = chanceCard.destination;
-                        CurrentPlayer.currentTileIndex = chanceCard.tileNumber;
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
-                    {
-                        dontPutBack = true;
-                        CurrentPlayer.GetOutOfJailFree = true;
-
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
-                    {
-                        for (int i = 0; i < playerCount; i++)
-                        {
-                            if (Players[i] != CurrentPlayer)
-                            {
-                                Players[i].Money += 50;
-                            }
-                        }
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GoBack3)
-                    {
-                        CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
-
-                        if (CurrentPlayer.currentTileIndex == 5)
-                        {
-                            CurrentPlayer.Money -= 200;
-                        }
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.GoInJail)
-                    {
-                        CurrentPlayer.inJail = true;
-                        CurrentPlayer.Position = new Vector2(523, 885);
-                    }
-                    else if (chanceCard.cardTypes == CardTypes.HouseRepair)
-                    {
-                        //houses
-                    }
-
-                    chanceCard.Hitbox.X = 1100;
-                    chanceCard.Hitbox.Y = 680;
-
-                    if (!dontPutBack)
-                    {
-                        chanceCards.Enqueue(chanceCard);
-                    }
-
-                    drawedACard = true;
-                }
-
-                if (drawChanceCards)
-                {
-                    if (chanceCard.rotation < 8 * 3.14f)
-                    {
-                        chanceCard.rotation += .2f;
-                        chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
-                        chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
-
-                        chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
-                        chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
-                    }
-                    else
-                    {
-                        chanceCardPrevTime += gameTime.ElapsedGameTime;
-                        if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
-                        {
-                            chanceCard.rotation = 0;
-                            chanceCardPrevTime = TimeSpan.Zero;
-                            drawChanceCards = false;
-                            chanceCard = null;
+                            hotel.Update(ms, false);
                         }
                     }
                 }
 
                 #endregion
 
-                #region CommunityChest Cards
-
-                if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 34) && !drawedACard)
+                if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
                 {
-                    communityCards = chestCards.Dequeue();
+                    diceOnBoard1.Tint = diceOnBoard1.Tint == Color.White * 0.0f ? Color.Yellow * 0.2f : Color.White * 0.0f;
+                    previousTime = gameTime.TotalGameTime;
+                }
 
-                    drawCommunityCards = true;
-                    bool dontPutBack = false;
-                    if (communityCards.money != 0)
+                #region DiceRolling
+                if (rollDice)
+                {
+                    if (diceMoving)
                     {
-                        CurrentPlayer.Money += communityCards.money;
+                        ;
+                        if (dice2.dest.X != 24 && !CurrentPlayer.inJail)
+                        {
+                            dice1.dest.Width = (int)Vector2.Lerp(new Vector2(dice1.dest.Width), new Vector2(dice1.dest.Width / 1.1f), .1f).X;
+                            dice1.dest.Height = (int)Vector2.Lerp(new Vector2(dice1.dest.Height), new Vector2(dice1.dest.Height / 1.1f), .1f).X;
+
+                            dice2.dest.Width = (int)Vector2.Lerp(new Vector2(dice2.dest.Width), new Vector2(dice2.dest.Width / 1.1f), .1f).X;
+                            dice2.dest.Height = (int)Vector2.Lerp(new Vector2(dice2.dest.Height), new Vector2(dice2.dest.Height / 1.1f), .1f).X;
+
+                            dice2.dest.X = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).X;
+                            dice2.dest.Y = (int)Vector2.Lerp(new Vector2(dice2.dest.X, dice1.dest.Y), new Vector2(24, 962), .1f).Y;
+
+                            dice1.dest.X = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).X;
+                            dice1.dest.Y = (int)Vector2.Lerp(new Vector2(dice1.dest.X, dice1.dest.Y), new Vector2(104, 962), .1f).Y;
+                        }
+                        else
+                        {
+                            diceMoving = false;
+                            darkenScreen = false;
+                            diceRolling = false;
+                            characterMoving = true;
+                            diceFlashing = false;
+                            rollDice = false;
+                            agagagagaga = true;
+                        }
+                    }
+
+                    diceOnBoard1.Update(ms);
+
+                    if (diceOnBoard1.IsClicked(ms))
+                    {
+                        diceRolling = true;
+                        darkenScreen = true;
+                    }
+
+                    if (diceRolling)
+                    {
+                        diceFlashing = false;
+                        showingDice = true;
+                        dice1.Update(gameTime, true);
+                        dice2.Update(gameTime, true);
+
+                        rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
+
+                        //target = rollValue + CurrentPlayer.currentTileIndex;
+
+                        if (CurrentPlayer.Token != "Boat")
+                        {
+                            //if (CurrentPlayer.currentTileIndex == 1)
+                            //{
+                            //    target = 2;
+                            //}
+                            //else if (CurrentPlayer.currentTileIndex == 2)
+                            //{
+                            //    target = 4;
+                            //}
+                            //if (CurrentPlayer.currentTileIndex == 4)
+                            //{
+                            //    target = 7;
+                            //}
+                            //else if (CurrentPlayer.currentTileIndex == 7)
+                            //{
+                            //    target = 9;
+                            //}
+                            //else if (CurrentPlayer.currentTileIndex == 9)
+                            //{
+                            //    target = 10;
+                            //}
+                            if (CurrentPlayer.currentTileIndex == 1)
+                            {
+                                target = 12;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 12)
+                            {
+                                target = 14;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 14)
+                            {
+                                target = 15;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 15)
+                            {
+                                target = 17;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 17)
+                            {
+                                target = 19;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 19)
+                            {
+                                target = 20;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 20)
+                            {
+                                target = 22;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 22)
+                            {
+                                target = 24;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 24)
+                            {
+                                target = 25;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 25)
+                            {
+                                target = 27;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 27)
+                            {
+                                target = 28;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 28)
+                            {
+                                target = 30;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 30)
+                            {
+                                target = 32;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 32)
+                            {
+                                target = 33;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 33)
+                            {
+                                target = 35;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 35)
+                            {
+                                target = 38;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 38)
+                            {
+                                target = 40;
+                            }
+
+
+                        }
+                        else
+                        {
+                            target = 1;
+                        }
+
+                        /*
+                        FOR TESTING BUYING PROPS 
+
+                        if (CurrentPlayer.Token != "Boat")
+                        {
+                            target = 3 + CurrentPlayer.currentTileIndex;
+                        }
+                        else
+                        {
+                            target = 1;
+                        }
+                        */
+
+                        if (dice1.stopped)
+                        {
+                            if (CurrentPlayer.inJail)
+                            {
+                                if (dice1.DiceRollValue != dice2.DiceRollValue)
+                                {
+                                    rollValue = 0;
+                                    target = rollValue + (CurrentPlayer.currentTileIndex);
+
+                                    if (agagagagaga)
+                                    {
+                                        CurrentPlayer.jailTimer++;
+                                        agagagagaga = false;
+                                    }
+
+                                    diceMoving = true;
+                                }
+                                else
+                                {
+                                    CurrentPlayer.inJail = false;
+                                    CurrentPlayer.jailTimer = 0;
+                                }
+                            }
+                            else
+                            {
+                                diceMoving = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (CurrentPlayer.inJail && (getOutOfJailFree.IsClicked || getOutOfJailFree2.IsClicked))
+                        {
+                            CurrentPlayer.inJail = false;
+                            CurrentPlayer.Position = charPostitions[10];
+                        }
                     }
 
 
-                    switch (communityCards.cardTypes)
-                    {
-                        case CommunityCardTypes.BankMoney:
-                            break;
+                }
+                #endregion
 
-                        case CommunityCardTypes.GetFromOthers:
+                #region Movement
+                if (characterMoving)
+                {
+                    if (target >= 40)
+                    {
+                        target %= 40;
+                        shouldMove = true;
+                    }
+
+                    if (CurrentPlayer.currentTileIndex >= 40)
+                    {
+                        CurrentPlayer.currentTileIndex %= 40;
+                    }
+
+                    if (CurrentPlayer.currentTileIndex < target || shouldMove)
+                    {
+
+
+                        if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
+                        {
+                            CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
+                            CurrentPlayer.currentTileIndex++;
+                            tokenMovingTime = gameTime.TotalGameTime;
+                        }
+                    }
+                    else
+                    {
+                        if (dice1.DiceRollValue == dice2.DiceRollValue)
+                        {
+                            cardDouble = true;
+                            doubleCounter++;
+
+                            if (doubleCounter == 3)
+                            {
+                                CurrentPlayer.inJail = true;
+                            }
+                        }
+                        else
+                        {
+                            cardDouble = false;
+                            doubleCounter = 0;
+                        }
+
+                        characterMoving = false;
+                        itsMoneyTime = true;
+                        Rent = true;
+                        showingDice = false;
+
+                        tokenMovingTime = TimeSpan.Zero;
+                        shouldMove = false;
+                        dice1.Restart();
+                        dice2.Restart();
+
+                        dice1.dest.Width = 128;
+                        dice1.dest.Height = 128;
+                        dice1.dest.X = 800;
+                        dice1.dest.Y = 430;
+
+                        dice2.dest.X = 600;
+                        dice2.dest.Y = 430;
+                        dice2.dest.Width = dice1.dest.Width;
+                        dice2.dest.Height = dice1.dest.Height;
+
+                    }
+
+                    if (CurrentPlayer.currentTileIndex == target)
+                    {
+                        shouldMove = false;
+                    }
+                }
+                #endregion
+
+                #region Financial stuff 
+
+                if (itsMoneyTime)
+                {
+
+                    //jail
+                    if (CurrentPlayer.currentTileIndex == 31)
+                    {
+                        CurrentPlayer.inJail = true;
+                        CurrentPlayer.jailTimer++;
+                        CurrentPlayer.Position = new Vector2(523, 885);
+                    }
+                    //jail
+
+                    if (buyingHouses)
+                    {
+
+                    }
+
+                    //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
+                    //if they own all of 1 color property, the properties will be highlighted, otherwise they will be darkened
+                    //when they click on the property 
+
+                    #region Chance Card
+
+                    if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 37) && !drawedACard)
+                    {
+                        chanceCard = chanceCards.Dequeue();
+                        bool dontPutBack = false;
+                        drawChanceCards = true;
+
+                        if (chanceCard.money != 0)
+                        {
+                            CurrentPlayer.Money += chanceCard.money;
+                        }
+                        else if (chanceCard.destination != Vector2.Zero || chanceCard.cardTypes == CardTypes.GoToGo)
+                        {
+                            if (chanceCard.destination == Vector2.One)
+                            {
+                                //Nearest Railroad.
+
+                                int county = CurrentPlayer.currentTileIndex;
+
+                                while (true)
+                                {
+                                    if ((Properties.ContainsKey(charPostitions[county]) && Properties[charPostitions[county]].isRailroad) || (BoughtProperties.ContainsKey(charPostitions[county]) && BoughtProperties[charPostitions[county]].isRailroad))
+                                    {
+                                        chanceCard.destination = charPostitions[county];
+                                        chanceCard.tileNumber = county + 1;
+                                        break;
+                                    }
+                                    else if (county == 39)
+                                    {
+                                        county = 0;
+                                    }
+
+
+                                    county++;
+                                }
+                            }
+
+                            else if (chanceCard.destination == new Vector2(2, 2))
+                            {
+                                //Nearest Utility
+
+                                int thingy = CurrentPlayer.currentTileIndex;
+
+                                while (true)
+                                {
+                                    if ((Properties.ContainsKey(charPostitions[thingy]) && Properties[charPostitions[thingy]].isUtility) || (BoughtProperties.ContainsKey(charPostitions[thingy]) && BoughtProperties[charPostitions[thingy]].isUtility))
+                                    {
+                                        chanceCard.destination = charPostitions[thingy];
+                                        chanceCard.tileNumber = thingy + 1;
+                                        break;
+                                    }
+                                    else if (thingy == 39)
+                                    {
+                                        thingy = 0;
+                                    }
+
+                                    thingy++;
+                                }
+                            }
+
+                            if (CurrentPlayer.currentTileIndex > chanceCard.tileNumber && !moneyStolenOnce)
+                            {
+                                CurrentPlayer.Money += 200;
+                                moneyStolenOnce = true;
+                            }
+
+                            CurrentPlayer.Position = chanceCard.destination;
+                            CurrentPlayer.currentTileIndex = chanceCard.tileNumber;
+                        }
+                        else if (chanceCard.cardTypes == CardTypes.GetOutOfJail)
+                        {
+                            dontPutBack = true;
+                            CurrentPlayer.GetOutOfJailFree = true;
+
+                        }
+                        else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
+                        {
                             for (int i = 0; i < playerCount; i++)
                             {
                                 if (Players[i] != CurrentPlayer)
                                 {
-                                    Players[i].Money -= 50;
+                                    Players[i].Money += 50;
                                 }
                             }
-                            break;
+                        }
+                        else if (chanceCard.cardTypes == CardTypes.GoBack3)
+                        {
+                            CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
 
-                        case CommunityCardTypes.GetOutOfJail:
-                            CurrentPlayer.GetOutOfJailFree2 = true;
-                            dontPutBack = true;
-                            break;
-
-                        case CommunityCardTypes.GoInJail:
+                            if (CurrentPlayer.currentTileIndex == 5)
+                            {
+                                CurrentPlayer.Money -= 200;
+                            }
+                        }
+                        else if (chanceCard.cardTypes == CardTypes.GoInJail)
+                        {
                             CurrentPlayer.inJail = true;
-                            break;
-
-                        case CommunityCardTypes.HouseRepair:
-                            //house
-                            break;
-
-                        case CommunityCardTypes.GoToGo:
-                            CurrentPlayer.Position = charPostitions[0];
-                            CurrentPlayer.currentTileIndex = 0;
-                            break;
-
-                        case CommunityCardTypes.Invalid:
-                            break;
-                        default:
-                            break;
-                    }
-
-                    communityCards.Hitbox.X = 1100;
-                    communityCards.Hitbox.Y = 680;
-
-                    if (!dontPutBack)
-                    {
-                        chestCards.Enqueue(communityCards);
-                    }
-
-                    drawedACard = true;
-                }
-
-                if (drawCommunityCards)
-                {
-                    if (communityCards.rotation < 8 * 3.14f)
-                    {
-                        communityCards.rotation += .2f;
-                        communityCards.Hitbox.X = (int)Lerp(communityCards.Hitbox.X, Bounds.Width / 2, .03f);
-                        communityCards.Hitbox.Y = (int)Lerp(communityCards.Hitbox.Y, Bounds.Height / 2, .03f);
-
-                        communityCards.Hitbox.Width = (int)Lerp(communityCards.Hitbox.Width, 190, .05f);
-                        communityCards.Hitbox.Height = (int)Lerp(communityCards.Hitbox.Height, 150, .05f);
-                    }
-                    else
-                    {
-                        communityChestPrevTime += gameTime.ElapsedGameTime;
-                        if (communityChestPrevTime >= TimeSpan.FromSeconds(3))
-                        {
-                            communityCards.rotation = 0;
-                            communityChestPrevTime = TimeSpan.Zero;
-                            drawCommunityCards = false;
-                            communityCards = null;
+                            CurrentPlayer.Position = new Vector2(523, 885);
                         }
-                    }
-                }
-
-                #endregion
-
-                //taxes
-                if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
-                {
-                    CurrentPlayer.Money -= 200;
-                    moneyStolenOnce = true;
-                }
-
-                else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
-                {
-                    CurrentPlayer.Money -= 100;
-                    moneyStolenOnce = true;
-                }
-                //taxes
-
-                #region Buying
-                if (Properties.ContainsKey(CurrentPlayer.Position) && !drawChanceCards)
-                {
-                    if (noButton.IsClicked)
-                    {
-                        if (!cardDouble)
+                        else if (chanceCard.cardTypes == CardTypes.HouseRepair)
                         {
-
-                            if (currentPlayerIndex + 1 < playerCount)
-                            {
-                                currentPlayerIndex++;
-                            }
-                            else
-                            {
-                                currentPlayerIndex = 0;
-                            }
-
-                            CurrentPlayer = Players[currentPlayerIndex];
-
-                        }
-                        rollDice = true;
-                        itsMoneyTime = false;
-                        diceFlashing = true;
-                        moneyStolenOnce = false;
-                        drawedACard = false;
-                    }
-
-                    if (yesButton.IsClicked)
-                    {
-                        CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
-                        CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
-
-                        int i = CurrentPlayer.properties.Count - 1;
-                        int propCount = CurrentPlayer.properties.Count;
-                        BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
-                        Properties.Remove(CurrentPlayer.Position);
-
-                        #region Railroads
-                        if (CurrentPlayer.mostRecentPurchase().isRailroad)
-                        {
-                            CurrentPlayer.railroadCounter++;
-
-                            for (int j = 0; j < CurrentPlayer.properties.Count; j++)
-                            {
-                                if (CurrentPlayer.properties[j].isRailroad)
-                                {
-                                    if (CurrentPlayer.railroadCounter < 3)
-                                    {
-                                        CurrentPlayer.properties[j].Rent = 25 * CurrentPlayer.railroadCounter;
-                                    }
-                                    else
-                                    {
-                                        CurrentPlayer.properties[j].Rent = 100 * (CurrentPlayer.railroadCounter - 2);
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-
-                        #region Utility
-
-                        if (CurrentPlayer.mostRecentPurchase().isUtility)
-                        {
-                            CurrentPlayer.utillityCounter++;
-
-                            if (CurrentPlayer.utillityCounter < 2)
-                            {
-                                CurrentPlayer.mostRecentPurchase().Rent = 4;
-                            }
-                            else
-                            {
-                                for (int k = 0; k < CurrentPlayer.properties.Count; k++)
-                                {
-                                    if (CurrentPlayer.properties[k].isUtility)
-                                    {
-                                        CurrentPlayer.properties[k].Rent = 10;
-                                    }
-                                }
-                            }
+                            //houses
                         }
 
-                        #endregion
+                        chanceCard.Hitbox.X = 1100;
+                        chanceCard.Hitbox.Y = 680;
 
-                        #region Property Placement
-                        if (propCount == 1)
+                        if (!dontPutBack)
                         {
-                            CurrentPlayer.properties[0].Hitbox = new Rectangle(1475, 700, CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
+                            chanceCards.Enqueue(chanceCard);
+                        }
+
+                        drawedACard = true;
+                    }
+
+                    if (drawChanceCards)
+                    {
+                        if (chanceCard.rotation < 8 * 3.14f)
+                        {
+                            chanceCard.rotation += .2f;
+                            chanceCard.Hitbox.X = (int)Lerp(chanceCard.Hitbox.X, Bounds.Width / 2, .03f);
+                            chanceCard.Hitbox.Y = (int)Lerp(chanceCard.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                            chanceCard.Hitbox.Width = (int)Lerp(chanceCard.Hitbox.Width, 190, .05f);
+                            chanceCard.Hitbox.Height = (int)Lerp(chanceCard.Hitbox.Height, 150, .05f);
                         }
                         else
                         {
-                            int x = 0;
-                            int y = 0;
-                            switch (propRowCounter)
+                            chanceCardPrevTime += gameTime.ElapsedGameTime;
+                            if (chanceCardPrevTime >= TimeSpan.FromSeconds(3))
                             {
-                                case 0:
-                                    x = 1475;
-                                    y = 690;
-                                    break;
-                                case 1:
-                                    x = 1680;
-                                    y = 690;
-                                    propCount = propCount - 5;
-                                    break;
-                                case 2:
-                                    x = 1475;
-                                    y = 860;
-                                    propCount = propCount - 10;
-                                    break;
-                                case 3:
-                                    x = 1680;
-                                    y = 860;
-                                    propCount = propCount - 15;
-                                    break;
-
-                                default:
-                                    throw new Exception("Counter is off");
+                                chanceCard.rotation = 0;
+                                chanceCardPrevTime = TimeSpan.Zero;
+                                drawChanceCards = false;
+                                chanceCard = null;
                             }
-
-                            int[] xCoordinates = new int[] { 1475, 1680 };
-                            int[] yCoordinates = new int[] { 690, 700, 870, 870 };
-
-                            if (propCount % 6 == 0)
-                            {
-                                propRowCounter++;
-
-                                CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
-
-                                CurrentPlayer.properties[i].Hitbox = new Rectangle(xCoordinates[propRowCounter % 2], yCoordinates[propRowCounter], CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
-                            }
-                            else
-                            {
-                                x += ((propCount % 6 - 1) * 33);
-
-                                if (propCount % 5 < 4)
-                                {
-                                    y -= ((propCount % 5 - 1) * 10);
-                                }
-
-                                if (propCount == 4)
-                                {
-                                    y -= 20;
-                                }
-
-                                if (propCount == 5)
-                                {
-                                    y -= 20;
-                                }
-
-
-                                CurrentPlayer.properties[i].Hitbox = new Rectangle(x, y, (CurrentPlayer.properties[i].Image.Width / 3), CurrentPlayer.properties[i].Image.Height / 3);
-                                CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
-                            }
-
-
-
                         }
+                    }
 
-                        #endregion
+                    #endregion
 
-                        if (!cardDouble)
+                    #region CommunityChest Cards
+
+                    if ((CurrentPlayer.currentTileIndex == 3 || CurrentPlayer.currentTileIndex == 18 || CurrentPlayer.currentTileIndex == 34) && !drawedACard)
+                    {
+                        communityCards = chestCards.Dequeue();
+
+                        drawCommunityCards = true;
+                        bool dontPutBack = false;
+                        if (communityCards.money != 0)
                         {
+                            CurrentPlayer.Money += communityCards.money;
+                        }
 
-                            if (currentPlayerIndex + 1 < playerCount)
+
+                        switch (communityCards.cardTypes)
+                        {
+                            case CommunityCardTypes.BankMoney:
+                                break;
+
+                            case CommunityCardTypes.GetFromOthers:
+                                for (int i = 0; i < playerCount; i++)
+                                {
+                                    if (Players[i] != CurrentPlayer)
+                                    {
+                                        Players[i].Money -= 50;
+                                    }
+                                }
+                                break;
+
+                            case CommunityCardTypes.GetOutOfJail:
+                                CurrentPlayer.GetOutOfJailFree2 = true;
+                                dontPutBack = true;
+                                break;
+
+                            case CommunityCardTypes.GoInJail:
+                                CurrentPlayer.inJail = true;
+                                break;
+
+                            case CommunityCardTypes.HouseRepair:
+                                //house
+                                break;
+
+                            case CommunityCardTypes.GoToGo:
+                                CurrentPlayer.Position = charPostitions[0];
+                                CurrentPlayer.currentTileIndex = 0;
+                                break;
+
+                            case CommunityCardTypes.Invalid:
+                                break;
+                            default:
+                                break;
+                        }
+
+                        communityCards.Hitbox.X = 1100;
+                        communityCards.Hitbox.Y = 680;
+
+                        if (!dontPutBack)
+                        {
+                            chestCards.Enqueue(communityCards);
+                        }
+
+                        drawedACard = true;
+                    }
+
+                    if (drawCommunityCards)
+                    {
+                        if (communityCards.rotation < 8 * 3.14f)
+                        {
+                            communityCards.rotation += .2f;
+                            communityCards.Hitbox.X = (int)Lerp(communityCards.Hitbox.X, Bounds.Width / 2, .03f);
+                            communityCards.Hitbox.Y = (int)Lerp(communityCards.Hitbox.Y, Bounds.Height / 2, .03f);
+
+                            communityCards.Hitbox.Width = (int)Lerp(communityCards.Hitbox.Width, 190, .05f);
+                            communityCards.Hitbox.Height = (int)Lerp(communityCards.Hitbox.Height, 150, .05f);
+                        }
+                        else
+                        {
+                            communityChestPrevTime += gameTime.ElapsedGameTime;
+                            if (communityChestPrevTime >= TimeSpan.FromSeconds(3))
                             {
-                                currentPlayerIndex++;
+                                communityCards.rotation = 0;
+                                communityChestPrevTime = TimeSpan.Zero;
+                                drawCommunityCards = false;
+                                communityCards = null;
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    //taxes
+                    if (CurrentPlayer.currentTileIndex == 5 && !moneyStolenOnce)
+                    {
+                        CurrentPlayer.Money -= 200;
+                        moneyStolenOnce = true;
+                    }
+
+                    else if (CurrentPlayer.currentTileIndex == 38 && !moneyStolenOnce)
+                    {
+                        CurrentPlayer.Money -= 100;
+                        moneyStolenOnce = true;
+                    }
+                    //taxes
+
+                    #region Buying
+                    if (Properties.ContainsKey(CurrentPlayer.Position) && !drawChanceCards)
+                    {
+                        if (noButton.IsClicked)
+                        {
+                            if (!cardDouble)
+                            {
+
+                                if (currentPlayerIndex + 1 < playerCount)
+                                {
+                                    currentPlayerIndex++;
+                                }
+                                else
+                                {
+                                    currentPlayerIndex = 0;
+                                }
+
+                                CurrentPlayer = Players[currentPlayerIndex];
+
+                            }
+                            rollDice = true;
+                            itsMoneyTime = false;
+                            diceFlashing = true;
+                            moneyStolenOnce = false;
+                            drawedACard = false;
+                        }
+
+                        if (yesButton.IsClicked)
+                        {
+                            CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
+                            CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
+
+                            int i = CurrentPlayer.properties.Count - 1;
+                            int propCount = CurrentPlayer.properties.Count;
+                            BoughtProperties.Add(CurrentPlayer.Position, Properties[CurrentPlayer.Position]);
+                            Properties.Remove(CurrentPlayer.Position);
+
+                            #region Railroads
+                            if (CurrentPlayer.mostRecentPurchase().isRailroad)
+                            {
+                                CurrentPlayer.railroadCounter++;
+
+                                for (int j = 0; j < CurrentPlayer.properties.Count; j++)
+                                {
+                                    if (CurrentPlayer.properties[j].isRailroad)
+                                    {
+                                        if (CurrentPlayer.railroadCounter < 3)
+                                        {
+                                            CurrentPlayer.properties[j].Rent = 25 * CurrentPlayer.railroadCounter;
+                                        }
+                                        else
+                                        {
+                                            CurrentPlayer.properties[j].Rent = 100 * (CurrentPlayer.railroadCounter - 2);
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            #region Utility
+
+                            if (CurrentPlayer.mostRecentPurchase().isUtility)
+                            {
+                                CurrentPlayer.utillityCounter++;
+
+                                if (CurrentPlayer.utillityCounter < 2)
+                                {
+                                    CurrentPlayer.mostRecentPurchase().Rent = 4;
+                                }
+                                else
+                                {
+                                    for (int k = 0; k < CurrentPlayer.properties.Count; k++)
+                                    {
+                                        if (CurrentPlayer.properties[k].isUtility)
+                                        {
+                                            CurrentPlayer.properties[k].Rent = 10;
+                                        }
+                                    }
+                                }
+                            }
+
+                            #endregion
+
+                            #region Property Placement
+                            if (propCount == 1)
+                            {
+                                CurrentPlayer.properties[0].Hitbox = new Rectangle(1475, 700, CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
                             }
                             else
                             {
-                                currentPlayerIndex = 0;
+                                int x = 0;
+                                int y = 0;
+                                switch (propRowCounter)
+                                {
+                                    case 0:
+                                        x = 1475;
+                                        y = 690;
+                                        break;
+                                    case 1:
+                                        x = 1680;
+                                        y = 690;
+                                        propCount = propCount - 5;
+                                        break;
+                                    case 2:
+                                        x = 1475;
+                                        y = 860;
+                                        propCount = propCount - 10;
+                                        break;
+                                    case 3:
+                                        x = 1680;
+                                        y = 860;
+                                        propCount = propCount - 15;
+                                        break;
+
+                                    default:
+                                        throw new Exception("Counter is off");
+                                }
+
+                                int[] xCoordinates = new int[] { 1475, 1680 };
+                                int[] yCoordinates = new int[] { 690, 700, 870, 870 };
+
+                                if (propCount % 6 == 0)
+                                {
+                                    propRowCounter++;
+
+                                    CurrentPlayer.properties[i].Rotation = CurrentPlayer.properties[0].Rotation;
+
+                                    CurrentPlayer.properties[i].Hitbox = new Rectangle(xCoordinates[propRowCounter % 2], yCoordinates[propRowCounter], CurrentPlayer.properties[0].Image.Width / 3, CurrentPlayer.properties[0].Image.Height / 3);
+                                }
+                                else
+                                {
+                                    x += ((propCount % 6 - 1) * 33);
+
+                                    if (propCount % 5 < 4)
+                                    {
+                                        y -= ((propCount % 5 - 1) * 10);
+                                    }
+
+                                    if (propCount == 4)
+                                    {
+                                        y -= 20;
+                                    }
+
+                                    if (propCount == 5)
+                                    {
+                                        y -= 20;
+                                    }
+
+
+                                    CurrentPlayer.properties[i].Hitbox = new Rectangle(x, y, (CurrentPlayer.properties[i].Image.Width / 3), CurrentPlayer.properties[i].Image.Height / 3);
+                                    CurrentPlayer.properties[i].Rotation = (CurrentPlayer.properties[i - 1].Rotation + 0.25f);
+                                }
+
+
+
                             }
 
-                            CurrentPlayer = Players[currentPlayerIndex];
+                            #endregion
+
+                            if (!cardDouble)
+                            {
+
+                                if (currentPlayerIndex + 1 < playerCount)
+                                {
+                                    currentPlayerIndex++;
+                                }
+                                else
+                                {
+                                    currentPlayerIndex = 0;
+                                }
+
+                                CurrentPlayer = Players[currentPlayerIndex];
+
+                            }
+
+                            rollDice = true;
+                            itsMoneyTime = false;
+                            diceFlashing = true;
+                            moneyStolenOnce = false;
+                            drawedACard = false;
+
 
                         }
-
-                        rollDice = true;
-                        itsMoneyTime = false;
-                        diceFlashing = true;
-                        moneyStolenOnce = false;
-                        drawedACard = false;
-
 
                     }
 
-                }
+                    #endregion
 
-                #endregion
-
-                #region Rent
-                else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
-                {
-                    Property temp = BoughtProperties[CurrentPlayer.Position];
-
-                    bool temp2 = false;
-
-                    for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+                    #region Rent
+                    else if (BoughtProperties.ContainsKey(CurrentPlayer.Position))
                     {
-                        if (temp == CurrentPlayer.properties[i])
+                        Property temp = BoughtProperties[CurrentPlayer.Position];
+
+                        bool temp2 = false;
+
+                        for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+                        {
+                            if (temp == CurrentPlayer.properties[i])
+                            {
+                                Rent = true;
+                                if (currentPlayerIndex + 1 < playerCount)
+                                {
+                                    currentPlayerIndex++;
+                                }
+                                else
+                                {
+                                    currentPlayerIndex = 0;
+                                }
+
+                                CurrentPlayer = Players[currentPlayerIndex];
+
+                                rollDice = true;
+                                itsMoneyTime = false;
+                                diceFlashing = true;
+                                moneyStolenOnce = false;
+                                temp2 = true;
+                                drawedACard = false;
+                            }
+                        }
+                        if (!temp2)
+                        {
+                            for (int i = 0; i < Players.Length; i++)
+                            {
+                                if (Players[i] != CurrentPlayer && Rent)
+                                {
+                                    for (int j = 0; j < Players[i].properties.Count; j++)
+                                    {
+                                        if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && Rent)
+                                        {
+                                            if (BoughtProperties[CurrentPlayer.Position].isUtility)
+                                            {
+                                                CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * rollValue;
+                                                Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * rollValue; ;
+                                            }
+                                            else
+                                            {
+                                                if (Players[i].allOfOneColor(BoughtProperties[CurrentPlayer.Position].Color((BoughtProperties[CurrentPlayer.Position].PropColor))))
+                                                {
+                                                    CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * 2;
+                                                    Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * 2;
+                                                }
+                                                else
+                                                {
+                                                    CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
+                                                    Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
+                                                }
+                                            }
+
+                                            Rent = false;
+
+                                            if (currentPlayerIndex + 1 < playerCount)
+                                            {
+                                                currentPlayerIndex++;
+                                            }
+                                            else
+                                            {
+                                                currentPlayerIndex = 0;
+                                            }
+
+                                            CurrentPlayer = Players[currentPlayerIndex];
+
+                                            rollDice = true;
+                                            itsMoneyTime = false;
+                                            diceFlashing = true;
+                                            moneyStolenOnce = false;
+                                            drawedACard = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    else if (!drawChanceCards && !drawCommunityCards)
+                    {
+                        if (!cardDouble)
                         {
                             Rent = true;
                             if (currentPlayerIndex + 1 < playerCount)
@@ -2084,142 +2181,62 @@ namespace Capitalism
                             }
 
                             CurrentPlayer = Players[currentPlayerIndex];
-
-                            rollDice = true;
-                            itsMoneyTime = false;
-                            diceFlashing = true;
-                            moneyStolenOnce = false;
-                            temp2 = true;
-                            drawedACard = false;
                         }
+
+                        rollDice = true;
+                        itsMoneyTime = false;
+                        diceFlashing = true;
+                        moneyStolenOnce = false;
+                        drawedACard = false;
+                        glowingHouse = false;
+                        cardDouble = false;
                     }
-                    if (!temp2)
+
+                    #region Growing Effect on Properties 
+                    for (int i = 0; i < CurrentPlayer.properties.Count; i++)
                     {
-                        for (int i = 0; i < Players.Length; i++)
+                        if (CurrentPlayer.properties[i].Hitbox.Contains(ms.Position))
                         {
-                            if (Players[i] != CurrentPlayer && Rent)
+                            // mouse was inside the hitbox for property
+                            //Is any other property that the player owns expanded
+
+
+
+                            if (!CurrentPlayer.properties[i].expanded)
                             {
-                                for (int j = 0; j < Players[i].properties.Count; j++)
+                                bool expand = true;
+                                foreach (Property prop in CurrentPlayer.properties)
                                 {
-                                    if (BoughtProperties.ContainsKey(CurrentPlayer.Position) && Players[i].properties[j] == BoughtProperties[CurrentPlayer.Position] && Rent)
+                                    if (prop.expanded)
                                     {
-                                        if (BoughtProperties[CurrentPlayer.Position].isUtility)
-                                        {
-                                            CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * rollValue;
-                                            Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * rollValue; ;
-                                        }
-                                        else
-                                        {
-                                            if (Players[i].allOfOneColor(BoughtProperties[CurrentPlayer.Position].Color((BoughtProperties[CurrentPlayer.Position].PropColor))))
-                                            {
-                                                CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent * 2;
-                                                Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent * 2;
-                                            }
-                                            else
-                                            {
-                                                CurrentPlayer.Money -= BoughtProperties[CurrentPlayer.Position].Rent;
-                                                Players[i].Money += BoughtProperties[CurrentPlayer.Position].Rent;
-                                            }
-                                        }
-
-                                        Rent = false;
-
-                                        if (currentPlayerIndex + 1 < playerCount)
-                                        {
-                                            currentPlayerIndex++;
-                                        }
-                                        else
-                                        {
-                                            currentPlayerIndex = 0;
-                                        }
-
-                                        CurrentPlayer = Players[currentPlayerIndex];
-
-                                        rollDice = true;
-                                        itsMoneyTime = false;
-                                        diceFlashing = true;
-                                        moneyStolenOnce = false;
-                                        drawedACard = false;
-                                        break;
+                                        expand = false;
                                     }
                                 }
+
+                                if (expand)
+                                {
+                                    CurrentPlayer.properties[i].Expand();
+                                }
                             }
-                        }
-                    }
-                }
 
-                #endregion
-
-                else if (!drawChanceCards && !drawCommunityCards)
-                {
-                    if (!cardDouble)
-                    {
-                        Rent = true;
-                        if (currentPlayerIndex + 1 < playerCount)
-                        {
-                            currentPlayerIndex++;
                         }
                         else
                         {
-                            currentPlayerIndex = 0;
-                        }
-
-                        CurrentPlayer = Players[currentPlayerIndex];
-                    }
-
-                    rollDice = true;
-                    itsMoneyTime = false;
-                    diceFlashing = true;
-                    moneyStolenOnce = false;
-                    drawedACard = false;
-                    glowingHouse = false;
-                    cardDouble = false;
-                }
-
-                #region Growing Effect on Properties 
-                for (int i = 0; i < CurrentPlayer.properties.Count; i++)
-                {
-                    if (CurrentPlayer.properties[i].Hitbox.Contains(ms.Position))
-                    {
-                        // mouse was inside the hitbox for property
-                        //Is any other property that the player owns expanded
-
-
-
-                        if (!CurrentPlayer.properties[i].expanded)
-                        {
-                            bool expand = true;
-                            foreach (Property prop in CurrentPlayer.properties)
+                            if (CurrentPlayer.properties[i].expanded)
                             {
-                                if (prop.expanded)
-                                {
-                                    expand = false;
-                                }
+                                CurrentPlayer.properties[i].Shrink();
                             }
-
-                            if (expand)
-                            {
-                                CurrentPlayer.properties[i].Expand();
-                            }
+                            //reset the height and width if it goes from true to false
                         }
 
                     }
-                    else
-                    {
-                        if (CurrentPlayer.properties[i].expanded)
-                        {
-                            CurrentPlayer.properties[i].Shrink();
-                        }
-                        //reset the height and width if it goes from true to false
-                    }
+                    #endregion
 
                 }
                 #endregion
 
+                lms = ms;
             }
-            #endregion
-
-            lms = ms;
         }
         ////////////UPDATE\\\\\\\\\\\\
 
@@ -2341,14 +2358,23 @@ namespace Capitalism
 
             house.Draw(batch);
 
-            for (int i = 0; i < houses.Count; i++)
+            if (Players[0] != null)
             {
-                houses[i].Item1.Draw(batch);
-            }
+                foreach (var Player in Players)
+                {
+                    foreach (var property in Player.properties)
+                    {
+                        foreach (var house in property.houses)
+                        {
+                            house.Draw(batch);
+                        }
 
-            for (int i = 0; i < hotels.Count; i++)
-            {
-                hotels[i].Draw(batch);
+                        foreach (var hotel in property.hotels)
+                        {
+                            hotel.Draw(batch);
+                        }
+                    }
+                }
             }
             ///////////////////
 
@@ -2743,7 +2769,7 @@ namespace Capitalism
                                 hotelIcon.stopBeingHighlighted = true;
                             }
                         }
-                        else 
+                        else
                         {
                             if (!isReadyForHotel(selectedPropToBuildOn))
                             {
@@ -2782,7 +2808,7 @@ namespace Capitalism
                         #endregion
                         ;
                         if (readyToBuy && buyHouses.IsClicked)
-                        { 
+                        {
 
                             if (hotelIcon.stayHighlighted)
                             {
@@ -2790,19 +2816,12 @@ namespace Capitalism
                                 CurrentPlayer.Money -= selectedPropToBuildOn.HotelCost;
                                 selectedPropToBuildOn.Rent = selectedPropToBuildOn.WithHotel;
 
-                                feafeadfea
-                                // this line is broken, it wont remove a certain amount of houses depending on how many rounds its been since you bought the houses
-                                for (int i = 0; i < houses.Count; i++)
-                                {
-                                    if (houses[i].Item2 == propCounter)
-                                    {
-                                        houses.Remove(houses[i]);
-                                    }
-                                }
-                                hotels.Add(new HighlightButton(inGameHotelIcon, hotelPositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.1f)));
-                                
+                                selectedPropToBuildOn.houses.Clear();
+
+                                selectedPropToBuildOn.hotels.Add(new HighlightButton(inGameHotelIcon, hotelPositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.3f)));
+
                             }
-                            else 
+                            else
                             {
                                 selectedPropToBuildOn.houseCounter++;
                                 CurrentPlayer.Money -= selectedPropToBuildOn.HouseCost;
@@ -2823,7 +2842,7 @@ namespace Capitalism
                                         break;
                                 }
 
-                               houses.Add((new HighlightButton(inGameHouseIcon, housePositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn.houseCounter, selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.13f)), propCounter));
+                                selectedPropToBuildOn.houses.Add(new HighlightButton(inGameHouseIcon, housePositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn.houseCounter, selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.13f)));
                             }
                             houseMenuStage2 = false;
                             imDone = true;

@@ -589,6 +589,30 @@
 /processorParam:TextureFormat=Color
 /build:Community/IncomeTaxRefund.png
 
+#begin Community/inGameHotel.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Community/inGameHotel.png
+
+#begin Community/inGameHouse.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Community/inGameHouse.png
+
 #begin Community/LifeInsuranceMatures.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1027,7 +1051,7 @@
 /processorParam:TextureFormat=Color
 /build:IndianaAve.jpg
 
-#begin inGameHotel.jpg
+#begin inGameHotel3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1037,7 +1061,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:inGameHotel.jpg
+/build:inGameHotel3.png
 
 #begin inGameHouse.png
 /importer:TextureImporter
