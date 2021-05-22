@@ -27,6 +27,9 @@ namespace Capitalism
             }
         }
 
+        public Vector2 origin = Vector2.Zero;
+        public float rotation = 0f;
+        public bool toRotate = false;
 
         public override Rectangle Hitbox
         {
@@ -47,6 +50,7 @@ namespace Capitalism
         public bool stayHighlighted = false;
         public bool stopBeingHighlighted = false;
 
+
         public HighlightButton(Texture2D image, Vector2 position, Color tint, Vector2 Scale) : base(image, position, tint)
         {
             scale = Scale;
@@ -55,7 +59,6 @@ namespace Capitalism
         public void Update(MouseState ms, bool toHighlight)
         {
             IsClicked = false;
-
             if (toHighlight)
             {
                 if (Hitbox.Contains(ms.Position))
@@ -109,7 +112,8 @@ namespace Capitalism
 
         public override void Draw(SpriteBatch batch)
         {
-            batch.Draw(this.Image, CurrentHitbox, CurrentTint);
+            batch.Draw(this.Image, CurrentHitbox, null, CurrentTint, rotation, origin, SpriteEffects.None, 1);
+
             //base.Draw(batch);
         }
     }

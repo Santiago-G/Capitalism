@@ -136,6 +136,7 @@ namespace Capitalism
             Hitbox.Height = originalHeight;
 
             expanded = false;
+   
         }
 
         public void Draw(SpriteBatch batch)

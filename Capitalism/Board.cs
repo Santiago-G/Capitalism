@@ -55,6 +55,7 @@ namespace Capitalism
         bool readyForHotel = false;
         bool readyToBuy = false;
         bool imDone = false;
+        bool houseToRotate = false;
         //bool firstLap = true;
         #endregion
 
@@ -467,7 +468,7 @@ namespace Capitalism
             return true;
         }
 
-        public Vector2 housePositions(string color, int houseNumber, Property prop, int propNumb)
+        public Vector2 housePositions(string color, int houseNumber, Property prop, int propNumb, bool rotate)
         {
             bool sideways = false;
             Vector2 position = new Vector2(0);
@@ -603,9 +604,11 @@ namespace Capitalism
             {
                 if (sideways)
                 {
-                    //position.Y += (20 * houseNumber);\
+                    houseToRotate = true;
 
-                    position.X -= 20 * houseNumber;
+                    position.Y += (20 * (houseNumber - 1));
+
+                    position.X -= 20;
 
                     return position;
                 }
@@ -900,6 +903,7 @@ namespace Capitalism
 
             houseIcon = Content.Load<Texture2D>("housey2");
             house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White, Vector2.One);
+
             houseBuyingUI = Content.Load<Texture2D>("template");
 
             PurplePropSprite = Content.Load<Texture2D>("PurpleProp");
@@ -2842,7 +2846,16 @@ namespace Capitalism
                                         break;
                                 }
 
-                                selectedPropToBuildOn.houses.Add(new HighlightButton(inGameHouseIcon, housePositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn.houseCounter, selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.13f)));
+                                HighlightButton tempy = new HighlightButton(inGameHouseIcon, housePositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn.houseCounter, selectedPropToBuildOn, propColorCounter, true), Color.White, new Vector2(0.13f));
+
+                                if (houseToRotate)
+                                {
+                                    tempy.rotation = 1.5708f;
+                                    tempy.origin = new Vector2((inGameHotelIcon.Width / 2), (inGameHotelIcon.Height / 2));
+                                }
+
+                                selectedPropToBuildOn.houses.Add(tempy);
+
                             }
                             houseMenuStage2 = false;
                             imDone = true;
