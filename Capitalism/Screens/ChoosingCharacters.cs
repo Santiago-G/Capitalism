@@ -130,7 +130,7 @@ namespace Capitalism.Screens
                 if (Car.IsClicked && !alreadySelected[0])
                 {
 
-                    players.Add($"Player {currentPlayer}", (new Player(VroomVroom, new Vector2(1000), Color.White, "Car", 1, int.MaxValue), Car));
+                    players.Add($"Player {currentPlayer}", (new Player(VroomVroom, new Vector2(1000), Color.White, "Car", 1, int.MaxValue / 2), Car));
                     alreadySelected[0] = true;
 
                     why = true;

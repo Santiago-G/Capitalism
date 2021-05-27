@@ -56,6 +56,7 @@ namespace Capitalism
         bool readyToBuy = false;
         bool imDone = false;
         bool houseToRotate = false;
+        bool hotelToRotate = false;
         //bool firstLap = true;
         #endregion
 
@@ -647,22 +648,22 @@ namespace Capitalism
             return new Vector2(-1);
         }
 
-        public Vector2 hotelPositions(string color, Property prop, int propNumb)
+        public Vector2 hotelPositions(string color, Property prop, int propNumb, bool rotate)
         {
             bool sideways = false;
             Vector2 position = new Vector2(0);
             color = color.ToLower();
             switch (color)
             {
-                //add 22,-5
+                //add 22
                 case "purple":
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1222, 864);
+                        position = new Vector2(1220, 869);
                     }
                     else
                     {
-                        position = new Vector2(1070, 864);
+                        position = new Vector2(1068, 869);
                     }
 
                     break;
@@ -670,15 +671,15 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(841, 864);
+                        position = new Vector2(841, 869);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(690, 864);
+                        position = new Vector2(690, 869);
                     }
                     else
                     {
-                        position = new Vector2(615, 864);
+                        position = new Vector2(695, 869);
                     }
 
                     break;
@@ -687,15 +688,15 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(587, 793);
+                        position = new Vector2(603, 799);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(587, 642);
+                        position = new Vector2(603, 648);
                     }
                     else
                     {
-                        position = new Vector2(587, 566);
+                        position = new Vector2(603, 572);
                     }
 
                     break;
@@ -704,31 +705,30 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(587, 413);
+                        position = new Vector2(603, 419);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(587, 262);
+                        position = new Vector2(603, 268);
                     }
                     else
                     {
-                        position = new Vector2(587, 186);
+                        position = new Vector2(603, 192);
                     }
 
                     break;
-                case "red":
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(663, 180);
+                        position = new Vector2(643, 160);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(814, 180);
+                        position = new Vector2(794, 160);
                     }
                     else
                     {
-                        position = new Vector2(889, 180);
+                        position = new Vector2(869, 160);
                     }
 
                     break;
@@ -736,15 +736,15 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1042, 180);
+                        position = new Vector2(1022, 160);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(1118, 180);
+                        position = new Vector2(1098, 160);
                     }
                     else
                     {
-                        position = new Vector2(1270, 180);
+                        position = new Vector2(1250, 160);
                     }
 
                     break;
@@ -753,15 +753,16 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1274, 255);
+                        //1274, 249
+                        position = new Vector2(1311, 243);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(1274, 332);
+                        position = new Vector2(1311, 320);
                     }
                     else
                     {
-                        position = new Vector2(1274, 484);
+                        position = new Vector2(1311, 472);
                     }
 
                     break;
@@ -770,21 +771,30 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1274, 711);
+                        position = new Vector2(1311, 699);
                     }
                     else
                     {
-                        position = new Vector2(1274, 862);
+                        position = new Vector2(1311, 850);
                     }
 
                     break;
             }
-
             if (position != Vector2.Zero)
             {
+                if (sideways)
+                {
+                    hotelToRotate = true;
+                    return position;
+                }
+                else
+                {
+                    hotelToRotate = false;
+                }
+
+
                 return position;
             }
-
             return new Vector2(-1);
         }
         static float Lerp(float start_value, float end_value, float pct)
@@ -1425,75 +1435,75 @@ namespace Capitalism
 
                         if (CurrentPlayer.Token != "Boat")
                         {
-                            //if (CurrentPlayer.currentTileIndex == 1)
-                            //{
-                            //    target = 2;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 2)
-                            //{
-                            //    target = 4;
-                            //}
-                            //if (CurrentPlayer.currentTileIndex == 4)
-                            //{
-                            //    target = 7;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 7)
-                            //{
-                            //    target = 9;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 9)
-                            //{
-                            //    target = 10;
-                            //}
-                            //if (CurrentPlayer.currentTileIndex == 1)
-                            //{
-                            //    target = 12;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 12)
-                            //{
-                            //    target = 14;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 14)
-                            //{
-                            //    target = 15;
-                            //}
-                            //if (CurrentPlayer.currentTileIndex == 15)
-                            //{
-                            //    target = 17;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 17)
-                            //{
-                            //    target = 19;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 19)
-                            //{
-                            //    target = 20;
-                            //}
-                            //if (CurrentPlayer.currentTileIndex == 1)
-                            //{
-                            //    target = 22;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 22)
-                            //{
-                            //    target = 24;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 24)
-                            //{
-                            //    target = 25;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 25)
-                            //{
-                            //    target = 27;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 27)
-                            //{
-                            //    target = 28;
-                            //}
-                            //else if (CurrentPlayer.currentTileIndex == 28)
-                            //{
-                            //    target = 30;
-                            //}
                             if (CurrentPlayer.currentTileIndex == 1)
+                            {
+                                target = 2;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 2)
+                            {
+                                target = 4;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 4)
+                            {
+                                target = 7;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 7)
+                            {
+                                target = 9;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 9)
+                            {
+                                target = 10;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 10)
+                            {
+                                target = 12;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 12)
+                            {
+                                target = 14;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 14)
+                            {
+                                target = 15;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 15)
+                            {
+                                target = 17;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 17)
+                            {
+                                target = 19;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 19)
+                            {
+                                target = 20;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 20)
+                            {
+                                target = 22;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 22)
+                            {
+                                target = 24;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 24)
+                            {
+                                target = 25;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 25)
+                            {
+                                target = 27;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 27)
+                            {
+                                target = 28;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 28)
+                            {
+                                target = 30;
+                            }
+                            else if (CurrentPlayer.currentTileIndex == 30)
                             {
                                 target = 32;
                             }
@@ -2831,6 +2841,8 @@ namespace Capitalism
                             }
 
                             hotelIcon.Tint = Color.Gray;
+                            hotelIcon.stayHighlighted = false;
+                            hotelIcon.stopBeingHighlighted = true;
                         }
                         #endregion
                         ;
@@ -2845,8 +2857,15 @@ namespace Capitalism
 
                                 selectedPropToBuildOn.houses.Clear();
 
-                                selectedPropToBuildOn.hotels.Add(new HighlightButton(inGameHotelIcon, hotelPositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn, propColorCounter), Color.White, new Vector2(0.3f)));
+                                HighlightButton tempy2 = new HighlightButton(inGameHotelIcon, hotelPositions(selectedPropToBuildOn.Color(selectedPropToBuildOn.PropColor), selectedPropToBuildOn, propColorCounter, true), Color.White, new Vector2(0.3f));
 
+                                if (hotelToRotate)
+                                {
+                                    tempy2.rotation = 1.5708f;
+                                    tempy2.origin = new Vector2((inGameHotelIcon.Width / 2), (inGameHotelIcon.Height / 2));
+                                }
+
+                                selectedPropToBuildOn.hotels.Add(tempy2);
                             }
                             else
                             {
@@ -2891,7 +2910,7 @@ namespace Capitalism
                             hotelIcon.stopBeingHighlighted = true;
                             houseIcony.stopBeingHighlighted = true;
                             houseIcony.stayHighlighted = false;
-                            hotelIcon.stopBeingHighlighted = false;
+                            hotelIcon.stayHighlighted = false;
                         }
                     }
                     else

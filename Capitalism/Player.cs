@@ -27,6 +27,7 @@ namespace Capitalism
         public bool GetOutOfJailFree2 = false;
 
         bool goMoney = true;
+        bool gotMoneyOnce = false;
 
         public Rectangle Hitbox => new Rectangle((int)Position.X, (int)Position.Y, (int)(Image.Width * Size), (int)(Image.Height * Size));
 
@@ -72,15 +73,18 @@ namespace Capitalism
                 //game over
             }
             //if GetTilePosition != Position 0 then reset goMoney to false
-            if (GetTilePosition() != PositionArea[0] && GetTilePosition() != Vector2.Zero)
+            Vector2 temp = GetTilePosition();
+
+            if (temp != PositionArea[0])
             {
                 goMoney = false;
             }
 
-            if (currentTileIndex == 0 && goMoney == false)
+            if (currentTileIndex == 1 && goMoney == false)
             {
                 Money += 200;
                 goMoney = true;
+                gotMoneyOnce = true;
             }
 
             if (inJail)
@@ -112,6 +116,12 @@ namespace Capitalism
                 }
             }
 
+            
+
+            if (Position == new Vector2(1284, 895) || Position == new Vector2(1284, 935) || Position == new Vector2(1320, 950) || Position == new Vector2(1320, 875) || Position == new Vector2(1320, 915) || Position == new Vector2(1360, 950) || Position == new Vector2(1360, 875) || Position == new Vector2(1360, 915))
+            {
+                return PositionArea[0];
+            }
             return Vector2.Zero;
         }
 
