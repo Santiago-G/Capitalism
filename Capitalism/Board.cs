@@ -679,24 +679,24 @@ namespace Capitalism
                     }
                     else
                     {
-                        position = new Vector2(695, 869);
+                        position = new Vector2(614, 869);
                     }
 
                     break;
                 case "pink":
                     sideways = true;
-
+                    //603 799
                     if (propNumb == 1)
                     {
-                        position = new Vector2(603, 799);
+                        position = new Vector2(577, 830);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(603, 648);
+                        position = new Vector2(577, 679);
                     }
                     else
                     {
-                        position = new Vector2(603, 572);
+                        position = new Vector2(577, 603);
                     }
 
                     break;
@@ -705,30 +705,30 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(603, 419);
+                        position = new Vector2(577, 450);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(603, 268);
+                        position = new Vector2(577, 299);
                     }
                     else
                     {
-                        position = new Vector2(603, 192);
+                        position = new Vector2(577, 223);
                     }
 
                     break;
-
+                case "red":
                     if (propNumb == 1)
                     {
-                        position = new Vector2(643, 160);
+                        position = new Vector2(613, 158);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(794, 160);
+                        position = new Vector2(764, 158);
                     }
                     else
                     {
-                        position = new Vector2(869, 160);
+                        position = new Vector2(839, 158);
                     }
 
                     break;
@@ -736,15 +736,15 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1022, 160);
+                        position = new Vector2(992, 158);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(1098, 160);
+                        position = new Vector2(1068, 158);
                     }
                     else
                     {
-                        position = new Vector2(1250, 160);
+                        position = new Vector2(1220, 158);
                     }
 
                     break;
@@ -754,15 +754,15 @@ namespace Capitalism
                     if (propNumb == 1)
                     {
                         //1274, 249
-                        position = new Vector2(1311, 243);
+                        position = new Vector2(1287, 223);
                     }
                     else if (propNumb == 2)
                     {
-                        position = new Vector2(1311, 320);
+                        position = new Vector2(1287, 300);
                     }
                     else
                     {
-                        position = new Vector2(1311, 472);
+                        position = new Vector2(1287, 452);
                     }
 
                     break;
@@ -771,11 +771,11 @@ namespace Capitalism
 
                     if (propNumb == 1)
                     {
-                        position = new Vector2(1311, 699);
+                        position = new Vector2(1287, 679);
                     }
                     else
                     {
-                        position = new Vector2(1311, 850);
+                        position = new Vector2(1287, 830);
                     }
 
                     break;
@@ -866,6 +866,7 @@ namespace Capitalism
         HighlightButton getOutOfJailFree2;
 
         HighlightButton buyHouses;
+        HighlightButton mortgageProps;
 
         #endregion
 
@@ -1009,8 +1010,8 @@ namespace Capitalism
 
             //////
 
-            propertySprites.Add("purple1", new HighlightButton(Content.Load<Texture2D>("MediterraneanAve"), new Vector2(635, 300), Color.White, Vector2.One));
-            propertySprites.Add("purple2", new HighlightButton(Content.Load<Texture2D>("BalticAve"), new Vector2(710, 300), Color.White, Vector2.One));
+            propertySprites.Add("purple1", new HighlightButton(Content.Load<Texture2D>("MediterraneanAve"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("purple2", new HighlightButton(Content.Load<Texture2D>("BalticAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
             propertySprites.Add("lightBlue1", new HighlightButton(Content.Load<Texture2D>("OrientalAve"), new Vector2(535, 300), Color.White, Vector2.One));
             propertySprites.Add("lightBlue2", new HighlightButton(Content.Load<Texture2D>("VermontAve"), new Vector2(810, 300), Color.White, Vector2.One));
@@ -1036,8 +1037,8 @@ namespace Capitalism
             propertySprites.Add("green2", new HighlightButton(Content.Load<Texture2D>("NoCarolinaAve"), new Vector2(810, 300), Color.White, Vector2.One));
             propertySprites.Add("green3", new HighlightButton(Content.Load<Texture2D>("PennsylvaniaAve"), new Vector2(1085, 300), Color.White, Vector2.One));
 
-            propertySprites.Add("blue1", new HighlightButton(Content.Load<Texture2D>("ParkPlace"), new Vector2(100, 300), Color.White, Vector2.One));
-            propertySprites.Add("blue2", new HighlightButton(Content.Load<Texture2D>("Boardwalk"), new Vector2(100, 300), Color.White, Vector2.One));
+            propertySprites.Add("blue1", new HighlightButton(Content.Load<Texture2D>("ParkPlace"), new Vector2(535, 300), Color.White, Vector2.One));
+            propertySprites.Add("blue2", new HighlightButton(Content.Load<Texture2D>("Boardwalk"), new Vector2(1085, 300), Color.White, Vector2.One));
 
             #endregion
 
@@ -1142,6 +1143,7 @@ namespace Capitalism
             breakOutOfJailButton = new HighlightButton(Yes, new Vector2(365, 755), Color.White, new Vector2(1.2f));
             exitHouseMenu = new HighlightButton(No, new Vector2(1496, 55), Color.White, new Vector2(1.5f));
             buyHouses = new HighlightButton(Yes, new Vector2(880, 870), Color.White, new Vector2(3f));
+            mortgageProps = new HighlightButton(Content.Load<Texture2D>("mortgageIcon"), new Vector2(230, 900), Color.White, new Vector2(0.32f));
 
             Bounds = bounds;
         }
@@ -1316,6 +1318,7 @@ namespace Capitalism
                 yesButton.Update(ms, true);
                 breakOutOfJailButton.Update(ms, getOutOfJailGlow);
                 buyHouses.Update(ms, readyToBuy);
+                mortgageProps.Update(ms, true);
 
                 exitHouseMenu.Update(ms, true);
 
@@ -2394,6 +2397,7 @@ namespace Capitalism
             diceOnBoard1.Draw(batch);
 
             house.Draw(batch);
+            mortgageProps.Draw(batch);
 
             if (Players[0] != null)
             {
