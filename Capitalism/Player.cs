@@ -66,6 +66,49 @@ namespace Capitalism
             return false;
         }
 
+        public bool oneOfOneColor(int numb)
+        {
+            string colorName = "";
+
+            switch (numb)
+            {
+                case 0:
+                    colorName = "purple";
+                    break;
+                case 1:
+                    colorName = "lightblue";
+                    break;
+                case 2:
+                    colorName = "pink";
+                    break;
+                case 3:
+                    colorName = "orange";
+                    break;
+                case 4:
+                    colorName = "red";
+                    break;
+                case 5:
+                    colorName = "yellow";
+                    break;
+                case 6:
+                    colorName = "green";
+                    break;
+                case 7:
+                    colorName = "blue";
+                    break;
+            }
+
+            for (int i = 0; i < properties.Count; i++)
+            {
+                if (Enum.GetName(typeof(PropertyColor), properties[i].PropColor) == colorName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void Update()
         {
             if (Money == 0)
@@ -116,7 +159,7 @@ namespace Capitalism
                 }
             }
 
-            
+
 
             if (Position == new Vector2(1284, 895) || Position == new Vector2(1284, 935) || Position == new Vector2(1320, 950) || Position == new Vector2(1320, 875) || Position == new Vector2(1320, 915) || Position == new Vector2(1360, 950) || Position == new Vector2(1360, 875) || Position == new Vector2(1360, 915))
             {
@@ -140,7 +183,7 @@ namespace Capitalism
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture: Image,destinationRectangle: Hitbox, color: Tint, rotation: 0, origin: new Vector2(Hitbox.Width/2, Hitbox.Height/2), effects: default, layerDepth: default);
+            spriteBatch.Draw(texture: Image, destinationRectangle: Hitbox, color: Tint, rotation: 0, origin: new Vector2(Hitbox.Width / 2, Hitbox.Height / 2), effects: default, layerDepth: default);
         }//(int)(Image.Width * Size)/ 2, (int)(Image.Height * Size)/ 2
     }
 }

@@ -36,11 +36,14 @@ namespace Capitalism
         bool agagagagaga = true;
         bool glowingHouse = false;
         bool buyingHouses = false;
+        bool mortgaging = false;
         bool cardDouble = false;
         bool getOutOfJailGlow = false;
 
         bool houseMenuUp = false;
         bool houseMenuStage2 = false;
+
+        bool mortMenuStage2 = false;
 
         bool redPropMenu = false;
         bool orangePropMenu = false;
@@ -73,6 +76,8 @@ namespace Capitalism
         int doubleCounter = 0;
         int propColorCounter = 0;
         int propCounter = 0;
+
+        int mortColorSelected;
         public int playerCount => SelectingPlayers.playerCount;
 
         Property selectedPropToBuildOn;
@@ -630,7 +635,7 @@ namespace Capitalism
                     return position;
 
                 }
-                else if(upsideDown)
+                else if (upsideDown)
                 {
                     position.X -= (20 * (houseNumber - 1));
 
@@ -847,6 +852,7 @@ namespace Capitalism
         HighlightButton noButton;
         HighlightButton breakOutOfJailButton;
         HighlightButton exitHouseMenu;
+        HighlightButton exitMortgageMenu;
         NormalButton diceOnBoard1;
         HighlightButton house;
 
@@ -858,6 +864,8 @@ namespace Capitalism
         HighlightButton YellowProp;
         HighlightButton GreenProp;
         HighlightButton BlueProp;
+
+        List<HighlightButton> MortProps = new List<HighlightButton>();
 
         HighlightButton hotelIcon;
         HighlightButton houseIcony;
@@ -935,8 +943,8 @@ namespace Capitalism
             duckFrame = Content.Load<Texture2D>("duckFrame");
             hatFrame = Content.Load<Texture2D>("hatFrame");
 
-            houseIcon = Content.Load<Texture2D>("housey2");
-            house = new HighlightButton(houseIcon, new Vector2(50, 900), Color.White, Vector2.One);
+            houseIcon = Content.Load<Texture2D>("pieceGreen_border07");
+            house = new HighlightButton(houseIcon, new Vector2(50, 890), Color.White, new Vector2(2));
 
             houseBuyingUI = Content.Load<Texture2D>("template");
 
@@ -961,6 +969,17 @@ namespace Capitalism
             YellowProp = new HighlightButton(YellowPropSprite, new Vector2(660, 600), Color.White, Vector2.One);
             GreenProp = new HighlightButton(GreenPropSprite, new Vector2(940, 600), Color.White, Vector2.One);
             BlueProp = new HighlightButton(BluePropSprite, new Vector2(1220, 600), Color.White, Vector2.One);
+
+
+            MortProps.Add(new HighlightButton(PurplePropSprite, new Vector2(380, 270), Color.White, Vector2.One));
+            MortProps.Add(new HighlightButton(LightBluePropSprite, new Vector2(660, 270), Color.White, Vector2.One));
+            MortProps.Add(new HighlightButton(PinkPropSprite, new Vector2(940, 270), Color.White, Vector2.One));
+            MortProps.Add(new HighlightButton(OrangePropSprite, new Vector2(1220, 270), Color.White, Vector2.One));
+
+            MortProps.Add(new HighlightButton(RedPropSprite, new Vector2(380, 600), Color.White, Vector2.One));
+            MortProps.Add(new HighlightButton(YellowPropSprite, new Vector2(660, 600), Color.White, Vector2.One));
+            MortProps.Add(new HighlightButton(GreenPropSprite, new Vector2(940, 600), Color.White, Vector2.One));
+            MortProps.Add(new HighlightButton(BluePropSprite, new Vector2(1220, 600), Color.White, Vector2.One));
 
 
             getOutOfJailFree = new HighlightButton(Content.Load<Texture2D>("getOutOfJailFree"), new Vector2(50, 760), Color.White, new Vector2(.5f, .5f));
@@ -1142,6 +1161,7 @@ namespace Capitalism
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
             breakOutOfJailButton = new HighlightButton(Yes, new Vector2(365, 755), Color.White, new Vector2(1.2f));
             exitHouseMenu = new HighlightButton(No, new Vector2(1496, 55), Color.White, new Vector2(1.5f));
+            exitMortgageMenu = new HighlightButton(No, new Vector2(1496, 55), Color.White, new Vector2(1.5f));
             buyHouses = new HighlightButton(Yes, new Vector2(880, 870), Color.White, new Vector2(3f));
             mortgageProps = new HighlightButton(Content.Load<Texture2D>("mortgageIcon"), new Vector2(230, 900), Color.White, new Vector2(0.32f));
 
@@ -1174,7 +1194,7 @@ namespace Capitalism
                     ;
 
                     bean = false;
-                    Console.WriteLine("doyouseebananamanhopingoveronthewhitehotsandherehecomeswithsomeformefreshlytakenfrombananatreebananamanmewantatongivemedoubleandabonuseonegivememoreforallmefriendsthisbananaflowwillneverend");
+
                 }
 
                 #region Property/Testing
@@ -1218,7 +1238,7 @@ namespace Capitalism
 
                 #region House/Hotels
                 glowingHouse = true;
-                if ((house.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) || houseMenuUp)
+                if (((house.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) || houseMenuUp) && !mortgaging)
                 {
                     buyingHouses = true;
                     darkenScreen = true;
@@ -1275,11 +1295,6 @@ namespace Capitalism
                     }
                     #endregion
 
-                    if (houseMenuStage2)
-                    {
-
-                    }
-
                     //then use propSprite dict to draw the props
 
                     if (exitHouseMenu.IsClicked || imDone)
@@ -1312,6 +1327,32 @@ namespace Capitalism
 
                 #endregion
 
+                if ((mortgageProps.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) && !buyingHouses)
+                {
+                    mortgaging = true;
+                }
+
+                if (mortgaging)
+                {
+                    darkenScreen = true;
+
+                    for (int i = 0; i < MortProps.Count; i++)
+                    {
+                        if (MortProps[i].IsClicked)
+                        {
+                            mortColorSelected = i;
+                            mortMenuStage2 = true;
+                        }
+                    }
+
+                    if (exitMortgageMenu.IsClicked)
+                    {
+                        mortgaging = false;
+                        darkenScreen = false;
+                        //exit
+                    }
+                }
+
                 #region Updates 
                 CurrentPlayer.Update();
                 noButton.Update(ms, true);
@@ -1330,6 +1371,11 @@ namespace Capitalism
                 YellowProp.Update(ms, CurrentPlayer.allOfOneColor("yellow"));
                 GreenProp.Update(ms, CurrentPlayer.allOfOneColor("green"));
                 BlueProp.Update(ms, CurrentPlayer.allOfOneColor("blue"));
+
+                for (int i = 0; i < MortProps.Count; i++)
+                {
+                    MortProps[i].Update(ms, CurrentPlayer.oneOfOneColor(i));
+                }
 
                 house.Update(ms, glowingHouse);
                 getOutOfJailFree.Update(ms, getOutOfJailGlow);
@@ -1357,6 +1403,8 @@ namespace Capitalism
                 propertySprites[$"green3"].Update(ms, true);
                 propertySprites[$"blue1"].Update(ms, true);
                 propertySprites[$"blue2"].Update(ms, true);
+
+                exitMortgageMenu.Update(ms, true);
 
                 hotelIcon.Update(ms, readyForHotel);
                 houseIcony.Update(ms, isReadyForHouse(selectedPropToBuildOn));
@@ -3008,6 +3056,401 @@ namespace Capitalism
                     BlueProp.Draw(batch);
                 }
                 exitHouseMenu.Draw(batch);
+            }
+
+            if (mortgaging)
+            {
+                batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
+                batch.DrawString(mediumSizeFont, "Select which property you want to mortgage.", new Vector2(560, 140), Color.Black);
+
+                if (!mortMenuStage2)
+                {
+                    for (int i = 0; i < MortProps.Count; i++)
+                    {
+                        if (CurrentPlayer.oneOfOneColor(i))
+                        {
+                            MortProps[i].Tint = Color.White;
+                        }
+                        else
+                        {
+                            MortProps[i].Tint = Color.Gray;
+                        }
+
+                        MortProps[i].Draw(batch);
+                    }
+                }
+                else
+                {
+                    switch (mortColorSelected)
+                    {
+                        case 0:
+                            propertySprites[$"purple1"].Draw(batch);
+                            propertySprites[$"purple2"].Draw(batch);
+
+                            if (propertySprites[$"purple1"].IsClicked)
+                            {
+                                propertySprites[$"purple1"].stayHighlighted = true;
+
+                                selectedPropToBuildOn = findProp("MediterraneanAve");
+
+                                propertySprites[$"purple2"].stayHighlighted = false;
+                                propertySprites[$"purple2"].stopBeingHighlighted = true;
+                                propColorCounter = 1;
+                                propCounter = 1;
+                            }
+                            if (propertySprites[$"purple2"].IsClicked)
+                            {
+                                propertySprites[$"purple2"].stayHighlighted = true;
+
+                                selectedPropToBuildOn = findProp("BalticAve");
+
+                                propertySprites[$"purple1"].stayHighlighted = false;
+                                propertySprites[$"purple1"].stopBeingHighlighted = true;
+                                propColorCounter = 2;
+                                propCounter = 2;
+                            }
+                            break;
+                        case 1:
+                            propertySprites[$"lightBlue1"].Draw(batch);
+                            propertySprites[$"lightBlue2"].Draw(batch);
+                            propertySprites[$"lightBlue3"].Draw(batch);
+
+                            if (propertySprites[$"lightBlue1"].IsClicked)
+                            {
+                                propertySprites[$"lightBlue1"].stayHighlighted = true;
+
+                                selectedPropToBuildOn = findProp("OrientalAve");
+
+                                propertySprites[$"lightBlue2"].stayHighlighted = false;
+                                propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
+
+                                propertySprites[$"lightBlue3"].stayHighlighted = false;
+                                propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
+                                propColorCounter = 1;
+                                propCounter = 3;
+                            }
+                            if (propertySprites[$"lightBlue2"].IsClicked)
+                            {
+                                propertySprites[$"lightBlue2"].stayHighlighted = true;
+
+                                selectedPropToBuildOn = findProp("VermontAve");
+
+                                propertySprites[$"lightBlue1"].stayHighlighted = false;
+                                propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
+
+                                propertySprites[$"lightBlue3"].stayHighlighted = false;
+                                propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
+                                propColorCounter = 2;
+                                propCounter = 4;
+                            }
+                            if (propertySprites[$"lightBlue3"].IsClicked)
+                            {
+                                propertySprites[$"lightBlue3"].stayHighlighted = true;
+
+                                selectedPropToBuildOn = findProp("ConnecticutAve");
+
+                                propertySprites[$"lightBlue1"].stayHighlighted = false;
+                                propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
+
+                                propertySprites[$"lightBlue2"].stayHighlighted = false;
+                                propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
+                                propColorCounter = 3;
+                                propCounter = 5;
+                            }
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        case 7:
+                            break;
+
+                    }
+
+                    else if (pinkPropMenu)
+                    {
+                        propertySprites[$"pink1"].Draw(batch);
+                        propertySprites[$"pink2"].Draw(batch);
+                        propertySprites[$"pink3"].Draw(batch);
+
+                        if (propertySprites[$"pink1"].IsClicked)
+                        {
+                            propertySprites[$"pink1"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("StCharlesPlace");
+
+                            propertySprites[$"pink2"].stayHighlighted = false;
+                            propertySprites[$"pink2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"pink3"].stayHighlighted = false;
+                            propertySprites[$"pink3"].stopBeingHighlighted = true;
+                            propColorCounter = 1;
+                            propCounter = 6;
+                        }
+                        if (propertySprites[$"pink2"].IsClicked)
+                        {
+                            propertySprites[$"pink2"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("StatesAve");
+
+                            propertySprites[$"pink1"].stayHighlighted = false;
+                            propertySprites[$"pink1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"pink3"].stayHighlighted = false;
+                            propertySprites[$"pink3"].stopBeingHighlighted = true;
+                            propColorCounter = 2;
+                            propCounter = 7;
+                        }
+                        if (propertySprites[$"pink3"].IsClicked)
+                        {
+                            propertySprites[$"pink3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("VirginiaAve");
+
+                            propertySprites[$"pink1"].stayHighlighted = false;
+                            propertySprites[$"pink1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"pink2"].stayHighlighted = false;
+                            propertySprites[$"pink2"].stopBeingHighlighted = true;
+                            propColorCounter = 3;
+                            propCounter = 8;
+                        }
+                    }
+                    else if (orangePropMenu)
+                    {
+                        propertySprites[$"orange1"].Draw(batch);
+                        propertySprites[$"orange2"].Draw(batch);
+                        propertySprites[$"orange3"].Draw(batch);
+
+                        if (propertySprites[$"orange1"].IsClicked)
+                        {
+                            propertySprites[$"orange1"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("StJamesPlace");
+
+                            propertySprites[$"orange2"].stayHighlighted = false;
+                            propertySprites[$"orange2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"orange3"].stayHighlighted = false;
+                            propertySprites[$"orange3"].stopBeingHighlighted = true;
+                            propColorCounter = 1;
+                            propCounter = 9;
+                        }
+                        if (propertySprites[$"orange2"].IsClicked)
+                        {
+                            propertySprites[$"orange2"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("TennesseeAve");
+
+                            propertySprites[$"orange1"].stayHighlighted = false;
+                            propertySprites[$"orange1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"orange3"].stayHighlighted = false;
+                            propertySprites[$"orange3"].stopBeingHighlighted = true;
+                            propColorCounter = 2;
+                            propCounter = 10;
+                        }
+                        if (propertySprites[$"orange3"].IsClicked)
+                        {
+                            propertySprites[$"orange3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("NewYorkAve");
+
+                            propertySprites[$"orange1"].stayHighlighted = false;
+                            propertySprites[$"orange1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"orange2"].stayHighlighted = false;
+                            propertySprites[$"orange2"].stopBeingHighlighted = true;
+                            propColorCounter = 3;
+                            propCounter = 11;
+                        }
+                    }
+                    else if (redPropMenu)
+                    {
+                        propertySprites[$"red1"].Draw(batch);
+                        propertySprites[$"red2"].Draw(batch);
+                        propertySprites[$"red3"].Draw(batch);
+
+                        if (propertySprites[$"red1"].IsClicked)
+                        {
+                            propertySprites[$"red1"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("KentuckyAve");
+
+                            propertySprites[$"red2"].stayHighlighted = false;
+                            propertySprites[$"red2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"red3"].stayHighlighted = false;
+                            propertySprites[$"red3"].stopBeingHighlighted = true;
+                            propColorCounter = 1;
+                            propCounter = 12;
+                        }
+                        if (propertySprites[$"red2"].IsClicked)
+                        {
+                            propertySprites[$"red2"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("IndianaAve");
+
+                            propertySprites[$"red1"].stayHighlighted = false;
+                            propertySprites[$"red1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"red3"].stayHighlighted = false;
+                            propertySprites[$"red3"].stopBeingHighlighted = true;
+                            propColorCounter = 2;
+                            propCounter = 13;
+                        }
+                        if (propertySprites[$"red3"].IsClicked)
+                        {
+                            propertySprites[$"red3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("IllinoisAve");
+
+                            propertySprites[$"red1"].stayHighlighted = false;
+                            propertySprites[$"red1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"red2"].stayHighlighted = false;
+                            propertySprites[$"red2"].stopBeingHighlighted = true;
+                            propColorCounter = 3;
+                            propCounter = 14;
+                        }
+                    }
+                    else if (yellowPropMenu)
+                    {
+                        propertySprites[$"yellow1"].Draw(batch);
+                        propertySprites[$"yellow2"].Draw(batch);
+                        propertySprites[$"yellow3"].Draw(batch);
+
+                        if (propertySprites[$"yellow1"].IsClicked)
+                        {
+                            propertySprites[$"yellow1"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("AtlanticAve");
+
+                            propertySprites[$"yellow2"].stayHighlighted = false;
+                            propertySprites[$"yellow2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"yellow3"].stayHighlighted = false;
+                            propertySprites[$"yellow3"].stopBeingHighlighted = true;
+                            propColorCounter = 1;
+                            propCounter = 15;
+                        }
+                        if (propertySprites[$"yellow2"].IsClicked)
+                        {
+                            propertySprites[$"yellow2"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("VentnorAve");
+
+                            propertySprites[$"yellow1"].stayHighlighted = false;
+                            propertySprites[$"yellow1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"yellow3"].stayHighlighted = false;
+                            propertySprites[$"yellow3"].stopBeingHighlighted = true;
+                            propColorCounter = 2;
+                            propCounter = 16;
+                        }
+                        if (propertySprites[$"yellow3"].IsClicked)
+                        {
+                            propertySprites[$"yellow3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("MarvinGardens");
+
+                            propertySprites[$"yellow1"].stayHighlighted = false;
+                            propertySprites[$"yellow1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"yellow2"].stayHighlighted = false;
+                            propertySprites[$"yellow2"].stopBeingHighlighted = true;
+                            propColorCounter = 3;
+                            propCounter = 17;
+                        }
+                    }
+                    else if (greenPropMenu)
+                    {
+                        propertySprites[$"green1"].Draw(batch);
+                        propertySprites[$"green2"].Draw(batch);
+                        propertySprites[$"green3"].Draw(batch);
+
+                        if (propertySprites[$"green1"].IsClicked)
+                        {
+                            propertySprites[$"green1"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("PacificAve");
+
+                            propertySprites[$"green2"].stayHighlighted = false;
+                            propertySprites[$"green2"].stopBeingHighlighted = true;
+
+                            propertySprites[$"green3"].stayHighlighted = false;
+                            propertySprites[$"green3"].stopBeingHighlighted = true;
+                            propColorCounter = 1;
+                            propCounter = 18;
+                        }
+                        if (propertySprites[$"green2"].IsClicked)
+                        {
+                            propertySprites[$"green2"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("NoCarolinaAve");
+
+                            propertySprites[$"green1"].stayHighlighted = false;
+                            propertySprites[$"green1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"green3"].stayHighlighted = false;
+                            propertySprites[$"green3"].stopBeingHighlighted = true;
+                            propColorCounter = 2;
+                            propCounter = 19;
+                        }
+                        if (propertySprites[$"green3"].IsClicked)
+                        {
+                            propertySprites[$"green3"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("PennsylvaniaAve");
+
+                            propertySprites[$"green1"].stayHighlighted = false;
+                            propertySprites[$"green1"].stopBeingHighlighted = true;
+
+                            propertySprites[$"green2"].stayHighlighted = false;
+                            propertySprites[$"green2"].stopBeingHighlighted = true;
+                            propColorCounter = 3;
+                            propCounter = 20;
+                        }
+                    }
+                    else if (bluePropMenu)
+                    {
+                        propertySprites[$"blue1"].Draw(batch);
+                        propertySprites[$"blue2"].Draw(batch);
+
+                        if (propertySprites[$"blue1"].IsClicked)
+                        {
+                            propertySprites[$"blue1"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("ParkPlace");
+
+                            propertySprites[$"blue2"].stayHighlighted = false;
+                            propertySprites[$"blue2"].stopBeingHighlighted = true;
+                            propColorCounter = 1;
+                            propCounter = 21;
+                        }
+                        if (propertySprites[$"blue2"].IsClicked)
+                        {
+                            propertySprites[$"blue2"].stayHighlighted = true;
+
+                            selectedPropToBuildOn = findProp("Boardwalk");
+
+                            propertySprites[$"blue1"].stayHighlighted = false;
+                            propertySprites[$"blue1"].stopBeingHighlighted = true;
+                            propColorCounter = 2;
+                            propCounter = 22;
+                        }
+                    }
+
+                    
+
+                }
+                exitMortgageMenu.Draw(batch);
             }
 
             if (showingDice)

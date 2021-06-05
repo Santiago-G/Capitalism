@@ -1298,6 +1298,18 @@
 /processorParam:TextureFormat=Color
 /build:PennsylvaniaRR.jpg
 
+#begin pieceGreen_border07.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pieceGreen_border07.png
+
 #begin PinkProp.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
