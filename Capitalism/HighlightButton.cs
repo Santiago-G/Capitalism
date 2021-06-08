@@ -56,6 +56,20 @@ namespace Capitalism
             scale = Scale;
         }
 
+        public HighlightButton Copy()
+        {
+            HighlightButton box =  new HighlightButton(Image, Position, Tint, scale);
+
+            box.CurrentHitbox = CurrentHitbox;
+            box.CurrentTint = CurrentTint;
+            box.origin = origin;
+            box.scale = scale;
+            box.stayHighlighted = false;
+            box.stopBeingHighlighted = true;
+
+           return box;
+        }
+
         public void Update(MouseState ms, bool toHighlight)
         {
             IsClicked = false;
