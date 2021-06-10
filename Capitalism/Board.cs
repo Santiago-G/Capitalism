@@ -63,11 +63,15 @@ namespace Capitalism
         bool houseToRotate = false;
         bool hotelToRotate = false;
         bool tearDownTheWall = false;
+
+        bool mortGlow = false;
         #endregion
 
         string theTrial = "";
         int bricksInTheWall = 0;
         HighlightButton theWall = null;
+
+        int selectedMortgageOption = 0;
 
         ChanceCards chanceCard;
         CommunityChests communityCards;
@@ -1400,9 +1404,36 @@ namespace Capitalism
                     }
                     else if (mortMenuStage3)
                     {
-                        if ()
+                        if (mortgageYesButton.IsClicked)
                         {
+                            if (selectedMortgageOption == 1)
+                            {
+                                //house
+                                //selectedPropToMortgage
+                                CurrentPlayer.Money += (selectedPropToMortgage.HouseCost / 2);
 
+                            }
+                            else if (selectedMortgageOption == 2)
+                            {
+                                //hotel
+
+                                selectedPropToMortgage.hotels.RemoveAt(0);
+                                CurrentPlayer.Money += (selectedPropToMortgage.HotelCost / 2);
+                            }
+                            else 
+                            {
+                                selectedPropToMortgage.isMortgaged = true;
+                                CurrentPlayer.Money += (selectedPropToMortgage.Cost / 2);
+                                selectedPropToMortgage.Tint = Color.Gray;
+                            }
+
+                            mortgaging = false;
+                            darkenScreen = false;
+                            mortMenuStage1 = false;
+                            mortMenuStage2 = false;
+                            mortMenuStage3 = false;
+
+                            bricksInTheWall = 0;
                         }
                     }
 
@@ -1448,28 +1479,28 @@ namespace Capitalism
                 getOutOfJailFree.Update(ms, getOutOfJailGlow);
                 getOutOfJailFree2.Update(ms, getOutOfJailGlow);
 
-                propertySprites[$"purple1"].Update(ms, true);
-                propertySprites[$"purple2"].Update(ms, true);
-                propertySprites[$"lightBlue1"].Update(ms, true);
-                propertySprites[$"lightBlue2"].Update(ms, true);
-                propertySprites[$"lightBlue3"].Update(ms, true);
-                propertySprites[$"pink1"].Update(ms, true);
-                propertySprites[$"pink2"].Update(ms, true);
-                propertySprites[$"pink3"].Update(ms, true);
-                propertySprites[$"orange1"].Update(ms, true);
-                propertySprites[$"orange2"].Update(ms, true);
-                propertySprites[$"orange3"].Update(ms, true);
-                propertySprites[$"red1"].Update(ms, true);
-                propertySprites[$"red2"].Update(ms, true);
-                propertySprites[$"red3"].Update(ms, true);
-                propertySprites[$"yellow1"].Update(ms, true);
-                propertySprites[$"yellow2"].Update(ms, true);
-                propertySprites[$"yellow3"].Update(ms, true);
-                propertySprites[$"green1"].Update(ms, true);
-                propertySprites[$"green2"].Update(ms, true);
-                propertySprites[$"green3"].Update(ms, true);
-                propertySprites[$"blue1"].Update(ms, true);
-                propertySprites[$"blue2"].Update(ms, true);
+                propertySprites[$"purple1"].Update(ms, mortGlow);
+                propertySprites[$"purple2"].Update(ms, mortGlow);
+                propertySprites[$"lightBlue1"].Update(ms, mortGlow);
+                propertySprites[$"lightBlue2"].Update(ms, mortGlow);
+                propertySprites[$"lightBlue3"].Update(ms, mortGlow);
+                propertySprites[$"pink1"].Update(ms, mortGlow);
+                propertySprites[$"pink2"].Update(ms, mortGlow);
+                propertySprites[$"pink3"].Update(ms, mortGlow);
+                propertySprites[$"orange1"].Update(ms, mortGlow);
+                propertySprites[$"orange2"].Update(ms, mortGlow);
+                propertySprites[$"orange3"].Update(ms, mortGlow);
+                propertySprites[$"red1"].Update(ms, mortGlow);
+                propertySprites[$"red2"].Update(ms, mortGlow);
+                propertySprites[$"red3"].Update(ms, mortGlow);
+                propertySprites[$"yellow1"].Update(ms, mortGlow);
+                propertySprites[$"yellow2"].Update(ms, mortGlow);
+                propertySprites[$"yellow3"].Update(ms, mortGlow);
+                propertySprites[$"green1"].Update(ms, mortGlow);
+                propertySprites[$"green2"].Update(ms, mortGlow);
+                propertySprites[$"green3"].Update(ms, mortGlow);
+                propertySprites[$"blue1"].Update(ms, mortGlow);
+                propertySprites[$"blue2"].Update(ms, mortGlow);
 
                 exitMortgageMenu.Update(ms, true);
 
@@ -3179,7 +3210,7 @@ namespace Capitalism
 
                                 temp = findProp("MediterraneanAve");
                                 temp2 = findProp("BalticAve");
-
+                                if you mortgage it will let you re-mortgage fix this
                                 if (propertySprites[$"purple1"].IsClicked && temp != null)
                                 {
                                     selectedPropToMortgage = findProp("MediterraneanAve");
@@ -3190,6 +3221,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if(temp == null)
+                                {
+                                    propertySprites[$"purple1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"purple1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"purple2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("BalticAve");
@@ -3199,6 +3240,16 @@ namespace Capitalism
                                     propCounter = 2;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"purple2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"purple2"].Tint = Color.White;
                                 }
                                 break;
                             case 1:
@@ -3219,6 +3270,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"lightBlue1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"lightBlue1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"lightBlue2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("VermontAve");
@@ -3229,6 +3290,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"lightBlue2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"lightBlue2"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"lightBlue3"].IsClicked && temp3 != null)
                                 {
                                     selectedPropToMortgage = findProp("ConnecticutAve");
@@ -3238,6 +3309,16 @@ namespace Capitalism
                                     propCounter = 5;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp3 == null)
+                                {
+                                    propertySprites[$"lightBlue3"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"lightBlue3"].Tint = Color.White;
                                 }
                                 break;
                             case 2:
@@ -3260,6 +3341,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"pink1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"pink1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"pink2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("StatesAve");
@@ -3270,6 +3361,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"pink2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"pink2"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"pink3"].IsClicked && temp3 != null)
                                 {
                                     selectedPropToMortgage = findProp("VirginiaAve");
@@ -3279,6 +3380,16 @@ namespace Capitalism
                                     propCounter = 8;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp3 == null)
+                                {
+                                    propertySprites[$"pink3"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"pink3"].Tint = Color.White;
                                 }
 
                                 break;
@@ -3302,6 +3413,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"orange1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"orange1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"orange2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("TennesseeAve");
@@ -3312,6 +3433,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"orange2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"orange2"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"orange3"].IsClicked && temp3 != null)
                                 {
                                     selectedPropToMortgage = findProp("NewYorkAve");
@@ -3321,6 +3452,16 @@ namespace Capitalism
                                     propCounter = 11;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp3 == null)
+                                {
+                                    propertySprites[$"orange3"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"orange3"].Tint = Color.White;
                                 }
 
                                 break;
@@ -3343,6 +3484,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"red1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"red1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"red2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("IndianaAve");
@@ -3353,6 +3504,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"red2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"red2"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"red3"].IsClicked && temp3 != null)
                                 {
                                     selectedPropToMortgage = findProp("IllinoisAve");
@@ -3362,6 +3523,16 @@ namespace Capitalism
                                     propCounter = 14;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp3 == null)
+                                {
+                                    propertySprites[$"red3"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"red3"].Tint = Color.White;
                                 }
                                 break;
                             case 5:
@@ -3383,6 +3554,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"yellow1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"yellow1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"yellow2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("VentnorAve");
@@ -3393,6 +3574,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"yellow2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"yellow2"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"yellow3"].IsClicked && temp3 != null)
                                 {
                                     selectedPropToMortgage = findProp("MarvinGardens");
@@ -3402,6 +3593,16 @@ namespace Capitalism
                                     propCounter = 17;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp3 == null)
+                                {
+                                    propertySprites[$"yellow3"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"yellow3"].Tint = Color.White;
                                 }
                                 break;
                             case 6:
@@ -3423,6 +3624,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"green1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"green1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"green2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("NoCarolinaAve");
@@ -3433,6 +3644,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"green2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"green2"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"green3"].IsClicked && temp3 != null)
                                 {
                                     selectedPropToMortgage = findProp("PennsylvaniaAve");
@@ -3442,6 +3663,16 @@ namespace Capitalism
                                     propCounter = 20;
 
                                     mortMenuStage3 = true;
+                                }
+                                else if (temp3 == null)
+                                {
+                                    propertySprites[$"green3"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"green3"].Tint = Color.White;
                                 }
                                 break;
                             case 7:
@@ -3461,6 +3692,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp == null)
+                                {
+                                    propertySprites[$"blue1"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"blue1"].Tint = Color.White;
+                                }
                                 if (propertySprites[$"blue2"].IsClicked && temp2 != null)
                                 {
                                     selectedPropToMortgage = findProp("Boardwalk");
@@ -3471,6 +3712,16 @@ namespace Capitalism
 
                                     mortMenuStage3 = true;
                                 }
+                                else if (temp2 == null)
+                                {
+                                    propertySprites[$"blue2"].Tint = Color.Gray;
+                                    mortGlow = false;
+                                }
+                                else
+                                {
+                                    mortGlow = true;
+                                    propertySprites[$"blue2"].Tint = Color.White;
+                                }
                                 break;
                         }
                     }
@@ -3478,7 +3729,6 @@ namespace Capitalism
 
                 else if (mortMenuStage3)
                 {
-
                     if (bricksInTheWall == 0)
                     {
                         theWall = propertySprites[theTrial].Copy();
@@ -3491,21 +3741,44 @@ namespace Capitalism
                     mortHotelIcon.Draw(batch);
                     mortHouseIcon.Draw(batch);
 
-                    if (mortHouseIcon.IsClicked)
+                    if (mortHouseIcon.IsClicked && hasHouse(selectedPropToMortgage))
                     {
                         mortHouseIcon.stayHighlighted = true;
                         mortHouseIcon.stopBeingHighlighted = false;
 
                         mortHotelIcon.stayHighlighted = false;
                         mortHotelIcon.stopBeingHighlighted = true;
+
+                        theWall.stayHighlighted = false;
+                        theWall.stopBeingHighlighted = true;
+
+                        selectedMortgageOption = 1;
                     }
-                    if (mortHotelIcon.IsClicked)
+                    if (mortHotelIcon.IsClicked && hasHotel(selectedPropToMortgage))
                     {
                         mortHotelIcon.stayHighlighted = true;
                         mortHotelIcon.stopBeingHighlighted = false;
 
                         mortHouseIcon.stayHighlighted = false;
                         mortHouseIcon.stopBeingHighlighted = true;
+
+                        theWall.stayHighlighted = false;
+                        theWall.stopBeingHighlighted = true;
+
+                        selectedMortgageOption = 2;
+                    }
+                    if (theWall.IsClicked)
+                    {
+                        theWall.stayHighlighted = true;
+                        theWall.stopBeingHighlighted = false;
+
+                        mortHouseIcon.stayHighlighted = false;
+                        mortHouseIcon.stopBeingHighlighted = true;
+
+                        mortHotelIcon.stayHighlighted = false;
+                        mortHotelIcon.stopBeingHighlighted = true;
+
+                        selectedMortgageOption = 3;
                     }
 
                     mortgageYesButton.Draw(batch);

@@ -44,9 +44,12 @@ namespace Capitalism
         public int HouseCost;
         public int HotelCost;
 
+        int originalRent;
+
         public bool expanded = false;
         public bool isRailroad = false;
         public bool isUtility = false;
+        public bool isMortgaged = false;
 
         public List<HighlightButton> houses = new List<HighlightButton>();
 
@@ -115,7 +118,7 @@ namespace Capitalism
             isRailroad = Railroad;
             isUtility = Utillity;
             //fix utillities 
-            
+            originalRent = rent;
         }
 
 
