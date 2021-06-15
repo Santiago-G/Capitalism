@@ -1587,7 +1587,7 @@ namespace Capitalism
 
                     diceOnBoard1.Update(ms);
 
-                    if (diceOnBoard1.IsClicked(ms))
+                    if (diceOnBoard1.IsClicked(ms) && (!buyingHouses && (!mortMenuStage1 && !mortMenuStage2 && !mortMenuStage3)))
                     {
                         diceRolling = true;
                         darkenScreen = true;
@@ -2629,6 +2629,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 1;
                         }
+                        else if (findProp("MediterraneanAve").isMortgaged)
+                        {
+                            propertySprites[$"purple1"].stayHighlighted = false;
+                            propertySprites[$"purple1"].stopBeingHighlighted = true;
+                            propertySprites[$"purple1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"purple2"].IsClicked && !findProp("BalticAve").isMortgaged)
                         {
                             propertySprites[$"purple2"].stayHighlighted = true;
@@ -2639,6 +2645,12 @@ namespace Capitalism
                             propertySprites[$"purple1"].stopBeingHighlighted = true;
                             propColorCounter = 2;
                             propCounter = 2;
+                        }
+                        else if (findProp("BalticAve").isMortgaged)
+                        {
+                            propertySprites[$"purple2"].stayHighlighted = false;
+                            propertySprites[$"purple2"].stopBeingHighlighted = true;
+                            propertySprites[$"purple2"].Tint = Color.Red;
                         }
                     }
                     else if (lightBluePropMenu)
@@ -2661,6 +2673,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 3;
                         }
+                        else if (findProp("OrientalAve").isMortgaged)
+                        {
+                            propertySprites[$"lightBlue1"].stayHighlighted = false;
+                            propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
+                            propertySprites[$"lightBlue1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"lightBlue2"].IsClicked && !findProp("VermontAve").isMortgaged)
                         {
                             propertySprites[$"lightBlue2"].stayHighlighted = true;
@@ -2675,7 +2693,13 @@ namespace Capitalism
                             propColorCounter = 2;
                             propCounter = 4;
                         }
-                        if (propertySprites[$"lightBlue3"].IsClicked && !findProp("ConnencticutAve").isMortgaged)
+                        else if (findProp("VermontAve").isMortgaged)
+                        {
+                            propertySprites[$"lightBlue2"].stayHighlighted = false;
+                            propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
+                            propertySprites[$"lightBlue2"].Tint = Color.Red;
+                        }
+                        if (propertySprites[$"lightBlue3"].IsClicked && !findProp("ConnecticutAve").isMortgaged)
                         {
                             propertySprites[$"lightBlue3"].stayHighlighted = true;
 
@@ -2688,6 +2712,12 @@ namespace Capitalism
                             propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
                             propCounter = 5;
+                        }
+                        else if (findProp("ConnecticutAve").isMortgaged)
+                        {
+                            propertySprites[$"lightBlue3"].stayHighlighted = false;
+                            propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
+                            propertySprites[$"lightBlue3"].Tint = Color.Red;
                         }
                     }
                     else if (pinkPropMenu)
@@ -2710,6 +2740,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 6;
                         }
+                        else if (findProp("StCharlesPlace").isMortgaged)
+                        {
+                            propertySprites[$"pink1"].stayHighlighted = false;
+                            propertySprites[$"pink1"].stopBeingHighlighted = true;
+                            propertySprites[$"pink1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"pink2"].IsClicked && !findProp("StatesAve").isMortgaged)
                         {
                             propertySprites[$"pink2"].stayHighlighted = true;
@@ -2724,6 +2760,12 @@ namespace Capitalism
                             propColorCounter = 2;
                             propCounter = 7;
                         }
+                        else if (findProp("StatesAve").isMortgaged)
+                        {
+                            propertySprites[$"pink2"].stayHighlighted = false;
+                            propertySprites[$"pink2"].stopBeingHighlighted = true;
+                            propertySprites[$"pink2"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"pink3"].IsClicked && !findProp("VirginiaAve").isMortgaged)
                         {
                             propertySprites[$"pink3"].stayHighlighted = true;
@@ -2737,6 +2779,12 @@ namespace Capitalism
                             propertySprites[$"pink2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
                             propCounter = 8;
+                        }
+                        else if (findProp("VirginiaAve").isMortgaged)
+                        {
+                            propertySprites[$"pink3"].stayHighlighted = false;
+                            propertySprites[$"pink3"].stopBeingHighlighted = true;
+                            propertySprites[$"pink3"].Tint = Color.Red;
                         }
                     }
                     else if (orangePropMenu)
@@ -2759,6 +2807,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 9;
                         }
+                        else if (findProp("StJamesPlace").isMortgaged)
+                        {
+                            propertySprites[$"orange1"].stayHighlighted = false;
+                            propertySprites[$"orange1"].stopBeingHighlighted = true;
+                            propertySprites[$"orange1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"orange2"].IsClicked && !findProp("TennesseeAve").isMortgaged)
                         {
                             propertySprites[$"orange2"].stayHighlighted = true;
@@ -2773,6 +2827,12 @@ namespace Capitalism
                             propColorCounter = 2;
                             propCounter = 10;
                         }
+                        else if (findProp("TennesseeAve").isMortgaged)
+                        {
+                            propertySprites[$"orange2"].stayHighlighted = false;
+                            propertySprites[$"orange2"].stopBeingHighlighted = true;
+                            propertySprites[$"orange2"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"orange3"].IsClicked && !findProp("NewYorkAve").isMortgaged)
                         {
                             propertySprites[$"orange3"].stayHighlighted = true;
@@ -2786,6 +2846,12 @@ namespace Capitalism
                             propertySprites[$"orange2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
                             propCounter = 11;
+                        }
+                        else if (findProp("NewYorkAve").isMortgaged)
+                        {
+                            propertySprites[$"orange3"].stayHighlighted = false;
+                            propertySprites[$"orange3"].stopBeingHighlighted = true;
+                            propertySprites[$"orange3"].Tint = Color.Red;
                         }
                     }
                     else if (redPropMenu)
@@ -2808,6 +2874,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 12;
                         }
+                        else if (findProp("KentuckyAve").isMortgaged)
+                        {
+                            propertySprites[$"red1"].stayHighlighted = false;
+                            propertySprites[$"red1"].stopBeingHighlighted = true;
+                            propertySprites[$"red1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"red2"].IsClicked && !findProp("IndianaAve").isMortgaged)
                         {
                             propertySprites[$"red2"].stayHighlighted = true;
@@ -2822,6 +2894,12 @@ namespace Capitalism
                             propColorCounter = 2;
                             propCounter = 13;
                         }
+                        else if (findProp("IndianaAve").isMortgaged)
+                        {
+                            propertySprites[$"red2"].stayHighlighted = false;
+                            propertySprites[$"red2"].stopBeingHighlighted = true;
+                            propertySprites[$"red2"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"red3"].IsClicked && !findProp("IllinoisAve").isMortgaged)
                         {
                             propertySprites[$"red3"].stayHighlighted = true;
@@ -2835,6 +2913,12 @@ namespace Capitalism
                             propertySprites[$"red2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
                             propCounter = 14;
+                        }
+                        else if (findProp("IllinoisAve").isMortgaged)
+                        {
+                            propertySprites[$"red3"].stayHighlighted = false;
+                            propertySprites[$"red3"].stopBeingHighlighted = true;
+                            propertySprites[$"red3"].Tint = Color.Red;
                         }
                     }
                     else if (yellowPropMenu)
@@ -2857,6 +2941,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 15;
                         }
+                        else if (findProp("AtlanticAve").isMortgaged)
+                        {
+                            propertySprites[$"yellow1"].stayHighlighted = false;
+                            propertySprites[$"yellow1"].stopBeingHighlighted = true;
+                            propertySprites[$"yellow1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"yellow2"].IsClicked && !findProp("VentnorAve").isMortgaged)
                         {
                             propertySprites[$"yellow2"].stayHighlighted = true;
@@ -2871,6 +2961,12 @@ namespace Capitalism
                             propColorCounter = 2;
                             propCounter = 16;
                         }
+                        else if (findProp("VentnorAve").isMortgaged)
+                        {
+                            propertySprites[$"yellow2"].stayHighlighted = false;
+                            propertySprites[$"yellow2"].stopBeingHighlighted = true;
+                            propertySprites[$"yellow2"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"yellow3"].IsClicked && !findProp("MarvinGardens").isMortgaged)
                         {
                             propertySprites[$"yellow3"].stayHighlighted = true;
@@ -2884,6 +2980,12 @@ namespace Capitalism
                             propertySprites[$"yellow2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
                             propCounter = 17;
+                        }
+                        else if (findProp("MarvinGardens").isMortgaged)
+                        {
+                            propertySprites[$"yellow3"].stayHighlighted = false;
+                            propertySprites[$"yellow3"].stopBeingHighlighted = true;
+                            propertySprites[$"yellow3"].Tint = Color.Red;
                         }
                     }
                     else if (greenPropMenu)
@@ -2906,6 +3008,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 18;
                         }
+                        else if (findProp("PacificAve").isMortgaged)
+                        {
+                            propertySprites[$"green1"].stayHighlighted = false;
+                            propertySprites[$"green1"].stopBeingHighlighted = true;
+                            propertySprites[$"green1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"green2"].IsClicked && !findProp("NoCarolinaAve").isMortgaged)
                         {
                             propertySprites[$"green2"].stayHighlighted = true;
@@ -2920,6 +3028,12 @@ namespace Capitalism
                             propColorCounter = 2;
                             propCounter = 19;
                         }
+                        else if (findProp("NoCarolinaAve").isMortgaged)
+                        {
+                            propertySprites[$"green2"].stayHighlighted = false;
+                            propertySprites[$"green2"].stopBeingHighlighted = true;
+                            propertySprites[$"green1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"green3"].IsClicked && !findProp("PennsylvaniaAve").isMortgaged)
                         {
                             propertySprites[$"green3"].stayHighlighted = true;
@@ -2933,6 +3047,12 @@ namespace Capitalism
                             propertySprites[$"green2"].stopBeingHighlighted = true;
                             propColorCounter = 3;
                             propCounter = 20;
+                        }
+                        else if (findProp("PennsylvaniaAve").isMortgaged)
+                        {
+                            propertySprites[$"green3"].stayHighlighted = false;
+                            propertySprites[$"green3"].stopBeingHighlighted = true;
+                            propertySprites[$"green3"].Tint = Color.Red;
                         }
                     }
                     else if (bluePropMenu)
@@ -2951,6 +3071,12 @@ namespace Capitalism
                             propColorCounter = 1;
                             propCounter = 21;
                         }
+                        else if (findProp("ParkPlace").isMortgaged)
+                        {
+                            propertySprites[$"blue1"].stayHighlighted = false;
+                            propertySprites[$"blue1"].stopBeingHighlighted = true;
+                            propertySprites[$"blue1"].Tint = Color.Red;
+                        }
                         if (propertySprites[$"blue2"].IsClicked && !findProp("Boardwalk").isMortgaged)
                         {
                             propertySprites[$"blue2"].stayHighlighted = true;
@@ -2961,6 +3087,12 @@ namespace Capitalism
                             propertySprites[$"blue1"].stopBeingHighlighted = true;
                             propColorCounter = 2;
                             propCounter = 22;
+                        }
+                        else if (findProp("Boardwalk").isMortgaged)
+                        {
+                            propertySprites[$"blue2"].stayHighlighted = false;
+                            propertySprites[$"blue2"].stopBeingHighlighted = true;
+                            propertySprites[$"blue2"].Tint = Color.Red;
                         }
                     }
 
@@ -3247,6 +3379,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"purple1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"purple1"].stopBeingHighlighted = true;
+                                    propertySprites[$"purple1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3271,6 +3405,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"purple2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"purple2"].stopBeingHighlighted = true;
+                                    propertySprites[$"purple2"].stayHighlighted = false;
                                 }
 
                                 break;
@@ -3303,6 +3439,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"lightBlue1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"lightBlue1"].stopBeingHighlighted = true;
+                                    propertySprites[$"lightBlue1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3327,6 +3465,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"lightBlue2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"lightBlue2"].stopBeingHighlighted = true;
+                                    propertySprites[$"lightBlue2"].stayHighlighted = false;
                                 }
 
                                 if (temp3 != null && !temp3.isMortgaged)
@@ -3351,6 +3491,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"lightBlue3"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"lightBlue3"].stopBeingHighlighted = true;
+                                    propertySprites[$"lightBlue3"].stayHighlighted = false;
                                 }
 
                                 break;
@@ -3386,6 +3528,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"pink1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"pink1"].stopBeingHighlighted = true;
+                                    propertySprites[$"pink1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3410,6 +3554,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"pink2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"pink2"].stopBeingHighlighted = true;
+                                    propertySprites[$"pink2"].stayHighlighted = false;
                                 }
 
                                 if (temp3 != null && !temp3.isMortgaged)
@@ -3434,6 +3580,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"pink3"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"pink3"].stopBeingHighlighted = true;
+                                    propertySprites[$"pink3"].stayHighlighted = false;
                                 }
 
 
@@ -3470,6 +3618,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"orange1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"orange1"].stopBeingHighlighted = true;
+                                    propertySprites[$"orange1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3494,6 +3644,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"orange2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"orange2"].stopBeingHighlighted = true;
+                                    propertySprites[$"orange2"].stayHighlighted = false;
                                 }
 
                                 if (temp3 != null && !temp3.isMortgaged)
@@ -3518,6 +3670,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"orange3"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"orange3"].stopBeingHighlighted = true;
+                                    propertySprites[$"orange3"].stayHighlighted = false;
                                 }
 
                                 break;
@@ -3552,6 +3706,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"red1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"red1"].stopBeingHighlighted = true;
+                                    propertySprites[$"red1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3576,6 +3732,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"red2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"red2"].stopBeingHighlighted = true;
+                                    propertySprites[$"red2"].stayHighlighted = false;
                                 }
 
                                 if (temp3 != null && !temp3.isMortgaged)
@@ -3600,6 +3758,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"red3"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"red3"].stopBeingHighlighted = true;
+                                    propertySprites[$"red3"].stayHighlighted = false;
                                 }
 
                                 break;
@@ -3634,6 +3794,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"yellow1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"yellow1"].stopBeingHighlighted = true;
+                                    propertySprites[$"yellow1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3658,6 +3820,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"yellow2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"yellow2"].stopBeingHighlighted = true;
+                                    propertySprites[$"yellow2"].stayHighlighted = false;
                                 }
 
                                 if(temp3 != null && !temp3.isMortgaged)
@@ -3682,6 +3846,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"yellow3"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"yellow3"].stopBeingHighlighted = true;
+                                    propertySprites[$"yellow3"].stayHighlighted = false;
                                 }
 
                                 break;
@@ -3716,6 +3882,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"green1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"green1"].stopBeingHighlighted = true;
+                                    propertySprites[$"green1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3740,6 +3908,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"green2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"green2"].stopBeingHighlighted = true;
+                                    propertySprites[$"green2"].stayHighlighted = false;
                                 }
 
                                 if (temp3 != null && !temp3.isMortgaged)
@@ -3764,6 +3934,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"green3"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"green3"].stopBeingHighlighted = true;
+                                    propertySprites[$"green3"].stayHighlighted = false;
                                 }
 
                                 break;
@@ -3796,6 +3968,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"blue1"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"blue1"].stopBeingHighlighted = true;
+                                    propertySprites[$"blue1"].stayHighlighted = false;
                                 }
 
                                 if (temp2 != null && !temp2.isMortgaged)
@@ -3820,6 +3994,8 @@ namespace Capitalism
                                 {
                                     propertySprites[$"blue2"].Tint = Color.Gray;
                                     mortGlow = false;
+                                    propertySprites[$"blue2"].stopBeingHighlighted = true;
+                                    propertySprites[$"blue2"].stayHighlighted = false;
                                 }
                                 break;
                         }
