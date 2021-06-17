@@ -109,6 +109,49 @@ namespace Capitalism
             return false;
         }
 
+        public bool oneOfOneColorMort(int numb)
+        {
+            string colorName = "";
+
+            switch (numb)
+            {
+                case 0:
+                    colorName = "purple";
+                    break;
+                case 1:
+                    colorName = "lightblue";
+                    break;
+                case 2:
+                    colorName = "pink";
+                    break;
+                case 3:
+                    colorName = "orange";
+                    break;
+                case 4:
+                    colorName = "red";
+                    break;
+                case 5:
+                    colorName = "yellow";
+                    break;
+                case 6:
+                    colorName = "green";
+                    break;
+                case 7:
+                    colorName = "blue";
+                    break;
+            }
+
+            for (int i = 0; i < properties.Count; i++)
+            {
+                if ((Enum.GetName(typeof(PropertyColor), properties[i].PropColor) == colorName) && properties[i].isMortgaged)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void Update()
         {
             if (Money == 0)
