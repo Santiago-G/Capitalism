@@ -1370,6 +1370,12 @@ namespace Capitalism
                         tempi = true;
                         imDone = false;
 
+                        foreach (var prop in propertySprites)
+                        {
+                            prop.Value.Tint = Color.White;
+                            prop.Value.stayHighlighted = false;
+                            prop.Value.stopBeingHighlighted = true;
+                        }
 
                         hotelIcon.Tint = Color.Gray;
                         houseIcony.Tint = Color.Gray;
@@ -1422,8 +1428,69 @@ namespace Capitalism
                             if (selectedMortgageOption == 1)
                             {
                                 //house
-                                //selectedPropToMortgage
-                                CurrentPlayer.Money += (selectedPropToMortgage.HouseCost / 2);
+
+                                List<Property> tempProps = getAllPropColor(selectedPropToMortgage.Color(selectedPropToMortgage.PropColor));
+
+                                if (tempProps.Count == 3)
+                                {
+                                    Property temp1 = tempProps[0];
+                                    Property temp2 = tempProps[1];
+                                    Property temp3 = tempProps[2];
+
+                                    Property newSelectedProp;
+                                    Property otherProp1;
+                                    Property otherProp2;
+                                    int maxHouseCounter = 0;
+                                    bool e = false;
+
+                                    foreach (var prop in tempProps)
+                                    {
+                                        if (prop.houses.Count > maxHouseCounter)
+                                        {
+                                            do foreach to check other options for house counts
+                                        }
+                                    }
+
+                                    //for (int i = 0; i < tempProps.Count; i++)
+                                    //{
+                                    //    if (selectedPropToMortgage == tempProps[i])
+                                    //    {
+                                    //        newSelectedProp = tempProps[i];
+                                    //    }
+                                    //    else if (otherProp1 == null)
+                                    //    {
+                                    //        otherProp1 = tempProps[i];
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        otherProp2 = tempProps[i]; 
+                                    //    }
+                                    //}
+
+                                    //if ((temp1.houses.Count == temp2.houses.Count) && temp3.houses.Count == temp2.houses.Count)
+                                    //{
+                                    //    selectedPropToMortgage.houses.RemoveAt(selectedPropToMortgage.houses.Count - 1);
+                                    //    CurrentPlayer.Money += (selectedPropToMortgage.HouseCost / 2);
+                                    //    selectedPropToMortgage.houseCounter--;
+                                    //}
+                                    //else
+                                    //{
+                                    //    int temp1HouseCount = temp1.houses.Count;
+                                    //    int temp2HouseCount = temp2.houses.Count;
+                                    //    int temp3HouseCount = temp3.houses.Count;
+
+                                    //    if (otherProp1.houses.Count - otherProp2.houses.Count == 0)
+                                    //    {
+                                            
+                                    //    }
+
+                                    //    int a = temp2HouseCount - temp3HouseCount;
+                                        
+                                    //}
+                                }
+
+
+
 
                             }
                             else if (selectedMortgageOption == 2)
@@ -1438,6 +1505,12 @@ namespace Capitalism
                                 selectedPropToMortgage.isMortgaged = true;
                                 CurrentPlayer.Money += (selectedPropToMortgage.Cost / 2);
                                 selectedPropToMortgage.Tint = Color.Gray;
+                                if (selectedPropToMortgage.houseCounter > 0)
+                                {
+                                    CurrentPlayer.Money += selectedPropToMortgage.houseCounter * (selectedPropToMortgage.HouseCost / 2);
+                                    selectedPropToMortgage.houses.Clear();
+                                    selectedPropToMortgage.houseCounter = 0;
+                                }
                             }
 
                             mortgaging = false;
@@ -1480,6 +1553,15 @@ namespace Capitalism
 
                         bricksInTheWall = 0;
                         selectedMortgageOption = 0;
+
+                        //remove all tints
+                        #region remove Tints
+                        foreach (var prop in propertySprites)
+                        {
+                            prop.Value.Tint = Color.White;
+                        }
+
+                        #endregion
                         //exit
                     }
                 }
@@ -4141,16 +4223,14 @@ namespace Capitalism
                                     if (propertySprites[$"purple1"].IsClicked)
                                     {
                                         selectedPropToMortgage = findProp("MediterraneanAve");
+                                        selectedPropToMortgage.Tint = Color.White;
                                         theTrial = "purple1";
 
                                         propColorCounter = 1;
                                         propCounter = 1;
 
                                         selectedPropToMortgage.isMortgaged = false;
-                                        CurrentPlayer.Money -= (selectedPropToMortgage.Cost / 2) + 20 percent;
-                                        
-                                        make it so the player wont be able to unmort if they dont have the so;
-                                        and when they mort a prop with houses, sell the houses first
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
                                     }
                                     else
                                     {
@@ -4785,6 +4865,7 @@ namespace Capitalism
                     }
                 }
                 #endregion
+
                 exitMortgageMenu.Draw(batch);
             }
 

@@ -38,7 +38,6 @@ namespace Capitalism
         public int With3House;
         public int With4House;
         public int WithHotel;
-        public int houseCounter = 0;
         public int hotelCounter = 0;
 
         public int HouseCost;
@@ -52,6 +51,7 @@ namespace Capitalism
         public bool isMortgaged = false;
 
         public List<HighlightButton> houses = new List<HighlightButton>();
+        public int houseCounter = 0;
 
         public List<HighlightButton> hotels = new List<HighlightButton>();
         //Add Mortgage
