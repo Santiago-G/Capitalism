@@ -821,6 +821,42 @@ namespace Capitalism
             }
             return new Vector2(-1);
         }
+
+        public bool isReadyToSellHouse(Property selectedPropToMortgage)
+        {
+            List<Property> tempProps = getAllPropColor(selectedPropToMortgage.Color(selectedPropToMortgage.PropColor));
+
+
+            int maxHouseCounter = tempProps[0].houseCounter;
+            bool e = false;
+
+
+            foreach (var prop in tempProps)
+            {
+                if (prop.houses.Count > maxHouseCounter)
+                {
+                    maxHouseCounter = prop.houses.Count;
+                    e = true;
+                    if (prop == selectedPropToMortgage)
+                    {
+                        return true;
+                    }
+                }
+                if (prop.houses.Count < maxHouseCounter && prop == selectedPropToMortgage)
+                {
+                    return false;
+                }
+            }
+
+            if (!e)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        //unmortgage bugs
+
         static float Lerp(float start_value, float end_value, float pct)
         {
             return (start_value + (end_value - start_value) * pct);
@@ -1429,76 +1465,19 @@ namespace Capitalism
                             {
                                 //house
 
-                                List<Property> tempProps = getAllPropColor(selectedPropToMortgage.Color(selectedPropToMortgage.PropColor));
-
-                                if (tempProps.Count == 3)
+                                if (isReadyToSellHouse(selectedPropToMortgage))
                                 {
-                                    Property temp1 = tempProps[0];
-                                    Property temp2 = tempProps[1];
-                                    Property temp3 = tempProps[2];
-
-                                    Property newSelectedProp;
-                                    Property otherProp1;
-                                    Property otherProp2;
-                                    int maxHouseCounter = 0;
-                                    bool e = false;
-
-                                    foreach (var prop in tempProps)
-                                    {
-                                        if (prop.houses.Count > maxHouseCounter)
-                                        {
-                                            do foreach to check other options for house counts
-                                        }
-                                    }
-
-                                    //for (int i = 0; i < tempProps.Count; i++)
-                                    //{
-                                    //    if (selectedPropToMortgage == tempProps[i])
-                                    //    {
-                                    //        newSelectedProp = tempProps[i];
-                                    //    }
-                                    //    else if (otherProp1 == null)
-                                    //    {
-                                    //        otherProp1 = tempProps[i];
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        otherProp2 = tempProps[i]; 
-                                    //    }
-                                    //}
-
-                                    //if ((temp1.houses.Count == temp2.houses.Count) && temp3.houses.Count == temp2.houses.Count)
-                                    //{
-                                    //    selectedPropToMortgage.houses.RemoveAt(selectedPropToMortgage.houses.Count - 1);
-                                    //    CurrentPlayer.Money += (selectedPropToMortgage.HouseCost / 2);
-                                    //    selectedPropToMortgage.houseCounter--;
-                                    //}
-                                    //else
-                                    //{
-                                    //    int temp1HouseCount = temp1.houses.Count;
-                                    //    int temp2HouseCount = temp2.houses.Count;
-                                    //    int temp3HouseCount = temp3.houses.Count;
-
-                                    //    if (otherProp1.houses.Count - otherProp2.houses.Count == 0)
-                                    //    {
-                                            
-                                    //    }
-
-                                    //    int a = temp2HouseCount - temp3HouseCount;
-                                        
-                                    //}
+                                    selectedPropToMortgage.houses.RemoveAt(selectedPropToMortgage.houses.Count - 1);
+                                    CurrentPlayer.Money += (selectedPropToMortgage.HouseCost / 2);
+                                    selectedPropToMortgage.houseCounter--;
                                 }
-
-
-
 
                             }
                             else if (selectedMortgageOption == 2)
                             {
-                                //hotel
-
                                 selectedPropToMortgage.hotels.RemoveAt(0);
                                 CurrentPlayer.Money += (selectedPropToMortgage.HotelCost / 2);
+                                //add 4 houses
                             }
                             else
                             {
@@ -1518,6 +1497,7 @@ namespace Capitalism
                             mortMenuStage1 = false;
                             mortMenuStage2 = false;
                             mortMenuStage3 = false;
+                            selectedPropToMortgage = null;
 
                             bricksInTheWall = 0;
                             selectedMortgageOption = 0;
@@ -1644,7 +1624,9 @@ namespace Capitalism
                 {
                     mortHotelIcon.Tint = Color.White;
                 }
-                mortHouseIcon.Update(ms, hasHouse(selectedPropToMortgage));
+
+                mortHouseIcon.Update(ms, (hasHouse(selectedPropToMortgage)) && (isReadyToSellHouse(selectedPropToMortgage)));
+
                 if (!hasHouse(selectedPropToMortgage))
                 {
                     mortHouseIcon.Tint = Color.Gray;
@@ -4142,8 +4124,7 @@ namespace Capitalism
 
                     mortHotelIcon.Draw(batch);
                     mortHouseIcon.Draw(batch);
-
-                    if (mortHouseIcon.IsClicked && hasHouse(selectedPropToMortgage))
+                    if ((mortHouseIcon.IsClicked && hasHouse(selectedPropToMortgage)) && isReadyToSellHouse(selectedPropToMortgage))
                     {
                         mortHouseIcon.stayHighlighted = true;
                         mortHouseIcon.stopBeingHighlighted = false;
@@ -4155,6 +4136,10 @@ namespace Capitalism
                         theWall.stopBeingHighlighted = true;
 
                         selectedMortgageOption = 1;
+                    }
+                    else if (!isReadyToSellHouse(selectedPropToMortgage))
+                    {
+                        mortHouseIcon.Tint = Color.Gray;
                     }
                     if (mortHotelIcon.IsClicked && hasHotel(selectedPropToMortgage))
                     {
