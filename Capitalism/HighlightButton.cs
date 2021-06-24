@@ -70,6 +70,8 @@ namespace Capitalism
            return box;
         }
 
+        fix click here
+
         public void Update(MouseState ms, bool toHighlight)
         {
             IsClicked = false;

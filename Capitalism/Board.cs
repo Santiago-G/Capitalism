@@ -825,32 +825,34 @@ namespace Capitalism
         public bool isReadyToSellHouse(Property selectedPropToMortgage)
         {
             List<Property> tempProps = getAllPropColor(selectedPropToMortgage.Color(selectedPropToMortgage.PropColor));
-
-
-            int maxHouseCounter = tempProps[0].houseCounter;
-            bool e = false;
-
-
-            foreach (var prop in tempProps)
+            if (tempProps != null)
             {
-                if (prop.houses.Count > maxHouseCounter)
+                int maxHouseCounter = tempProps[0].houseCounter;
+                bool e = false;
+
+                foreach (var prop in tempProps)
                 {
-                    maxHouseCounter = prop.houses.Count;
-                    e = true;
-                    if (prop == selectedPropToMortgage)
+                    if (prop.houses.Count > maxHouseCounter)
                     {
-                        return true;
+                        maxHouseCounter = prop.houses.Count;
+                        e = true;
+                        if (prop == selectedPropToMortgage)
+                        {
+                            return true;
+                        }
+                    }
+                    if (prop.houses.Count < maxHouseCounter && prop == selectedPropToMortgage)
+                    {
+                        return false;
                     }
                 }
-                if (prop.houses.Count < maxHouseCounter && prop == selectedPropToMortgage)
-                {
-                    return false;
-                }
-            }
 
-            if (!e)
-            {
-                return true;
+                if (!e)
+                {
+                    return true;
+                }
+
+                return false;
             }
 
             return false;
@@ -872,16 +874,32 @@ namespace Capitalism
             return anotherTempInTheWall.houseCounter != 0;
         }
 
-        public bool hasHotel(Property weDontNeedNoTempControl)
+        public bool hasHotel(Property e)
         {
-            if (weDontNeedNoTempControl == null)
+            if (e == null)
             {
                 return false;
             }
 
-            return weDontNeedNoTempControl.hotelCounter != 0;
+            return e.hotelCounter != 0;
         }
         //FUNCTIONS\\
+
+        public void exitMortMenu()
+        {
+            mortgaging = false;
+            darkenScreen = false;
+            mortMenuStage1 = false;
+            mortMenuStage2 = false;
+            mortMenuStage3 = false;
+            unmortMenuStage1 = false;
+            unmortMenuStage2 = false;
+            unmortMenuStage3 = false;
+            selectedPropToMortgage = null;
+
+            bricksInTheWall = 0;
+            selectedMortgageOption = 0;
+        }
 
         #endregion
 
@@ -1432,7 +1450,15 @@ namespace Capitalism
                 {
                     darkenScreen = true;
 
-                    mortMenuStage1 = ((!mortMenuStage2 && !mortMenuStage3) && !unmortMenuStage1);
+                    if (!mortMenuStage1 && !mortMenuStage2 && !mortMenuStage3 && !unmortMenuStage1 && !unmortMenuStage2 && !unmortMenuStage3)
+                    {
+                        mortMenuStage1 = true;
+                    }
+
+                    if (mortMenuStage2)
+                    {
+                        mortMenuStage1 = false;
+                    }
                     if (mortMenuStage3)
                     {
                         mortMenuStage2 = false;
@@ -1455,6 +1481,7 @@ namespace Capitalism
                         if (unmortgageYesButton.IsClicked)
                         {
                             unmortMenuStage1 = true;
+                            mortMenuStage1 = false;
                         }
                     }
                     else if (mortMenuStage3)
@@ -1497,6 +1524,9 @@ namespace Capitalism
                             mortMenuStage1 = false;
                             mortMenuStage2 = false;
                             mortMenuStage3 = false;
+                            unmortMenuStage1 = false;
+                            unmortMenuStage2 = false;
+                            unmortMenuStage3 = false;
                             selectedPropToMortgage = null;
 
                             bricksInTheWall = 0;
@@ -1518,7 +1548,6 @@ namespace Capitalism
                         }
                     }
 
-
                     if (exitMortgageMenu.IsClicked)
                     {
                         mortgaging = false;
@@ -1530,6 +1559,7 @@ namespace Capitalism
                         unmortMenuStage1 = false;
                         unmortMenuStage2 = false;
                         unmortMenuStage3 = false;
+                        selectedPropToMortgage = null;
 
                         bricksInTheWall = 0;
                         selectedMortgageOption = 0;
@@ -4216,6 +4246,8 @@ namespace Capitalism
 
                                         selectedPropToMortgage.isMortgaged = false;
                                         CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4241,7 +4273,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 2;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4275,7 +4307,7 @@ namespace Capitalism
 
                                         propCounter = 3;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4301,7 +4333,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 4;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4327,7 +4359,7 @@ namespace Capitalism
                                         propColorCounter = 3;
                                         propCounter = 5;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4364,7 +4396,7 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 6;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4390,7 +4422,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 7;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4416,7 +4448,7 @@ namespace Capitalism
                                         propColorCounter = 3;
                                         propCounter = 8;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4454,7 +4486,7 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 9;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4480,7 +4512,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 10;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4506,7 +4538,7 @@ namespace Capitalism
                                         propColorCounter = 3;
                                         propCounter = 11;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4542,7 +4574,7 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 12;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4568,7 +4600,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 13;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4594,7 +4626,7 @@ namespace Capitalism
                                         propColorCounter = 3;
                                         propCounter = 14;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4630,7 +4662,7 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 15;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4656,7 +4688,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 16;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4682,7 +4714,7 @@ namespace Capitalism
                                         propColorCounter = 3;
                                         propCounter = 17;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4718,7 +4750,7 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 18;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4744,7 +4776,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 19;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4770,7 +4802,7 @@ namespace Capitalism
                                         propColorCounter = 3;
                                         propCounter = 20;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4804,7 +4836,7 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 21;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
@@ -4830,7 +4862,7 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 22;
 
-                                        unmortMenuStage3 = true;
+                                        exitMortMenu();
                                     }
                                     else
                                     {
