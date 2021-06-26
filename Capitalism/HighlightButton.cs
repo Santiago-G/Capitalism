@@ -30,6 +30,7 @@ namespace Capitalism
         public Vector2 origin = Vector2.Zero;
         public float rotation = 0f;
         public bool toRotate = false;
+        bool canClick = false;
 
         public override Rectangle Hitbox
         {
@@ -70,8 +71,6 @@ namespace Capitalism
            return box;
         }
 
-        fix click here
-
         public void Update(MouseState ms, bool toHighlight)
         {
             IsClicked = false;
@@ -107,19 +106,21 @@ namespace Capitalism
 
             if (CurrentHitbox.Contains(ms.Position))
             {
-                if ((ms != mouseState && ms.LeftButton == ButtonState.Pressed)) // click logic goes in here
+
+                if ((ms != mouseState && ms.LeftButton == ButtonState.Pressed && canClick)) // click logic goes in here
                 {
                     IsClicked = true;
-
+                    canClick = false;
                     if (stayHighlighted)
                     {
                         CurrentHitbox = HighlightedHitbox;
                         CurrentTint = Color.Gold;
                     }
                 }
-                else
+                else if(ms.LeftButton == ButtonState.Released)
                 {
                     IsClicked = false;
+                    canClick = true;
                 }
             }
 

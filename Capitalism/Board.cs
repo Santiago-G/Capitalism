@@ -69,6 +69,8 @@ namespace Capitalism
         bool tearDownTheWall = false;
 
         bool mortGlow = false;
+        bool gameOver = false;
+        bool playerLost = false;
         #endregion
 
         string theTrial = "";
@@ -974,6 +976,9 @@ namespace Capitalism
         HighlightButton mortgageProps;
         HighlightButton unmortgageYesButton;
 
+        HighlightButton sellMortPropsGO;
+        HighlightButton giveUpGO;
+
         #endregion
 
         Animation dice1;
@@ -1267,6 +1272,8 @@ namespace Capitalism
             mortgageProps = new HighlightButton(Content.Load<Texture2D>("mortgageIcon"), new Vector2(230, 900), Color.White, new Vector2(0.32f));
             mortgageYesButton = new HighlightButton(Yes, new Vector2(890, 870), Color.White, new Vector2(3f));
             unmortgageYesButton = new HighlightButton(Yes, new Vector2(1080, 195), Color.White, new Vector2(1.5f));
+            giveUpGO = new HighlightButton(Yes, new Vector2(700), Color.White, new Vector2(1));
+            sellMortPropsGO = new HighlightButton(Yes, new Vector2(900, 700), Color.White, new Vector2(1));
 
             Bounds = bounds;
         }
@@ -1314,11 +1321,27 @@ namespace Capitalism
 
                 #endregion
 
-                for (int i = 0; i < Players.Length; i++)
+                if (CurrentPlayer.Money < 0)
                 {
-                    if (Players[i].Money == 0)
+                    //they lost.
+
+                    if (playerCount == 2)
                     {
                         //game over
+                    }
+                    else
+                    {
+                        //show screen where they have 2 options, mortgage their props or lose.
+                        playerLost = true;
+
+                        if (sellMortPropsGO.IsClicked)
+                        {
+                            
+                        }
+                        if (giveUpGO.IsClicked)
+                        {
+                            //they lost, do things below
+                        }
                     }
                 }
 
@@ -1441,6 +1464,7 @@ namespace Capitalism
 
                 #endregion
 
+                #region Mortgaging
                 if ((mortgageProps.IsClicked && (!diceMoving && !diceRolling && !characterMoving)) && !buyingHouses)
                 {
                     mortgaging = true;
@@ -1576,6 +1600,8 @@ namespace Capitalism
                     }
                 }
 
+                #endregion
+
                 #region Updates 
                 CurrentPlayer.Update();
                 noButton.Update(ms, true);
@@ -1683,6 +1709,9 @@ namespace Capitalism
                 }
 
                 theWall?.Update(ms, true);
+
+                sellMortPropsGO.Update(ms, true);
+                giveUpGO.Update(ms, true);
                 #endregion
 
                 if (gameTime.TotalGameTime - previousTime >= diceGlowInterval && diceFlashing)
@@ -1981,15 +2010,6 @@ namespace Capitalism
                     }
                     //jail
 
-                    if (buyingHouses)
-                    {
-
-                    }
-
-                    //if the player clicks on the house/hotel icon on the bottom left, open a menu that shows all the colored properties divided by colors
-                    //if they own all of 1 color property, the properties will be highlighted, otherwise they will be darkened
-                    //when they click on the property 
-
                     #region Chance Card
 
                     if ((CurrentPlayer.currentTileIndex == 8 || CurrentPlayer.currentTileIndex == 23 || CurrentPlayer.currentTileIndex == 37) && !drawedACard)
@@ -2092,7 +2112,18 @@ namespace Capitalism
                         }
                         else if (chanceCard.cardTypes == CardTypes.HouseRepair)
                         {
-                            //houses
+                            for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+                            {
+                                foreach (var house in CurrentPlayer.properties[i].houses)
+                                {
+                                    CurrentPlayer.Money -= 25;
+                                }
+
+                                foreach (var hotel in CurrentPlayer.properties[i].hotels)
+                                {
+                                    CurrentPlayer.Money -= 100;
+                                }
+                            }
                         }
 
                         chanceCard.Hitbox.X = 1100;
@@ -2171,7 +2202,19 @@ namespace Capitalism
                                 break;
 
                             case CommunityCardTypes.HouseRepair:
-                                //house
+
+                                for (int i = 0; i < CurrentPlayer.properties.Count; i++)
+                                {
+                                    foreach (var house in CurrentPlayer.properties[i].houses)
+                                    {
+                                        CurrentPlayer.Money -= 25;
+                                    }
+
+                                    foreach (var hotel in CurrentPlayer.properties[i].hotels)
+                                    {
+                                        CurrentPlayer.Money -= 100;
+                                    }
+                                }
                                 break;
 
                             case CommunityCardTypes.GoToGo:
@@ -4268,10 +4311,15 @@ namespace Capitalism
                                     if (propertySprites[$"purple2"].IsClicked)
                                     {
                                         selectedPropToMortgage = findProp("BalticAve");
+                                        selectedPropToMortgage.Tint = Color.White;
                                         theTrial = "purple2";
 
                                         propColorCounter = 2;
                                         propCounter = 2;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4307,6 +4355,10 @@ namespace Capitalism
 
                                         propCounter = 3;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4333,6 +4385,10 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 4;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4358,6 +4414,10 @@ namespace Capitalism
 
                                         propColorCounter = 3;
                                         propCounter = 5;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4396,6 +4456,10 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 6;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4422,6 +4486,10 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 7;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4447,6 +4515,10 @@ namespace Capitalism
 
                                         propColorCounter = 3;
                                         propCounter = 8;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4486,6 +4558,10 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 9;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4512,6 +4588,10 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 10;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4537,6 +4617,10 @@ namespace Capitalism
 
                                         propColorCounter = 3;
                                         propCounter = 11;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4574,6 +4658,10 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 12;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4600,6 +4688,10 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 13;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4625,6 +4717,10 @@ namespace Capitalism
 
                                         propColorCounter = 3;
                                         propCounter = 14;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4662,6 +4758,10 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 15;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4688,6 +4788,10 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 16;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4713,6 +4817,10 @@ namespace Capitalism
 
                                         propColorCounter = 3;
                                         propCounter = 17;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4750,6 +4858,10 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 18;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4776,6 +4888,10 @@ namespace Capitalism
                                         propColorCounter = 2;
                                         propCounter = 19;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4801,6 +4917,10 @@ namespace Capitalism
 
                                         propColorCounter = 3;
                                         propCounter = 20;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4836,6 +4956,10 @@ namespace Capitalism
                                         propColorCounter = 1;
                                         propCounter = 21;
 
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
+
                                         exitMortMenu();
                                     }
                                     else
@@ -4861,6 +4985,10 @@ namespace Capitalism
 
                                         propColorCounter = 2;
                                         propCounter = 22;
+
+                                        selectedPropToMortgage.isMortgaged = false;
+                                        CurrentPlayer.Money -= (int)((selectedPropToMortgage.Cost / 2) * .2f);
+                                        selectedPropToMortgage.Tint = Color.White;
 
                                         exitMortMenu();
                                     }
@@ -4901,15 +5029,55 @@ namespace Capitalism
             {
                 communityCards.Draw(batch);
             }
-        }
-        //screaming issue - THE CARDS FREEZE WHEN THE PLAYER HAS TO PAY RENT
-        //do these first - houses
 
-        /*   THINGS THAT ARE BROKEN
-         * 
-         * Community Chest doesn't work with doubles.
-         * After you pull a moving card, when you move again it pulls another card
-         * doubles not working when char is paying rent
-         */
+            if (playerLost)
+            {
+                batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
+
+                int randomTextMessage = gen.Next(1, 11);
+                switch (randomTextMessage)
+                {
+                    case 1:
+                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 2:
+                        batch.DrawString(font, "You lost, get good.", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 3:
+                        batch.DrawString(font, "You won! Congra- oh wrong person", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 4:
+                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 5:
+                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 6:
+                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 7:
+                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 8:
+                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 9:
+                        batch.DrawString(font, "What are you, a filthy commie?", new Vector2(750, 190), Color.Black);
+                        break;
+                    case 10:
+                        batch.DrawString(font, "Why even bother playin you socialist", new Vector2(750, 190), Color.Black);
+                        break;
+                }
+
+                batch.DrawString(mediumSizeFont, "You got two options: mortgage you're properties*, or lose.", new Vector2(750, 190), Color.Black);
+
+                sellMortPropsGO.Draw(batch);
+                giveUpGO.Draw(batch);
+                //if they click on give up, remove them from the game. (if there were 3 players now theres 2) and all their props go into the free market
+                //if they have props and want to mortgage them for cash, let them do that, but ONLY that
+                //till they unmortgaged atleast 1 property.
+
+            }
+        }
     }
 }
