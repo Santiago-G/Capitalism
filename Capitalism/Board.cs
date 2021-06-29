@@ -84,6 +84,8 @@ namespace Capitalism
         Property prop;
         Queue<ChanceCards> chanceCards = new Queue<ChanceCards>();
         Queue<CommunityChests> chestCards = new Queue<CommunityChests>();
+        ChanceCards chanceTempy;
+        CommunityChests chestTempy;
 
         Property temp;
         Property temp2;
@@ -108,7 +110,7 @@ namespace Capitalism
         Vector2[] charPostitions;
         Vector2[] goPositions;
 
-        Player[] Players;
+        List<Player> Players = new List<Player>();
 
         Dictionary<string, (Player player, HighlightButton button)> playerDict = ChoosingCharacters.players;
         Player CurrentPlayer;
@@ -885,6 +887,108 @@ namespace Capitalism
 
             return e.hotelCounter != 0;
         }
+
+        public Vector2 propKeys(Property prop)
+        {
+            Vector2 temp;
+            switch (prop.Image.Name)
+            {
+                case "MediterraneanAve":
+                    temp = charPostitions[1];
+                    break;
+                case "BalticAve":
+                    temp = charPostitions[3];
+                    break;
+
+                case "OrientalAve":
+                    temp = charPostitions[6];
+                    break;
+                case "VermontAve":
+                    temp = charPostitions[8];
+                    break;
+                case "ConnecticutAve":
+                    temp = charPostitions[9];
+                    break;
+
+                case "StCharlesPlace":
+                    temp = charPostitions[11];
+                    break;
+                case "StatesAve":
+                    temp = charPostitions[13];
+                    break;
+                case "VirginiaAve":
+                    temp = charPostitions[14];
+                    break;
+
+                case "StJamesPlace":
+                    temp = charPostitions[16];
+                    break;
+                case "TennesseeAve":
+                    temp = charPostitions[18];
+                    break;
+                case "NewYorkAve":
+                    temp = charPostitions[19];
+                    break;
+
+                case "KentuckyAve":
+                    temp = charPostitions[21];
+                    break;
+                case "IndianaAve":
+                    temp = charPostitions[23];
+                    break;
+                case "IllinoisAve":
+                    temp = charPostitions[24];
+                    break;
+
+                case "AtlanticAve":
+                    temp = charPostitions[26];
+                    break;
+                case "VentnorAve":
+                    temp = charPostitions[27];
+                    break;
+                case "MarvinGardens":
+                    temp = charPostitions[29];
+                    break;
+
+                case "PacificAve":
+                    temp = charPostitions[31];
+                    break;
+                case "NoCarolinaAve":
+                    temp = charPostitions[32];
+                    break;
+                case "PennsylvaniaAve":
+                    temp = charPostitions[34];
+                    break;
+
+                case "ParkPlace":
+                    temp = charPostitions[37];
+                    break;
+                case "Boardwalk":
+                    temp = charPostitions[39];
+                    break;
+
+                case "ReadingRailroad":
+                    temp = charPostitions[5];
+                    break;
+                case "PennsylvaniaRR":
+                    temp = charPostitions[15];
+                    break;
+                case "B&ORailroad":
+                    temp = charPostitions[25];
+                    break;
+                case "ShortLineRR":
+                    temp = charPostitions[35];
+                    break;
+
+                case "ElectricCompany":
+                    temp = charPostitions[12];
+                    break;
+                case "WaterWorks":
+                    temp = charPostitions[28];
+                    break;
+            }
+            return new Vector2(0);
+        }
         //FUNCTIONS\\
 
         public void exitMortMenu()
@@ -1023,8 +1127,6 @@ namespace Capitalism
             charPostitions = MakingPositions();
             goPositions = MakingGoPositions();
             //Testing Testing Testing
-
-            Players = new Player[playerCount];
 
             PlayerTitle = Content.Load<Texture2D>("PlayerTitle2");
             pixel = Content.Load<Texture2D>("FFFFFF-1");
@@ -1292,13 +1394,9 @@ namespace Capitalism
 
                 if (bean)
                 {
-                    if (playerCount != Players.Length)
-                    {
-                        Players = new Player[playerCount];
-                    }
                     for (int i = 0; i < playerCount; i++)
                     {
-                        Players[i] = CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions);
+                        Players.Add(CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions));
                         Players[i].PositionArea = charPostitions;
                         Players[i].currentTileIndex = 1;
                     }
@@ -1331,16 +1429,35 @@ namespace Capitalism
                     }
                     else
                     {
-                        //show screen where they have 2 options, mortgage their props or lose.
                         playerLost = true;
 
-                        if (sellMortPropsGO.IsClicked)
-                        {
-                            
-                        }
                         if (giveUpGO.IsClicked)
                         {
-                            //they lost, do things below
+                            //get out of jail cards returned
+                            if (CurrentPlayer.GetOutOfJailFree)
+                            {
+                                chanceCards.Enqueue(chanceTempy);
+                            }
+                            else if(CurrentPlayer.GetOutOfJailFree2)
+                            {
+                                chestCards.Enqueue(chestTempy);
+                            }
+
+                            //houses, hotels, and the props themselves getting returned
+                            foreach (var prop in CurrentPlayer.properties)
+                            {
+                                prop.houses.Clear();
+                                prop.hotels.Clear();
+
+                                prop.isMortgaged = false;
+
+                                Properties.Add(propKeys(prop), prop);
+                                BoughtProperties.Remove(propKeys(prop));
+                            }
+
+                            //the player gets removed
+                            Players.RemoveAt(currentPlayerIndex);
+                            playerLost = false;
                         }
                     }
                 }
@@ -1605,7 +1722,7 @@ namespace Capitalism
                 #region Updates 
                 CurrentPlayer.Update();
                 noButton.Update(ms, true);
-                yesButton.Update(ms, true);
+                yesButton.Update(ms, (CurrentPlayer != null && CurrentPlayer.Money >= Properties[CurrentPlayer.Position].Cost)); ;
                 breakOutOfJailButton.Update(ms, getOutOfJailGlow);
                 buyHouses.Update(ms, readyToBuy);
                 mortgageProps.Update(ms, true);
@@ -1771,7 +1888,7 @@ namespace Capitalism
 
                         //target = rollValue + CurrentPlayer.currentTileIndex;
 
-                        if (CurrentPlayer.Token != "Boat")
+                        if (true)//CurrentPlayer.Token != "Boat")
                         {
                             if (CurrentPlayer.currentTileIndex == 1)
                             {
@@ -1780,6 +1897,10 @@ namespace Capitalism
                             else if (CurrentPlayer.currentTileIndex == 2)
                             {
                                 target = 4;
+                                if (CurrentPlayer.Token == "Boat")
+                                {
+                                    CurrentPlayer.Money = 1;
+                                }
                             }
                             else if (CurrentPlayer.currentTileIndex == 4)
                             {
@@ -1864,23 +1985,10 @@ namespace Capitalism
 
 
                         }
-                        else
-                        {
-                            target = 1;
-                        }
-
-                        /*
-                        FOR TESTING BUYING PROPS 
-
-                        if (CurrentPlayer.Token != "Boat")
-                        {
-                            target = 3 + CurrentPlayer.currentTileIndex;
-                        }
-                        else
-                        {
-                            target = 1;
-                        }
-                        */
+                        //else
+                        //{
+                        //    target = 1;
+                        //}
 
                         if (dice1.stopped)
                         {
@@ -1917,6 +2025,16 @@ namespace Capitalism
                         {
                             CurrentPlayer.inJail = false;
                             CurrentPlayer.Position = charPostitions[10];
+
+                            if (getOutOfJailFree.IsClicked)
+                            {
+                                chanceCards.Enqueue(chanceTempy);
+                            }
+                            else 
+                            {
+                                chestCards.Enqueue(chestTempy);
+                            }
+
                         }
                     }
 
@@ -2084,6 +2202,7 @@ namespace Capitalism
                         {
                             dontPutBack = true;
                             CurrentPlayer.GetOutOfJailFree = true;
+                            chanceTempy = chanceCard;
 
                         }
                         else if (chanceCard.cardTypes == CardTypes.GiveToOthers)
@@ -2195,6 +2314,8 @@ namespace Capitalism
                             case CommunityCardTypes.GetOutOfJail:
                                 CurrentPlayer.GetOutOfJailFree2 = true;
                                 dontPutBack = true;
+                                chestTempy = communityCards;
+
                                 break;
 
                             case CommunityCardTypes.GoInJail:
@@ -2306,7 +2427,7 @@ namespace Capitalism
                             drawedACard = false;
                         }
 
-                        if (yesButton.IsClicked)
+                        if (yesButton.IsClicked && CurrentPlayer.Money >= Properties[CurrentPlayer.Position].Cost)
                         {
                             CurrentPlayer.Money = CurrentPlayer.Money - Properties[CurrentPlayer.Position].Cost;
                             CurrentPlayer.properties.Add(Properties[CurrentPlayer.Position]);
@@ -2500,7 +2621,7 @@ namespace Capitalism
                         }
                         if (!temp2)
                         {
-                            for (int i = 0; i < Players.Length; i++)
+                            for (int i = 0; i < Players.Count; i++)
                             {
                                 if (Players[i] != CurrentPlayer && Rent)
                                 {
@@ -2737,7 +2858,7 @@ namespace Capitalism
 
             CurrentPlayer?.Draw(batch);
 
-            for (int i = 0; i < Players.Length; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
 
                 Players[i]?.Draw(batch);
@@ -2748,7 +2869,7 @@ namespace Capitalism
             house.Draw(batch);
             mortgageProps.Draw(batch);
 
-            if (Players[0] != null)
+            if (Players.Count != 0)
             {
                 foreach (var Player in Players)
                 {
@@ -5032,9 +5153,10 @@ namespace Capitalism
 
             if (playerLost)
             {
+                darkenScreen = true;
                 batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
 
-                int randomTextMessage = gen.Next(1, 11);
+                int randomTextMessage = 100;//gen.Next(1, 11);
                 switch (randomTextMessage)
                 {
                     case 1:
@@ -5069,14 +5191,10 @@ namespace Capitalism
                         break;
                 }
 
-                batch.DrawString(mediumSizeFont, "You got two options: mortgage you're properties*, or lose.", new Vector2(750, 190), Color.Black);
+                batch.DrawString(mediumSizeFont, "All your properties were put back in the free market", new Vector2(550, 190), Color.Black);
+                batch.DrawString(mediumSizeFont, "Press the button below to continue playing.", new Vector2(550, 300), Color.Black);
 
-                sellMortPropsGO.Draw(batch);
                 giveUpGO.Draw(batch);
-                //if they click on give up, remove them from the game. (if there were 3 players now theres 2) and all their props go into the free market
-                //if they have props and want to mortgage them for cash, let them do that, but ONLY that
-                //till they unmortgaged atleast 1 property.
-
             }
         }
     }
