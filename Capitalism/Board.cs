@@ -71,13 +71,15 @@ namespace Capitalism
         bool mortGlow = false;
         bool gameOver = false;
         bool playerLost = false;
+        bool newPlayerCount = false;
         #endregion
 
         string theTrial = "";
         int bricksInTheWall = 0;
         HighlightButton theWall = null;
-
+        int revolution9 = 999;
         int selectedMortgageOption = 0;
+        int winnerIndex = 1000;
 
         ChanceCards chanceCard;
         CommunityChests communityCards;
@@ -100,7 +102,8 @@ namespace Capitalism
         int propCounter = 0;
 
         int mortColorSelected;
-        public int playerCount => SelectingPlayers.playerCount;
+        public int playerCounty => SelectingPlayers.playerCount;
+        public int playerCount;
 
         Property selectedPropToBuildOn;
         Property selectedPropToMortgage;
@@ -279,7 +282,6 @@ namespace Capitalism
                 return CommunityCardTypes.BankMoney;
             }
 
-            return CommunityCardTypes.Invalid;
             //var cardType = Enum.Parse(typeof(CardTypes), filename);
 
             // return cardType;
@@ -1104,7 +1106,7 @@ namespace Capitalism
         TimeSpan communityChestPrevTime = TimeSpan.Zero;
 
         Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, bool isUtillity, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content, PropertyColor propColor)
-        {
+        { 
             if (fliped)
             {
                 return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
@@ -1305,7 +1307,6 @@ namespace Capitalism
 
                 CardTypes cardType = GetCardType(filename);
 
-                Property property = null;
                 var result = Destination(cardType, filename, charPostitions);
 
                 chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
@@ -1374,7 +1375,7 @@ namespace Capitalism
             mortgageProps = new HighlightButton(Content.Load<Texture2D>("mortgageIcon"), new Vector2(230, 900), Color.White, new Vector2(0.32f));
             mortgageYesButton = new HighlightButton(Yes, new Vector2(890, 870), Color.White, new Vector2(3f));
             unmortgageYesButton = new HighlightButton(Yes, new Vector2(1080, 195), Color.White, new Vector2(1.5f));
-            giveUpGO = new HighlightButton(Yes, new Vector2(700), Color.White, new Vector2(1));
+            giveUpGO = new HighlightButton(Yes, new Vector2(700), Color.White, new Vector2(3));
             sellMortPropsGO = new HighlightButton(Yes, new Vector2(900, 700), Color.White, new Vector2(1));
 
             Bounds = bounds;
@@ -1383,6 +1384,11 @@ namespace Capitalism
         ////////////UPDATE\\\\\\\\\\\\
         public void Update(MouseState ms, GameTime gameTime)
         {
+            if (!newPlayerCount)
+            {
+                playerCount = playerCounty;
+            }
+
             int iterations = 1;
             for (int dskaijdisajd = 0; dskaijdisajd < iterations; dskaijdisajd++)
             {
@@ -1419,13 +1425,23 @@ namespace Capitalism
 
                 #endregion
 
+                #region Game Over / Player Lost
                 if (CurrentPlayer.Money < 0)
                 {
                     //they lost.
 
                     if (playerCount == 2)
                     {
-                        //game over
+                        gameOver = true;
+
+                        if (currentPlayerIndex == 0)
+                        {
+                            winnerIndex = 1;
+                        }
+                        else 
+                        {
+                            winnerIndex = 0;
+                        }
                     }
                     else
                     {
@@ -1433,6 +1449,8 @@ namespace Capitalism
 
                         if (giveUpGO.IsClicked)
                         {
+                            //when you select yes, it doesnt go to the next player and the menu stays on.
+
                             //get out of jail cards returned
                             if (CurrentPlayer.GetOutOfJailFree)
                             {
@@ -1458,9 +1476,24 @@ namespace Capitalism
                             //the player gets removed
                             Players.RemoveAt(currentPlayerIndex);
                             playerLost = false;
+                            playerCount = playerCount - 1;
+
+                            if (currentPlayerIndex + 1 < playerCount)
+                            {
+                                currentPlayerIndex++;
+                            }
+                            else
+                            {
+                                currentPlayerIndex = 0;
+                            }
+
+                            CurrentPlayer = Players[currentPlayerIndex];
+                            newPlayerCount = true;
+                            darkenScreen = false;
                         }
                     }
                 }
+                #endregion
 
                 #region Jail
                 if (CurrentPlayer.inJail)
@@ -1722,7 +1755,7 @@ namespace Capitalism
                 #region Updates 
                 CurrentPlayer.Update();
                 noButton.Update(ms, true);
-                yesButton.Update(ms, (CurrentPlayer != null && CurrentPlayer.Money >= Properties[CurrentPlayer.Position].Cost)); ;
+                yesButton.Update(ms, ((CurrentPlayer != null && CurrentPlayer.currentTileIndex != 1))); 
                 breakOutOfJailButton.Update(ms, getOutOfJailGlow);
                 buyHouses.Update(ms, readyToBuy);
                 mortgageProps.Update(ms, true);
@@ -1886,8 +1919,9 @@ namespace Capitalism
 
                         rollValue = (dice1.DiceRollValue) + (dice2.DiceRollValue);
 
-                        //target = rollValue + CurrentPlayer.currentTileIndex;
+                        target = rollValue + CurrentPlayer.currentTileIndex;
 
+                        /*
                         if (true)//CurrentPlayer.Token != "Boat")
                         {
                             if (CurrentPlayer.currentTileIndex == 1)
@@ -1985,6 +2019,8 @@ namespace Capitalism
 
 
                         }
+
+                        */
                         //else
                         //{
                         //    target = 1;
@@ -5191,10 +5227,23 @@ namespace Capitalism
                         break;
                 }
 
-                batch.DrawString(mediumSizeFont, "All your properties were put back in the free market", new Vector2(550, 190), Color.Black);
-                batch.DrawString(mediumSizeFont, "Press the button below to continue playing.", new Vector2(550, 300), Color.Black);
+                batch.DrawString(mediumSizeFont, $"Player {currentPlayerIndex + 1} went bankrupt!", new Vector2(725, 100), Color.Black);
+
+                batch.DrawString(font, "All your properties were put back in the free market", new Vector2(600, 190), Color.Black);
+                batch.DrawString(font, "Press the button below to continue playing.", new Vector2(670, 300), Color.Black);
 
                 giveUpGO.Draw(batch);
+            }
+
+            if(gameOver)
+            {
+                darkenScreen = true;
+                batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
+
+                batch.DrawString(mediumSizeFont, "Game Over", new Vector2(700, 100), Color.Black);
+
+                batch.DrawString(font, $"Player {winnerIndex + 1} has won!", new Vector2(700, 200), Color.Black);
+
             }
         }
     }
