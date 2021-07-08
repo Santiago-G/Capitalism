@@ -110,7 +110,7 @@ namespace Capitalism
 
         public Rectangle Bounds { get; set; }
 
-        Vector2[] charPostitions;
+        Vector2[] charPositions;
         Vector2[] goPositions;
 
         List<Player> Players = new List<Player>();
@@ -892,104 +892,104 @@ namespace Capitalism
 
         public Vector2 propKeys(Property prop)
         {
-            Vector2 temp;
-            switch (prop.Image.Name)
-            {
-                case "MediterraneanAve":
-                    temp = charPostitions[1];
-                    break;
-                case "BalticAve":
-                    temp = charPostitions[3];
-                    break;
+            //Vector2 temp;
+            //switch (prop.Image.Name)
+            //{
+            //    case "MediterraneanAve":
+            //        temp = charPositions[1];
+            //        break;
+            //    case "BalticAve":
+            //        temp = charPositions[3];
+            //        break;
 
-                case "OrientalAve":
-                    temp = charPostitions[6];
-                    break;
-                case "VermontAve":
-                    temp = charPostitions[8];
-                    break;
-                case "ConnecticutAve":
-                    temp = charPostitions[9];
-                    break;
+            //    case "OrientalAve":
+            //        temp = charPositions[6];
+            //        break;
+            //    case "VermontAve":
+            //        temp = charPositions[8];
+            //        break;
+            //    case "ConnecticutAve":
+            //        temp = charPositions[9];
+            //        break;
 
-                case "StCharlesPlace":
-                    temp = charPostitions[11];
-                    break;
-                case "StatesAve":
-                    temp = charPostitions[13];
-                    break;
-                case "VirginiaAve":
-                    temp = charPostitions[14];
-                    break;
+            //    case "StCharlesPlace":
+            //        temp = charPositions[11];
+            //        break;
+            //    case "StatesAve":
+            //        temp = charPositions[13];
+            //        break;
+            //    case "VirginiaAve":
+            //        temp = charPositions[14];
+            //        break;
 
-                case "StJamesPlace":
-                    temp = charPostitions[16];
-                    break;
-                case "TennesseeAve":
-                    temp = charPostitions[18];
-                    break;
-                case "NewYorkAve":
-                    temp = charPostitions[19];
-                    break;
+            //    case "StJamesPlace":
+            //        temp = charPositions[16];
+            //        break;
+            //    case "TennesseeAve":
+            //        temp = charPositions[18];
+            //        break;
+            //    case "NewYorkAve":
+            //        temp = charPositions[19];
+            //        break;
 
-                case "KentuckyAve":
-                    temp = charPostitions[21];
-                    break;
-                case "IndianaAve":
-                    temp = charPostitions[23];
-                    break;
-                case "IllinoisAve":
-                    temp = charPostitions[24];
-                    break;
+            //    case "KentuckyAve":
+            //        temp = charPositions[21];
+            //        break;
+            //    case "IndianaAve":
+            //        temp = charPositions[23];
+            //        break;
+            //    case "IllinoisAve":
+            //        temp = charPositions[24];
+            //        break;
 
-                case "AtlanticAve":
-                    temp = charPostitions[26];
-                    break;
-                case "VentnorAve":
-                    temp = charPostitions[27];
-                    break;
-                case "MarvinGardens":
-                    temp = charPostitions[29];
-                    break;
+            //    case "AtlanticAve":
+            //        temp = charPositions[26];
+            //        break;
+            //    case "VentnorAve":
+            //        temp = charPositions[27];
+            //        break;
+            //    case "MarvinGardens":
+            //        temp = charPositions[29];
+            //        break;
 
-                case "PacificAve":
-                    temp = charPostitions[31];
-                    break;
-                case "NoCarolinaAve":
-                    temp = charPostitions[32];
-                    break;
-                case "PennsylvaniaAve":
-                    temp = charPostitions[34];
-                    break;
+            //    case "PacificAve":
+            //        temp = charPositions[31];
+            //        break;
+            //    case "NoCarolinaAve":
+            //        temp = charPositions[32];
+            //        break;
+            //    case "PennsylvaniaAve":
+            //        temp = charPositions[34];
+            //        break;
 
-                case "ParkPlace":
-                    temp = charPostitions[37];
-                    break;
-                case "Boardwalk":
-                    temp = charPostitions[39];
-                    break;
+            //    case "ParkPlace":
+            //        temp = charPositions[37];
+            //        break;
+            //    case "Boardwalk":
+            //        temp = charPositions[39];
+            //        break;
 
-                case "ReadingRailroad":
-                    temp = charPostitions[5];
-                    break;
-                case "PennsylvaniaRR":
-                    temp = charPostitions[15];
-                    break;
-                case "B&ORailroad":
-                    temp = charPostitions[25];
-                    break;
-                case "ShortLineRR":
-                    temp = charPostitions[35];
-                    break;
+            //    case "ReadingRailroad":
+            //        temp = charPositions[5];
+            //        break;
+            //    case "PennsylvaniaRR":
+            //        temp = charPositions[15];
+            //        break;
+            //    case "B&ORailroad":
+            //        temp = charPositions[25];
+            //        break;
+            //    case "ShortLineRR":
+            //        temp = charPositions[35];
+            //        break;
 
-                case "ElectricCompany":
-                    temp = charPostitions[12];
-                    break;
-                case "WaterWorks":
-                    temp = charPostitions[28];
-                    break;
-            }
-            return new Vector2(0);
+            //    case "ElectricCompany":
+            //        temp = charPositions[12];
+            //        break;
+            //    case "WaterWorks":
+            //        temp = charPositions[28];
+            //        break;
+            //}
+            //return new Vector2(0);
         }
         //FUNCTIONS\\
 
@@ -1092,6 +1092,7 @@ namespace Capitalism
 
         Dictionary<Vector2, Property> Properties = new Dictionary<Vector2, Property>();
         Dictionary<Vector2, Property> BoughtProperties = new Dictionary<Vector2, Property>();
+        Dictionary<Property, Vector2> PropertyLocations;
         Dictionary<string, HighlightButton> propertySprites = new Dictionary<string, HighlightButton>();
 
         MouseState lms;
@@ -1106,7 +1107,7 @@ namespace Capitalism
         TimeSpan communityChestPrevTime = TimeSpan.Zero;
 
         Property LoadContent(string Name, int x, int y, bool fliped, int cost, int rent, bool isRailroad, bool isUtillity, int rentH1, int rentH2, int rentH3, int rentH4, int rentHotel, int houseCost, int hotelCost, ContentManager Content, PropertyColor propColor)
-        { 
+        {
             if (fliped)
             {
                 return new Property(Content.Load<Texture2D>(Name), new Rectangle(x, y, 70, 100), Color.White, cost, rent, isRailroad, isUtillity, rentH1, rentH2, rentH3, rentH4, rentHotel, houseCost, hotelCost, propColor);
@@ -1126,7 +1127,7 @@ namespace Capitalism
         public Board(ContentManager Content, Rectangle bounds)
         {
             //Testing Testing Testing
-            charPostitions = MakingPositions();
+            charPositions = MakingPositions();
             goPositions = MakingGoPositions();
             //Testing Testing Testing
 
@@ -1199,43 +1200,45 @@ namespace Capitalism
 
             //finish adding house rent and prop
 
-            Properties.Add(charPostitions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.purple));
-            Properties.Add(charPostitions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.purple));
+            Properties.Add(charPositions[1], LoadContent("MediterraneanAve", 1199, 895, true, 60, 2, false, false, 10, 30, 90, 160, 250, 50, 50, Content, PropertyColor.purple));
+            Properties.Add(charPositions[3], LoadContent("BalticAve", 1049, 895, true, 60, 4, false, false, 20, 60, 180, 320, 450, 50, 50, Content, PropertyColor.purple));
 
-            Properties.Add(charPostitions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
-            Properties.Add(charPostitions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
-            Properties.Add(charPostitions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.lightblue));
+            Properties.Add(charPositions[6], LoadContent("OrientalAve", 820, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
+            Properties.Add(charPositions[8], LoadContent("VermontAve", 668, 895, true, 100, 6, false, false, 30, 90, 270, 400, 550, 50, 50, Content, PropertyColor.lightblue));
+            Properties.Add(charPositions[9], LoadContent("ConnecticutAve", 592, 895, true, 120, 8, false, false, 40, 100, 300, 450, 600, 50, 50, Content, PropertyColor.lightblue));
 
-            Properties.Add(charPostitions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, false, 50, 150, 450, 625, 750, 100, 100, Content, PropertyColor.pink));
-            Properties.Add(charPostitions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, false, 50, 150, 450, 625, 750, 100, 100, Content, PropertyColor.pink));
-            Properties.Add(charPostitions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, false, 60, 180, 500, 700, 900, 100, 100, Content, PropertyColor.pink));
+            Properties.Add(charPositions[11], LoadContent("StCharlesPlace", 458, 794, false, 140, 10, false, false, 50, 150, 450, 625, 750, 100, 100, Content, PropertyColor.pink));
+            Properties.Add(charPositions[13], LoadContent("StatesAve", 458, 642, false, 140, 10, false, false, 50, 150, 450, 625, 750, 100, 100, Content, PropertyColor.pink));
+            Properties.Add(charPositions[14], LoadContent("VirginiaAve", 458, 567, false, 160, 12, false, false, 60, 180, 500, 700, 900, 100, 100, Content, PropertyColor.pink));
 
-            Properties.Add(charPostitions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, false, 70, 200, 550, 750, 950, 100, 100, Content, PropertyColor.orange));
-            Properties.Add(charPostitions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, false, 70, 200, 550, 750, 950, 100, 100, Content, PropertyColor.orange));
-            Properties.Add(charPostitions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, false, 80, 220, 600, 800, 1000, 100, 100, Content, PropertyColor.orange));
+            Properties.Add(charPositions[16], LoadContent("StJamesPlace", 458, 413, false, 180, 14, false, false, 70, 200, 550, 750, 950, 100, 100, Content, PropertyColor.orange));
+            Properties.Add(charPositions[18], LoadContent("TennesseeAve", 458, 262, false, 180, 14, false, false, 70, 200, 550, 750, 950, 100, 100, Content, PropertyColor.orange));
+            Properties.Add(charPositions[19], LoadContent("NewYorkAve", 458, 186, false, 200, 16, false, false, 80, 220, 600, 800, 1000, 100, 100, Content, PropertyColor.orange));
 
-            Properties.Add(charPostitions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, false, 90, 250, 700, 875, 1050, 150, 150, Content, PropertyColor.red));
-            Properties.Add(charPostitions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, false, 90, 250, 700, 875, 1050, 150, 150, Content, PropertyColor.red));
-            Properties.Add(charPostitions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, false, 100, 300, 750, 925, 1100, 150, 150, Content, PropertyColor.red));
+            Properties.Add(charPositions[21], LoadContent("KentuckyAve", 592, 54, true, 220, 18, false, false, 90, 250, 700, 875, 1050, 150, 150, Content, PropertyColor.red));
+            Properties.Add(charPositions[23], LoadContent("IndianaAve", 742, 54, true, 220, 18, false, false, 90, 250, 700, 875, 1050, 150, 150, Content, PropertyColor.red));
+            Properties.Add(charPositions[24], LoadContent("IllinoisAve", 818, 54, true, 240, 20, false, false, 100, 300, 750, 925, 1100, 150, 150, Content, PropertyColor.red));
 
-            Properties.Add(charPostitions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 22, false, false, 110, 330, 800, 975, 1150, 150, 150, Content, PropertyColor.yellow));
-            Properties.Add(charPostitions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, false, 110, 330, 800, 975, 1150, 150, 150, Content, PropertyColor.yellow));
-            Properties.Add(charPostitions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, false, 120, 360, 850, 1025, 1200, 150, 150, Content, PropertyColor.yellow));
+            Properties.Add(charPositions[26], LoadContent("AtlanticAve", 970, 54, true, 260, 22, false, false, 110, 330, 800, 975, 1150, 150, 150, Content, PropertyColor.yellow));
+            Properties.Add(charPositions[27], LoadContent("VentnorAve", 1045, 54, true, 260, 22, false, false, 110, 330, 800, 975, 1150, 150, 150, Content, PropertyColor.yellow));
+            Properties.Add(charPositions[29], LoadContent("MarvinGardens", 1196, 54, true, 280, 24, false, false, 120, 360, 850, 1025, 1200, 150, 150, Content, PropertyColor.yellow));
 
-            Properties.Add(charPostitions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, false, 130, 390, 900, 1100, 1275, 150, 150, Content, PropertyColor.green));
-            Properties.Add(charPostitions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, false, 130, 390, 900, 1100, 1275, 150, 150, Content, PropertyColor.green));
-            Properties.Add(charPostitions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, false, 150, 450, 1000, 1200, 1400, 200, 200, Content, PropertyColor.green));
+            Properties.Add(charPositions[31], LoadContent("PacificAve", 1196, 54, true, 300, 26, false, false, 130, 390, 900, 1100, 1275, 150, 150, Content, PropertyColor.green));
+            Properties.Add(charPositions[32], LoadContent("NoCarolinaAve", 1196, 54, true, 300, 26, false, false, 130, 390, 900, 1100, 1275, 150, 150, Content, PropertyColor.green));
+            Properties.Add(charPositions[34], LoadContent("PennsylvaniaAve", 1196, 54, true, 300, 28, false, false, 150, 450, 1000, 1200, 1400, 200, 200, Content, PropertyColor.green));
 
-            Properties.Add(charPostitions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, false, 175, 500, 1100, 1300, 1500, 200, 200, Content, PropertyColor.blue));
-            Properties.Add(charPostitions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 200, 600, 1400, 1700, 2000, 200, 200, Content, PropertyColor.blue));
+            Properties.Add(charPositions[37], LoadContent("ParkPlace", 1196, 54, true, 300, 35, false, false, 175, 500, 1100, 1300, 1500, 200, 200, Content, PropertyColor.blue));
+            Properties.Add(charPositions[39], LoadContent("Boardwalk", 1196, 54, true, 300, 50, false, false, 200, 600, 1400, 1700, 2000, 200, 200, Content, PropertyColor.blue));
 
-            Properties.Add(charPostitions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPositions[5], LoadContent("ReadingRailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPositions[15], LoadContent("PennsylvaniaRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPositions[25], LoadContent("B&ORailroad", 11, 11, true, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPositions[35], LoadContent("ShortLineRR", 11, 11, false, 200, 25, true, false, 25, 50, 100, 200, 0, 0, 0, Content, PropertyColor.nully));
 
-            Properties.Add(charPostitions[12], LoadContent("ElectricCompany", 12, 12, false, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));
-            Properties.Add(charPostitions[28], LoadContent("WaterWorks", 12, 12, true, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));//PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+            Properties.Add(charPositions[12], LoadContent("ElectricCompany", 12, 12, false, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));
+            Properties.Add(charPositions[28], LoadContent("WaterWorks", 12, 12, true, 150, 0, false, true, 0, 0, 0, 0, 0, 0, 0, Content, PropertyColor.nully));//PropertiesEnum.WaterWorks, Content.Load<Texture2D>("WaterWorks"));
+
+            PropertyLocations = Properties.ToDictionary(x => x.Value, x => x.Key);
 
             //////
 
@@ -1307,7 +1310,7 @@ namespace Capitalism
 
                 CardTypes cardType = GetCardType(filename);
 
-                var result = Destination(cardType, filename, charPostitions);
+                var result = Destination(cardType, filename, charPositions);
 
                 chanceCards.Enqueue(new ChanceCards(text, new Rectangle(300, 300, 290 / 4, 160 / 4), Color.White, cardType, result.position, result.tileNumber, ChanceMoney(cardType, filename)  /*ask about order after*/));
             }
@@ -1364,7 +1367,7 @@ namespace Capitalism
             Purchase = Content.Load<Texture2D>("PurchaseThisProp");
 
             inGameHouseIcon = Content.Load<Texture2D>("inGameHouse");
-            inGameHotelIcon = Content.Load<Texture2D>("inGameHotel3");
+            inGameHotelIcon = Content.Load<Texture2D>("theInGameHotel");
 
             noButton = new HighlightButton(No, new Vector2(326, 662), Color.White, Vector2.One);
             yesButton = new HighlightButton(Yes, new Vector2(356, 662), Color.White, Vector2.One);
@@ -1375,7 +1378,7 @@ namespace Capitalism
             mortgageProps = new HighlightButton(Content.Load<Texture2D>("mortgageIcon"), new Vector2(230, 900), Color.White, new Vector2(0.32f));
             mortgageYesButton = new HighlightButton(Yes, new Vector2(890, 870), Color.White, new Vector2(3f));
             unmortgageYesButton = new HighlightButton(Yes, new Vector2(1080, 195), Color.White, new Vector2(1.5f));
-            giveUpGO = new HighlightButton(Yes, new Vector2(700), Color.White, new Vector2(3));
+            giveUpGO = new HighlightButton(Yes, new Vector2(900, 700), Color.White, new Vector2(3));
             sellMortPropsGO = new HighlightButton(Yes, new Vector2(900, 700), Color.White, new Vector2(1));
 
             Bounds = bounds;
@@ -1386,7 +1389,7 @@ namespace Capitalism
         {
             if (!newPlayerCount)
             {
-                playerCount = playerCounty;
+                
             }
 
             int iterations = 1;
@@ -1400,10 +1403,12 @@ namespace Capitalism
 
                 if (bean)
                 {
+                    playerCount = SelectingPlayers.playerCount;
+
                     for (int i = 0; i < playerCount; i++)
                     {
                         Players.Add(CreatePlayer(playerDict[$"Player {i + 1}"].player, itsBeanTime, i, goPositions));
-                        Players[i].PositionArea = charPostitions;
+                        Players[i].PositionArea = charPositions;
                         Players[i].currentTileIndex = 1;
                     }
 
@@ -1413,7 +1418,6 @@ namespace Capitalism
                     ;
 
                     bean = false;
-
                 }
 
                 #region Property/Testing
@@ -1438,7 +1442,7 @@ namespace Capitalism
                         {
                             winnerIndex = 1;
                         }
-                        else 
+                        else
                         {
                             winnerIndex = 0;
                         }
@@ -1456,7 +1460,7 @@ namespace Capitalism
                             {
                                 chanceCards.Enqueue(chanceTempy);
                             }
-                            else if(CurrentPlayer.GetOutOfJailFree2)
+                            else if (CurrentPlayer.GetOutOfJailFree2)
                             {
                                 chestCards.Enqueue(chestTempy);
                             }
@@ -1469,8 +1473,8 @@ namespace Capitalism
 
                                 prop.isMortgaged = false;
 
-                                Properties.Add(propKeys(prop), prop);
-                                BoughtProperties.Remove(propKeys(prop));
+                                Properties.Add(PropertyLocations[prop], prop);
+                                BoughtProperties.Remove(PropertyLocations[prop]);
                             }
 
                             //the player gets removed
@@ -1511,7 +1515,7 @@ namespace Capitalism
                     {
                         CurrentPlayer.inJail = false;
                         CurrentPlayer.Money -= 50;
-                        CurrentPlayer.Position = charPostitions[10];
+                        CurrentPlayer.Position = charPositions[10];
                     }
                 }
 
@@ -1755,7 +1759,7 @@ namespace Capitalism
                 #region Updates 
                 CurrentPlayer.Update();
                 noButton.Update(ms, true);
-                yesButton.Update(ms, ((CurrentPlayer != null && CurrentPlayer.currentTileIndex != 1))); 
+                yesButton.Update(ms, ((CurrentPlayer != null && CurrentPlayer.currentTileIndex != 1)));
                 breakOutOfJailButton.Update(ms, getOutOfJailGlow);
                 buyHouses.Update(ms, readyToBuy);
                 mortgageProps.Update(ms, true);
@@ -1921,106 +1925,102 @@ namespace Capitalism
 
                         target = rollValue + CurrentPlayer.currentTileIndex;
 
-                        /*
-                        if (true)//CurrentPlayer.Token != "Boat")
-                        {
-                            if (CurrentPlayer.currentTileIndex == 1)
-                            {
-                                target = 2;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 2)
-                            {
-                                target = 4;
-                                if (CurrentPlayer.Token == "Boat")
-                                {
-                                    CurrentPlayer.Money = 1;
-                                }
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 4)
-                            {
-                                target = 7;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 7)
-                            {
-                                target = 9;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 9)
-                            {
-                                target = 10;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 10)
-                            {
-                                target = 12;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 12)
-                            {
-                                target = 14;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 14)
-                            {
-                                target = 15;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 15)
-                            {
-                                target = 17;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 17)
-                            {
-                                target = 19;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 19)
-                            {
-                                target = 20;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 20)
-                            {
-                                target = 22;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 22)
-                            {
-                                target = 24;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 24)
-                            {
-                                target = 25;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 25)
-                            {
-                                target = 27;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 27)
-                            {
-                                target = 28;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 28)
-                            {
-                                target = 30;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 30)
-                            {
-                                target = 32;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 32)
-                            {
-                                target = 33;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 33)
-                            {
-                                target = 35;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 35)
-                            {
-                                target = 38;
-                            }
-                            else if (CurrentPlayer.currentTileIndex == 38)
-                            {
-                                target = 40;
-                            }
+
+                        //if (true)//CurrentPlayer.Token != "Boat")
+                        //{
+                        //    if (CurrentPlayer.currentTileIndex == 1)
+                        //    {
+                        //        target = 2;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 2)
+                        //    {
+                        //        target = 4;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 4)
+                        //    {
+                        //        target = 7;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 7)
+                        //    {
+                        //        target = 9;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 9)
+                        //    {
+                        //        target = 10;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 10)
+                        //    {
+                        //        target = 12;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 12)
+                        //    {
+                        //        target = 14;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 14)
+                        //    {
+                        //        target = 15;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 15)
+                        //    {
+                        //        target = 17;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 17)
+                        //    {
+                        //        target = 19;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 19)
+                        //    {
+                        //        target = 20;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 20)
+                        //    {
+                        //        target = 22;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 22)
+                        //    {
+                        //        target = 24;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 24)
+                        //    {
+                        //        target = 25;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 25)
+                        //    {
+                        //        target = 27;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 27)
+                        //    {
+                        //        target = 28;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 28)
+                        //    {
+                        //        target = 30;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 30)
+                        //    {
+                        //        target = 32;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 32)
+                        //    {
+                        //        target = 33;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 33)
+                        //    {
+                        //        target = 35;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 35)
+                        //    {
+                        //        target = 38;
+                        //    }
+                        //    else if (CurrentPlayer.currentTileIndex == 38)
+                        //    {
+                        //        target = 40;
+                        //    }
 
 
-                        }
+                        //}
 
-                        */
+
                         //else
                         //{
                         //    target = 1;
@@ -2060,13 +2060,13 @@ namespace Capitalism
                         if (CurrentPlayer.inJail && (getOutOfJailFree.IsClicked || getOutOfJailFree2.IsClicked))
                         {
                             CurrentPlayer.inJail = false;
-                            CurrentPlayer.Position = charPostitions[10];
+                            CurrentPlayer.Position = charPositions[10];
 
                             if (getOutOfJailFree.IsClicked)
                             {
                                 chanceCards.Enqueue(chanceTempy);
                             }
-                            else 
+                            else
                             {
                                 chestCards.Enqueue(chestTempy);
                             }
@@ -2098,7 +2098,7 @@ namespace Capitalism
 
                         if (gameTime.TotalGameTime - tokenMovingTime >= tokenInterval)
                         {
-                            CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex];
+                            CurrentPlayer.Position = charPositions[CurrentPlayer.currentTileIndex];
                             CurrentPlayer.currentTileIndex++;
                             tokenMovingTime = gameTime.TotalGameTime;
                         }
@@ -2186,9 +2186,9 @@ namespace Capitalism
 
                                 while (true)
                                 {
-                                    if ((Properties.ContainsKey(charPostitions[county]) && Properties[charPostitions[county]].isRailroad) || (BoughtProperties.ContainsKey(charPostitions[county]) && BoughtProperties[charPostitions[county]].isRailroad))
+                                    if ((Properties.ContainsKey(charPositions[county]) && Properties[charPositions[county]].isRailroad) || (BoughtProperties.ContainsKey(charPositions[county]) && BoughtProperties[charPositions[county]].isRailroad))
                                     {
-                                        chanceCard.destination = charPostitions[county];
+                                        chanceCard.destination = charPositions[county];
                                         chanceCard.tileNumber = county + 1;
                                         break;
                                     }
@@ -2210,9 +2210,9 @@ namespace Capitalism
 
                                 while (true)
                                 {
-                                    if ((Properties.ContainsKey(charPostitions[thingy]) && Properties[charPostitions[thingy]].isUtility) || (BoughtProperties.ContainsKey(charPostitions[thingy]) && BoughtProperties[charPostitions[thingy]].isUtility))
+                                    if ((Properties.ContainsKey(charPositions[thingy]) && Properties[charPositions[thingy]].isUtility) || (BoughtProperties.ContainsKey(charPositions[thingy]) && BoughtProperties[charPositions[thingy]].isUtility))
                                     {
-                                        chanceCard.destination = charPostitions[thingy];
+                                        chanceCard.destination = charPositions[thingy];
                                         chanceCard.tileNumber = thingy + 1;
                                         break;
                                     }
@@ -2253,7 +2253,7 @@ namespace Capitalism
                         }
                         else if (chanceCard.cardTypes == CardTypes.GoBack3)
                         {
-                            CurrentPlayer.Position = charPostitions[CurrentPlayer.currentTileIndex - 4];
+                            CurrentPlayer.Position = charPositions[CurrentPlayer.currentTileIndex - 4];
 
                             if (CurrentPlayer.currentTileIndex == 5)
                             {
@@ -2375,7 +2375,7 @@ namespace Capitalism
                                 break;
 
                             case CommunityCardTypes.GoToGo:
-                                CurrentPlayer.Position = charPostitions[0];
+                                CurrentPlayer.Position = charPositions[0];
                                 CurrentPlayer.currentTileIndex = 0;
                                 break;
 
@@ -5192,41 +5192,6 @@ namespace Capitalism
                 darkenScreen = true;
                 batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
 
-                int randomTextMessage = 100;//gen.Next(1, 11);
-                switch (randomTextMessage)
-                {
-                    case 1:
-                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 2:
-                        batch.DrawString(font, "You lost, get good.", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 3:
-                        batch.DrawString(font, "You won! Congra- oh wrong person", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 4:
-                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 5:
-                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 6:
-                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 7:
-                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 8:
-                        batch.DrawString(font, "You lost!", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 9:
-                        batch.DrawString(font, "What are you, a filthy commie?", new Vector2(750, 190), Color.Black);
-                        break;
-                    case 10:
-                        batch.DrawString(font, "Why even bother playin you socialist", new Vector2(750, 190), Color.Black);
-                        break;
-                }
-
                 batch.DrawString(mediumSizeFont, $"Player {currentPlayerIndex + 1} went bankrupt!", new Vector2(725, 100), Color.Black);
 
                 batch.DrawString(font, "All your properties were put back in the free market", new Vector2(600, 190), Color.Black);
@@ -5235,14 +5200,15 @@ namespace Capitalism
                 giveUpGO.Draw(batch);
             }
 
-            if(gameOver)
+            if (gameOver)
             {
                 darkenScreen = true;
                 batch.Draw(houseBuyingUI, new Vector2(330, 55), Color.White);
 
-                batch.DrawString(mediumSizeFont, "Game Over", new Vector2(700, 100), Color.Black);
+                batch.DrawString(mediumSizeFont, "Game Over", new Vector2(800, 100), Color.Black);
 
-                batch.DrawString(font, $"Player {winnerIndex + 1} has won!", new Vector2(700, 200), Color.Black);
+                batch.DrawString(font, $"Player {winnerIndex + 1} has won!", new Vector2(790, 300), Color.Black);
+
 
             }
         }
